@@ -6,18 +6,18 @@
     const argv = require('yargs').parse(commandLine)
     if (windowManager) {
       if (argv.hidden || argv.hide) {
-        windowManager.mailboxesWindow.hide()
+        windowManager.musicboxesWindow.hide()
       } else {
         if (argv.mailto) {
-          windowManager.mailboxesWindow.openMailtoLink(argv.mailto)
+          windowManager.musicboxesWindow.openMailtoLink(argv.mailto)
         }
         const index = argv._.findIndex((a) => a.indexOf('mailto') === 0)
         if (index !== -1) {
-          windowManager.mailboxesWindow.openMailtoLink(argv._[index])
+          windowManager.musicboxesWindow.openMailtoLink(argv._[index])
           argv._.splice(1)
         }
-        windowManager.mailboxesWindow.show()
-        windowManager.mailboxesWindow.focus()
+        windowManager.musicboxesWindow.show()
+        windowManager.musicboxesWindow.focus()
       }
     }
     return true
@@ -29,7 +29,7 @@
 
   const argv = require('yargs').parse(process.argv)
   const AppAnalytics = require('./AppAnalytics')
-  const MailboxesWindow = require('./windows/MailboxesWindow')
+  const MusicboxesWindow = require('./windows/MusicboxesWindow')
   const ContentWindow = require('./windows/ContentWindow')
   const pkg = require('../package.json')
   const AppPrimaryMenu = require('./AppPrimaryMenu')
@@ -66,8 +66,8 @@
   /* ****************************************************************************/
 
   const analytics = new AppAnalytics()
-  const mailboxesWindow = new MailboxesWindow(analytics)
-  windowManager = new WindowManager(mailboxesWindow)
+  const musicboxesWindow = new MusicboxesWindow(analytics)
+  windowManager = new WindowManager(musicboxesWindow)
   const selectors = {
     fullQuit: () => {
       windowManager.quit()
@@ -77,21 +77,21 @@
       focused ? focused.close() : undefined
     },
     showWindow: () => {
-      windowManager.mailboxesWindow.show()
-      windowManager.mailboxesWindow.focus()
+      windowManager.musicboxesWindow.show()
+      windowManager.musicboxesWindow.focus()
     },
     fullscreenToggle: () => {
       const focused = windowManager.focused()
       focused ? focused.toggleFullscreen() : undefined
     },
     sidebarToggle: () => {
-      windowManager.mailboxesWindow.toggleSidebar()
+      windowManager.musicboxesWindow.toggleSidebar()
     },
     menuToggle: () => {
-      windowManager.mailboxesWindow.toggleAppMenu()
+      windowManager.musicboxesWindow.toggleAppMenu()
     },
     preferences: () => {
-      windowManager.mailboxesWindow.launchPreferences()
+      windowManager.musicboxesWindow.launchPreferences()
     },
     reload: () => {
       const focused = windowManager.focused()
@@ -99,29 +99,32 @@
     },
     devTools: () => {
       const focused = windowManager.focused()
-      focused ? focused.openDevTools() : undefined
+      focused ? focused.toggleDevTools() : undefined
+    },
+    embeddedDevTools: (musicboxId) => {
+      windowManager.musicboxesWindow.toggleEmbeddedDevTools(musicboxId)
     },
     learnMoreGithub: () => { shell.openExternal(constants.GITHUB_URL) },
     learnMore: () => { shell.openExternal(constants.WEB_URL) },
     privacy: () => { shell.openExternal(constants.PRIVACY_URL) },
     bugReport: () => { shell.openExternal(constants.GITHUB_ISSUE_URL) },
-    zoomIn: () => { windowManager.mailboxesWindow.mailboxZoomIn() },
-    zoomOut: () => { windowManager.mailboxesWindow.mailboxZoomOut() },
-    zoomReset: () => { windowManager.mailboxesWindow.mailboxZoomReset() },
+    zoomIn: () => { windowManager.musicboxesWindow.musicboxZoomIn() },
+    zoomOut: () => { windowManager.musicboxesWindow.musicboxZoomOut() },
+    zoomReset: () => { windowManager.musicboxesWindow.musicboxZoomReset() },
     changeMusicbox: (musicboxId) => {
-      windowManager.mailboxesWindow.show()
-      windowManager.mailboxesWindow.focus()
-      windowManager.mailboxesWindow.switchMusicbox(musicboxId)
+      windowManager.musicboxesWindow.show()
+      windowManager.musicboxesWindow.focus()
+      windowManager.musicboxesWindow.switchMusicbox(musicboxId)
     },
     prevMusicbox: () => {
-      windowManager.mailboxesWindow.show()
-      windowManager.mailboxesWindow.focus()
-      windowManager.mailboxesWindow.switchPrevMusicbox()
+      windowManager.musicboxesWindow.show()
+      windowManager.musicboxesWindow.focus()
+      windowManager.musicboxesWindow.switchPrevMusicbox()
     },
     nextMusicbox: () => {
-      windowManager.mailboxesWindow.show()
-      windowManager.mailboxesWindow.focus()
-      windowManager.mailboxesWindow.switchNextMusicbox()
+      windowManager.musicboxesWindow.show()
+      windowManager.musicboxesWindow.focus()
+      windowManager.musicboxesWindow.switchNextMusicbox()
     },
     cycleWindows: () => { windowManager.focusNextWindow() },
     aboutDialog: () => {
@@ -139,13 +142,13 @@
         }
       })
     },
-    find: () => { windowManager.mailboxesWindow.findStart() },
-    findNext: () => { windowManager.mailboxesWindow.findNext() },
-    mailboxNavBack: () => { windowManager.mailboxesWindow.navigateMailboxBack() },
-    mailboxNavForward: () => { windowManager.mailboxesWindow.navigateMailboxForward() },
-    playPause: () => { windowManager.mailboxesWindow.playPause() },
-    nextTrack: () => { windowManager.mailboxesWindow.nextTrack() },
-    previousTrack: () => { windowManager.mailboxesWindow.previousTrack() }
+    find: () => { windowManager.musicboxesWindow.findStart() },
+    findNext: () => { windowManager.musicboxesWindow.findNext() },
+    musicboxNavBack: () => { windowManager.musicboxesWindow.navigateMusicboxBack() },
+    musicboxNavForward: () => { windowManager.musicboxesWindow.navigateMusicboxForward() },
+    playPause: () => { windowManager.musicboxesWindow.playPause() },
+    nextTrack: () => { windowManager.musicboxesWindow.nextTrack() },
+    previousTrack: () => { windowManager.musicboxesWindow.previousTrack() }
   }
   const appMenu = new AppPrimaryMenu(selectors)
   const keyboardShortcuts = new KeyboardShortcuts(selectors)
@@ -155,15 +158,15 @@
   /* ****************************************************************************/
 
   ipcMain.on('report-error', (evt, body) => {
-    analytics.appException(windowManager.mailboxesWindow.window, 'renderer', body.error)
+    analytics.appException(windowManager.musicboxesWindow.window, 'renderer', body.error)
   })
 
   ipcMain.on('new-window', (evt, body) => {
-    const mailboxesWindow = windowManager.mailboxesWindow
-    const copyPosition = !mailboxesWindow.window.isFullScreen() && !mailboxesWindow.window.isMaximized()
+    const musicboxesWindow = windowManager.musicboxesWindow
+    const copyPosition = !musicboxesWindow.window.isFullScreen() && !musicboxesWindow.window.isMaximized()
     const windowOptions = copyPosition ? (() => {
-      const position = mailboxesWindow.window.getPosition()
-      const size = mailboxesWindow.window.getSize()
+      const position = musicboxesWindow.window.getPosition()
+      const size = musicboxesWindow.window.getSize()
       return {
         x: position[0] + 20,
         y: position[1] + 20,
@@ -177,11 +180,11 @@
   })
 
   ipcMain.on('focus-app', (evt, body) => {
-    windowManager.focusMailboxesWindow()
+    windowManager.focusMusicboxesWindow()
   })
 
-  ipcMain.on('toggle-mailbox-visibility-from-tray', (evt, body) => {
-    windowManager.toggleMailboxWindowVisibilityFromTray()
+  ipcMain.on('toggle-musicbox-visibility-from-tray', (evt, body) => {
+    windowManager.toggleMusicboxWindowVisibilityFromTray()
   })
 
   ipcMain.on('quit-app', (evt, body) => {
@@ -194,17 +197,17 @@
   })
 
   ipcMain.on('prepare-webview-session', (evt, data) => {
-    mailboxesWindow.sessionManager.startManagingSession(data.partition)
+    musicboxesWindow.sessionManager.startManagingSession(data.partition)
   })
 
-  ipcMain.on('mailboxes-js-loaded', (evt, data) => {
+  ipcMain.on('musicboxes-js-loaded', (evt, data) => {
     if (argv.mailto) {
-      windowManager.mailboxesWindow.openMailtoLink(argv.mailto)
+      windowManager.musicboxesWindow.openMailtoLink(argv.mailto)
       delete argv.mailto
     } else {
       const index = argv._.findIndex((a) => a.indexOf('mailto') === 0)
       if (index !== -1) {
-        windowManager.mailboxesWindow.openMailtoLink(argv._[index])
+        windowManager.musicboxesWindow.openMailtoLink(argv._[index])
         argv._.splice(1)
       }
     }
@@ -216,7 +219,7 @@
 
   app.on('ready', () => {
     appMenu.updateApplicationMenu()
-    windowManager.mailboxesWindow.start(openHidden)
+    windowManager.musicboxesWindow.start(openHidden)
     keyboardShortcuts.registerGlobal()
   })
 
@@ -225,7 +228,7 @@
   })
 
   app.on('activate', () => {
-    windowManager.mailboxesWindow.show()
+    windowManager.musicboxesWindow.show()
   })
 
   // Keyboard shortcuts in Electron need to be registered and unregistered
@@ -246,7 +249,7 @@
 
   app.on('open-url', (evt, url) => { // osx only
     evt.preventDefault()
-    windowManager.mailboxesWindow.openMailtoLink(url)
+    windowManager.musicboxesWindow.openMailtoLink(url)
   })
 
   /* ****************************************************************************/
@@ -255,7 +258,7 @@
 
   // Send crash reports
   process.on('uncaughtException', (err) => {
-    analytics.appException(windowManager.mailboxesWindow.window, 'main', err)
+    analytics.appException(windowManager.musicboxesWindow.window, 'main', err)
     console.error(err)
     console.error(err.stack)
   })

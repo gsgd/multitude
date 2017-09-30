@@ -48,7 +48,7 @@ module.exports = React.createClass({
   * Opens the inspector window for this mailbox
   */
   handleInspect () {
-    mailboxDispatch.openDevTools(this.props.mailbox.id)
+    mailboxDispatch.toggleDevTools(this.props.mailbox.id)
     this.handleClosePopover()
   },
 

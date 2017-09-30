@@ -148,7 +148,7 @@ module.exports = React.createClass({
 
   blur () { this.getWebviewNode().blur() },
 
-  openDevTools () { 
+  toggleDevTools () { 
     const webview = this.getWebviewNode()
     webview.isDevToolsOpened() ? webview.closeDevTools() : webview.openDevTools()
   },

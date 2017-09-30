@@ -26,7 +26,7 @@ if (task === 'app') {
   module.exports = [ require('./src/app/webpack.config.js') ]
 } else if (task === 'mailboxes') {
   console.log('[TASK=mailboxes]')
-  module.exports = [ require('./src/scenes/mailboxes/webpack.config.js') ]
+  module.exports = [ require('./src/scenes/musicboxes/webpack.config.js') ]
 } else if (task === 'platform') {
   console.log('[TASK=platform]')
   module.exports = [ require('./src/scenes/platform/webpack.config.js') ]
@@ -38,7 +38,7 @@ if (task === 'app') {
   module.exports = [
     require('./assets/webpack.config.js'),
     require('./src/app/webpack.config.js'),
-    require('./src/scenes/mailboxes/webpack.config.js'),
+    require('./src/scenes/musicboxes/webpack.config.js'),
     require('./src/scenes/platform/webpack.config.js')
   ]
 }

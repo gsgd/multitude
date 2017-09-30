@@ -48,7 +48,7 @@ module.exports = React.createClass({
   * Opens the inspector window for this musicbox
   */
   handleInspect () {
-    musicboxDispatch.openDevTools(this.props.musicbox.id)
+    musicboxDispatch.toggleDevTools(this.props.musicbox.id)
     this.handleClosePopover()
   },
 

@@ -46,6 +46,7 @@ module.exports = React.createClass({
     musicboxDispatch.on('trackChanged', this.handleTrackChanged)
     musicboxDispatch.on('playingChanged', this.handlePlayingChanged)
     musicboxDispatch.respond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
+    ipcRenderer.on('musicbox-toggle-dev-tools', this.handleIPCToggleDevTools)
     ipcRenderer.on('musicbox-window-find-start', this.handleIPCSearchStart)
     ipcRenderer.on('musicbox-window-find-next', this.handleIPCSearchNext)
     ipcRenderer.on('musicbox-window-navigate-back', this.handleIPCNavigateBack)
@@ -71,6 +72,7 @@ module.exports = React.createClass({
     musicboxDispatch.off('reload', this.handleReload)
     musicboxDispatch.off('trackChanged', this.handleTrackChanged)
     musicboxDispatch.unrespond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
+    ipcRenderer.removeListener('musicbox-toggle-dev-tools', this.handleIPCToggleDevTools)
     ipcRenderer.removeListener('musicbox-window-find-start', this.handleIPCSearchStart)
     ipcRenderer.removeListener('musicbox-window-find-next', this.handleIPCSearchNext)
     ipcRenderer.removeListener('musicbox-window-navigate-back', this.handleIPCNavigateBack)
@@ -172,11 +174,12 @@ module.exports = React.createClass({
   * @param evt: the event that fired
   */
   handleOpenDevTools (evt) {
+    console.log('handleOpenDevTools', evt);
     if (evt.musicboxId === this.props.musicboxId) {
       if (!evt.service && this.state.isActive) {
-        this.refs[BROWSER_REF].openDevTools()
+        this.refs[BROWSER_REF].toggleDevTools()
       } else if (evt.service === this.props.service) {
-        this.refs[BROWSER_REF].openDevTools()
+        this.refs[BROWSER_REF].toggleDevTools()
       }
     }
   },
@@ -433,29 +436,37 @@ module.exports = React.createClass({
   /**
   * Handle playPause event
   */
+  handleIPCToggleDevTools () {
+    if (this.state.isActive) {
+      this.refs[BROWSER_REF].toggleDevTools()
+    }
+  },
+
+  /**
+  * Handle playPause event
+  */
   handleIPCPlayPause () {
-    this.refs[BROWSER_REF].send(this.props.controls.playPause, { })
+    if (this.state.isActive) {
+      this.refs[BROWSER_REF].send(this.props.controls.playPause, { })
+    }
   },
 
   /**
   * Handle nextTrack event
   */
   handleIPCNextTrack () { 
-    this.refs[BROWSER_REF].send(this.props.controls.nextTrack, { })
+    if (this.state.isActive) {
+      this.refs[BROWSER_REF].send(this.props.controls.nextTrack, { })
+    }
   },
 
   /**
   * Handle previousTrack event
   */
   handleIPCPreviousTrack () { 
-    this.refs[BROWSER_REF].send(this.props.controls.previousTrack, { })
-  },
-
-  /**
-  * Handle previousTrack event
-  */
-  handleIPCTrackChanged (track) { 
-    alert(track.title)
+    if (this.state.isActive) {
+      this.refs[BROWSER_REF].send(this.props.controls.previousTrack, { })
+    }
   },
 
   /* **************************************************************************/

@@ -77,7 +77,8 @@ class AppPrimaryMenu {
           { label: 'Reset Musicbox Zoom', accelerator: 'CmdOrCtrl+0', click: this._selectors.zoomReset },
           { type: 'separator' },
           { label: 'Reload', accelerator: 'CmdOrCtrl+R', click: this._selectors.reload },
-          { label: 'Developer Tools', accelerator: process.platform === 'darwin' ? 'Cmd+Alt+J' : 'Ctrl+Shift+J', click: this._selectors.devTools }
+          { label: 'Toggle Dev Tools', accelerator: process.platform === 'darwin' ? 'Cmd+Alt+J' : 'Ctrl+Shift+J', click: this._selectors.devTools },
+          { label: 'Toggle Box Dev Tools', accelerator: process.platform === 'darwin' ? 'Cmd+Alt+I' : 'Ctrl+Shift+I', click: this._selectors.embeddedDevTools },
         ].filter((item) => item !== undefined)
       },
       {

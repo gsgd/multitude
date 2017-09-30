@@ -193,7 +193,7 @@ class WMailWindow extends EventEmitter {
   /**
   * Opens dev tools for this window
   */
-  openDevTools () {
+  toggleDevTools () {
     this.window.webContents.isDevToolsOpened() ? this.window.webContents.closeDevTools() : this.window.webContents.openDevTools()
   }
 

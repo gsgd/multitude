@@ -8,15 +8,15 @@ class WindowManager {
   /* ****************************************************************************/
 
   /**
-  * @param mailboxesWindow: the main window
+  * @param musicboxesWindow: the main window
   */
-  constructor (mailboxesWindow) {
+  constructor (musicboxesWindow) {
     this.contentWindows = []
-    this.mailboxesWindow = mailboxesWindow
+    this.musicboxesWindow = musicboxesWindow
     this.forceQuit = false
-    this.mailboxesWindow.on('close', (e) => this.handleClose(e))
-    this.mailboxesWindow.on('closed', () => {
-      this.mailboxesWindow = null
+    this.musicboxesWindow.on('close', (e) => this.handleClose(e))
+    this.musicboxesWindow.on('closed', () => {
+      this.musicboxesWindow = null
       app.quit()
     })
   }
@@ -26,14 +26,14 @@ class WindowManager {
   /* ****************************************************************************/
 
   /**
-  * Handles the close event by trying to persist the mailbox window
+  * Handles the close event by trying to persist the musicbox window
   * @param evt: the event that occured
   */
   handleClose (evt) {
     if (!this.forceQuit) {
       this.contentWindows.forEach((w) => w.close())
       if (process.platform === 'darwin' || settingStore.tray.show) {
-        this.mailboxesWindow.hide()
+        this.musicboxesWindow.hide()
         evt.preventDefault()
         this.forceQuit = false
       }
@@ -60,68 +60,68 @@ class WindowManager {
   /* ****************************************************************************/
 
   /**
-  * Handles a quit by trying to keep the mailbox window hidden
+  * Handles a quit by trying to keep the musicbox window hidden
   */
   quit () {
     this.forceQuit = true
-    this.mailboxesWindow.close()
+    this.musicboxesWindow.close()
   }
 
   /**
   * Focuses the next available window
   */
   focusNextWindow () {
-    if (this.mailboxesWindow.isFocused()) {
+    if (this.musicboxesWindow.isFocused()) {
       if (this.contentWindows.length) {
         this.contentWindows[0].focus()
       }
     } else {
       const focusedIndex = this.contentWindows.findIndex((w) => w.isFocused())
       if (focusedIndex === -1 || focusedIndex + 1 >= this.contentWindows.length) {
-        this.mailboxesWindow.focus()
+        this.musicboxesWindow.focus()
       } else {
-        this.mailboxesWindow[focusedIndex + 1].focus()
+        this.musicboxesWindow[focusedIndex + 1].focus()
       }
     }
   }
 
   /**
-  * Focuses the main mailboxes window and shows it if it's hidden
+  * Focuses the main musicboxes window and shows it if it's hidden
   */
-  focusMailboxesWindow () {
-    if (this.focused() === this.mailboxesWindow) {
+  focusMusicboxesWindow () {
+    if (this.focused() === this.musicboxesWindow) {
       return // If there's already a focused window, do nothing
     }
 
-    if (!this.mailboxesWindow.isVisible()) {
-      this.mailboxesWindow.show()
+    if (!this.musicboxesWindow.isVisible()) {
+      this.musicboxesWindow.show()
     }
-    this.mailboxesWindow.focus()
+    this.musicboxesWindow.focus()
   }
 
   /**
-  * Toggles the mailboxes window visibility by hiding or showing the mailboxes windoww
+  * Toggles the musicboxes window visibility by hiding or showing the musicboxes windoww
   */
-  toggleMailboxWindowVisibilityFromTray () {
+  toggleMusicboxWindowVisibilityFromTray () {
     if (process.platform === 'win32') {
       // On windows clicking on non-window elements (e.g. tray) causes window
       // to lose focus, so the window will never have focus
-      if (this.mailboxesWindow.isVisible()) {
-        this.mailboxesWindow.close()
+      if (this.musicboxesWindow.isVisible()) {
+        this.musicboxesWindow.close()
       } else {
-        this.mailboxesWindow.show()
-        this.mailboxesWindow.focus()
+        this.musicboxesWindow.show()
+        this.musicboxesWindow.focus()
       }
     } else {
-      if (this.mailboxesWindow.isVisible()) {
-        if (this.focused() === this.mailboxesWindow) {
-          this.mailboxesWindow.hide()
+      if (this.musicboxesWindow.isVisible()) {
+        if (this.focused() === this.musicboxesWindow) {
+          this.musicboxesWindow.hide()
         } else {
-          this.mailboxesWindow.focus()
+          this.musicboxesWindow.focus()
         }
       } else {
-        this.mailboxesWindow.show()
-        this.mailboxesWindow.focus()
+        this.musicboxesWindow.show()
+        this.musicboxesWindow.focus()
       }
     }
   }
@@ -134,8 +134,8 @@ class WindowManager {
   * @return the focused window
   */
   focused () {
-    if (this.mailboxesWindow.isFocused()) {
-      return this.mailboxesWindow
+    if (this.musicboxesWindow.isFocused()) {
+      return this.musicboxesWindow
     } else {
       return this.contentWindows.find((w) => w.isFocused())
     }

@@ -1,6 +1,6 @@
 const Minivents = require('minivents')
 
-class MusicboxDispatch {
+class MailboxDispatch {
 
   /* **************************************************************************/
   // Lifecycle
@@ -77,27 +77,27 @@ class MusicboxDispatch {
   }
 
   /**
-  * Fetches the deezer unread count
-  * @param musicboxId: the id of the musicbox
+  * Fetches the gmail unread count
+  * @param mailboxId: the id of the mailbox
   * @return promise with the unread count or undefined
   */
-  fetchDeezerUnreadCount (musicboxId) {
-    return this.request('get-deezer-unread-count:' + musicboxId, {}, 1000)
+  fetchGmailUnreadCount (mailboxId) {
+    return this.request('get-google-unread-count:' + mailboxId, {}, 1000)
       .then((responses) => {
         return Promise.resolve((responses[0] || {}))
       })
   }
 
   /**
-  * Fetches the deezer unread count and retries on timeout
-  * @param musicboxId: the id of the musicbox
+  * Fetches the gmail unread count and retries on timeout
+  * @param mailboxId: the id of the mailbox
   * @param maxRetries=30: the number of retries to attempt. A second between each
   * @return promise with the unread count or undefined
   */
-  fetchDeezerUnreadCountWithRetry (musicboxId, maxRetries = 30) {
+  fetchGmailUnreadCountWithRetry (mailboxId, maxRetries = 30) {
     return new Promise((resolve, reject) => {
       const tryFetch = (tries) => {
-        this.fetchDeezerUnreadCount(musicboxId).then(
+        this.fetchGmailUnreadCount(mailboxId).then(
           (res) => resolve(res),
           (err) => {
             if (err.timeout && tries < maxRetries) {
@@ -117,80 +117,70 @@ class MusicboxDispatch {
 
   /**
   * Emits a open dev tools command
-  * @param musicboxId: the id of the musicbox
+  * @param mailboxId: the id of the mailbox
   * @param service: the service to open for
   */
-  openDevTools (musicboxId, service) {
-    this.emit('devtools', { musicboxId: musicboxId, service: service })
+  toggleDevTools (mailboxId, service) {
+    this.emit('devtools', { mailboxId: mailboxId, service: service })
   }
 
   /**
-  * Emits a focus event for a musicbox
-  * @param musicboxId=undefined: the id of the musicbox
-  * @param service=undefined: the service of the musicbox
+  * Emits a focus event for a mailbox
+  * @param mailboxId=undefined: the id of the mailbox
+  * @param service=undefined: the service of the mailbox
   */
-  refocus (musicboxId = undefined, service = undefined) {
-    this.emit('refocus', { musicboxId: musicboxId, service: service })
+  refocus (mailboxId = undefined, service = undefined) {
+    this.emit('refocus', { mailboxId: mailboxId, service: service })
   }
 
   /**
-  * Reloads a musicbox
-  * @param musicboxId: the id of musicbox
-  * @param service: the service of the musicbox
+  * Reloads a mailbox
+  * @param mailboxId: the id of mailbox
+  * @param service: the service of the mailbox
   */
-  reload (musicboxId, service) {
-    this.emit('reload', { musicboxId: musicboxId, service: service, allServices: false })
+  reload (mailboxId, service) {
+    this.emit('reload', { mailboxId: mailboxId, service: service, allServices: false })
   }
 
   /**
-  * Reloads all musicboxes services with the given id
-  * @param musicboxId: the id of musicbox
+  * Reloads all mailboxes services with the given id
+  * @param mailboxId: the id of mailbox
   */
-  reloadAllServices (musicboxId) {
-    this.emit('reload', { musicboxId: musicboxId, allServices: true })
+  reloadAllServices (mailboxId) {
+    this.emit('reload', { mailboxId: mailboxId, allServices: true })
   }
 
   /**
-  * Emis a blurred event for a musicbox
-  * @param musicboxId: the id of the musicbox
-  * @param service: the service of the musicbox
+  * Emis a blurred event for a mailbox
+  * @param mailboxId: the id of the mailbox
+  * @param service: the service of the mailbox
   */
-  blurred (musicboxId, service) {
-    this.emit('blurred', { musicboxId: musicboxId, service: service })
+  blurred (mailboxId, service) {
+    this.emit('blurred', { mailboxId: mailboxId, service: service })
   }
 
   /**
-  * Emis a focused event for a musicbox
-  * @param musicboxId: the id of the musicbox
-  * @param service: the service of the musicbox
+  * Emis a focused event for a mailbox
+  * @param mailboxId: the id of the mailbox
+  * @param service: the service of the mailbox
   */
-  focused (musicboxId, service) {
-    this.emit('focused', { musicboxId: musicboxId, service: service })
+  focused (mailboxId, service) {
+    this.emit('focused', { mailboxId: mailboxId, service: service })
   }
 
   /**
-  * Emits an open message event for a musicbox
-  * @param musicboxId: the id of the musicbox
+  * Emits an open message event for a mailbox
+  * @param mailboxId: the id of the mailbox
   * @param threadId: the id of the thread
   * @param messageId: the id of the message to open
   */
-  openMessage (musicboxId, threadId, messageId) {
+  openMessage (mailboxId, threadId, messageId) {
     this.emit('openMessage', {
-      musicboxId: musicboxId,
+      mailboxId: mailboxId,
       threadId: threadId,
       messageId: messageId
     })
   }
-
-  trackChanged (track) {
-    // console.log('trackChanged', track);
-    this.emit('trackChanged', track)
-  }
-
-  playingChanged (playing) {
-    // console.log('playingChanged', playing);
-    this.emit('playingChanged', playing)
-  }
 }
 
-module.exports = new MusicboxDispatch()
+module.exports = new MailboxDispatch()

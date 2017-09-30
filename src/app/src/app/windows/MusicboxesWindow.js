@@ -1,16 +1,16 @@
 const WMailWindow = require('./WMailWindow')
 const AuthGoogle = require('../AuthGoogle')
 const path = require('path')
-const MailboxesSessionManager = require('./MailboxesSessionManager')
+const MusicboxesSessionManager = require('./MusicboxesSessionManager')
 const settingStore = require('../stores/settingStore')
 
-const MAILBOXES_DIR = path.resolve(path.join(__dirname, '/../../../scenes/mailboxes'))
+const MAILBOXES_DIR = path.resolve(path.join(__dirname, '/../../../scenes/musicboxes'))
 const ALLOWED_URLS = new Set([
-  'file://' + path.join(MAILBOXES_DIR, 'mailboxes.html'),
+  'file://' + path.join(MAILBOXES_DIR, 'musicboxes.html'),
   'file://' + path.join(MAILBOXES_DIR, 'offline.html')
 ])
 
-class MailboxesWindow extends WMailWindow {
+class MusicboxesWindow extends WMailWindow {
 
   /* ****************************************************************************/
   // Lifecycle
@@ -21,11 +21,11 @@ class MailboxesWindow extends WMailWindow {
   */
   constructor (analytics) {
     super(analytics, {
-      screenLocationNS: 'mailbox_window_state'
+      screenLocationNS: 'musicbox_window_state'
     })
     this.heartbeatInterval = null
     this.authGoogle = new AuthGoogle()
-    this.sessionManager = new MailboxesSessionManager(this)
+    this.sessionManager = new MusicboxesSessionManager(this)
   }
 
   /**
@@ -33,7 +33,7 @@ class MailboxesWindow extends WMailWindow {
   * @param hidden=false: true to start the window hidden
   */
   start (hidden = false) {
-    super.start('file://' + path.join(MAILBOXES_DIR, 'mailboxes.html'), {
+    super.start('file://' + path.join(MAILBOXES_DIR, 'musicboxes.html'), {
       show: !hidden,
       minWidth: 770,
       minHeight: 300,
@@ -73,7 +73,7 @@ class MailboxesWindow extends WMailWindow {
   }
 
   /* ****************************************************************************/
-  // Mailbox Actions
+  // Musicbox Actions
   /* ****************************************************************************/
 
   /**
@@ -87,51 +87,51 @@ class MailboxesWindow extends WMailWindow {
   }
 
   /**
-  * Zooms the current mailbox in
+  * Zooms the current musicbox in
   */
-  mailboxZoomIn () {
-    this.window.webContents.send('mailbox-zoom-in', { })
+  musicboxZoomIn () {
+    this.window.webContents.send('musicbox-zoom-in', { })
   }
 
   /**
-  * Zooms the current mailbox out
+  * Zooms the current musicbox out
   */
-  mailboxZoomOut () {
-    this.window.webContents.send('mailbox-zoom-out', { })
+  musicboxZoomOut () {
+    this.window.webContents.send('musicbox-zoom-out', { })
   }
 
   /**
-  * Resets the zoom on the current mailbox
+  * Resets the zoom on the current musicbox
   */
-  mailboxZoomReset () {
-    this.window.webContents.send('mailbox-zoom-reset', { })
+  musicboxZoomReset () {
+    this.window.webContents.send('musicbox-zoom-reset', { })
   }
 
   /**
-  * Switches mailbox
-  * @param mailboxId: the id of the mailbox to switch to
+  * Switches musicbox
+  * @param musicboxId: the id of the musicbox to switch to
   */
-  switchMailbox (mailboxId) {
-    this.window.webContents.send('switch-mailbox', { mailboxId: mailboxId })
+  switchMusicbox (musicboxId) {
+    this.window.webContents.send('switch-musicbox', { musicboxId: musicboxId })
   }
 
   /**
-  * Switches to the previous mailbox
+  * Switches to the previous musicbox
   */
-  switchPrevMailbox () {
-    this.window.webContents.send('switch-mailbox', { prev: true })
+  switchPrevMusicbox () {
+    this.window.webContents.send('switch-musicbox', { prev: true })
   }
 
   /**
-  * Switches to the next mailbox
+  * Switches to the next musicbox
   */
-  switchNextMailbox () {
-    this.window.webContents.send('switch-mailbox', { next: true })
+  switchNextMusicbox () {
+    this.window.webContents.send('switch-musicbox', { next: true })
   }
 
   /**
-  * Switches mailbox
-  * @param mailboxId: the id of the mailbox to switch to
+  * Switches musicbox
+  * @param musicboxId: the id of the musicbox to switch to
   */
   switchMusicbox (musicboxId) {
     this.window.webContents.send('switch-musicbox', { musicboxId: musicboxId })
@@ -185,6 +185,13 @@ class MailboxesWindow extends WMailWindow {
   }
 
   /**
+  * Toggles the dev tools
+  */
+  toggleEmbeddedDevTools () {
+    this.window.webContents.send('musicbox-toggle-dev-tools', { })
+  }
+
+  /**
   * Tells the frame a download is complete
   * @param path: the path of the saved file
   * @param filename: the name of the file
@@ -197,31 +204,31 @@ class MailboxesWindow extends WMailWindow {
   }
 
   /**
-  * Starts finding in the mailboxes window
+  * Starts finding in the musicboxes window
   */
   findStart () {
-    this.window.webContents.send('mailbox-window-find-start', { })
+    this.window.webContents.send('musicbox-window-find-start', { })
   }
 
   /**
-  * Finds the next in the mailbox window
+  * Finds the next in the musicbox window
   */
   findNext () {
-    this.window.webContents.send('mailbox-window-find-next', { })
+    this.window.webContents.send('musicbox-window-find-next', { })
   }
 
   /**
-  * Tells the active mailbox to navigate back
+  * Tells the active musicbox to navigate back
   */
-  navigateMailboxBack () {
-    this.window.webContents.send('mailbox-window-navigate-back', { })
+  navigateMusicboxBack () {
+    this.window.webContents.send('musicbox-window-navigate-back', { })
   }
 
   /**
-  * Tells the active mailbox to navigate back
+  * Tells the active musicbox to navigate back
   */
-  navigateMailboxForward () {
-    this.window.webContents.send('mailbox-window-navigate-forward', { })
+  navigateMusicboxForward () {
+    this.window.webContents.send('musicbox-window-navigate-forward', { })
   }
 
   /**
@@ -234,4 +241,4 @@ class MailboxesWindow extends WMailWindow {
 
 }
 
-module.exports = MailboxesWindow
+module.exports = MusicboxesWindow

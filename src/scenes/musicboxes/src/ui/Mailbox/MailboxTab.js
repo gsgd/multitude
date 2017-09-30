@@ -156,11 +156,12 @@ module.exports = React.createClass({
   * @param evt: the event that fired
   */
   handleOpenDevTools (evt) {
+    console.log('handleOpenDevTools', evt);
     if (evt.mailboxId === this.props.mailboxId) {
       if (!evt.service && this.state.isActive) {
-        this.refs[BROWSER_REF].openDevTools()
+        this.refs[BROWSER_REF].toggleDevTools()
       } else if (evt.service === this.props.service) {
-        this.refs[BROWSER_REF].openDevTools()
+        this.refs[BROWSER_REF].toggleDevTools()
       }
     }
   },

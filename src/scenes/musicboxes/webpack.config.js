@@ -1,7 +1,7 @@
 const path = require('path')
 const ROOT_DIR = path.resolve(path.join(__dirname, '../../../'))
 const BIN_DIR = path.join(ROOT_DIR, 'bin')
-const OUT_DIR = path.join(BIN_DIR, 'scenes/mailboxes')
+const OUT_DIR = path.join(BIN_DIR, 'scenes/musicboxes')
 const devRequire = (n) => require(path.join(ROOT_DIR, 'node_modules', n))
 
 const webpack = devRequire('webpack')
@@ -14,13 +14,13 @@ const isProduction = process.env.NODE_ENV === 'production'
 const options = {
   devtool: isProduction ? undefined : (process.env.WEBPACK_DEVTOOL || 'source-map'),
   entry: {
-    mailboxes: [
+    musicboxes: [
       path.join(__dirname, 'src')
     ]
   },
   output: {
     path: OUT_DIR,
-    filename: 'mailboxes.js'
+    filename: 'musicboxes.js'
   },
   plugins: [
     !isProduction ? undefined : new webpack.DefinePlugin({
@@ -41,7 +41,7 @@ const options = {
 
     // Copy our static assets
     new CopyWebpackPlugin([
-      { from: path.join(__dirname, 'src/mailboxes.html'), to: 'mailboxes.html', force: true },
+      { from: path.join(__dirname, 'src/musicboxes.html'), to: 'musicboxes.html', force: true },
       { from: path.join(__dirname, 'src/offline.html'), to: 'offline.html', force: true },
       { from: path.join(__dirname, 'src/notification.html'), to: 'notification.html', force: true }
     ], {
