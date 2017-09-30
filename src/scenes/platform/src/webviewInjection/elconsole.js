@@ -9,7 +9,7 @@ class ELConsole {
       type: 'elevated-log',
       messages: Array.from(arguments)
     })
-    console.log.apply(this, Array.from(arguments))
+    // console.log.apply(this, Array.from(arguments))
   }
 
   /**

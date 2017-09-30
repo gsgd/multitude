@@ -1,5 +1,5 @@
 const {Menu} = require('electron')
-const mailboxStore = require('./stores/mailboxStore')
+const musicboxStore = require('./stores/musicboxStore')
 
 class AppPrimaryMenu {
 
@@ -9,10 +9,10 @@ class AppPrimaryMenu {
 
   constructor (selectors) {
     this._selectors = selectors
-    this._lastMailboxes = null
+    this._lastMusicboxes = null
 
-    mailboxStore.on('changed', () => {
-      this.handleMailboxesChanged()
+    musicboxStore.on('changed', () => {
+      this.handleMusicboxesChanged()
     })
   }
 
@@ -22,10 +22,10 @@ class AppPrimaryMenu {
 
   /**
   * Builds the menu
-  * @param mailboxes: the list of mailboxes
+  * @param musicboxes: the list of musicboxes
   * @return the new menu
   */
-  build (mailboxes) {
+  build (musicboxes) {
     return Menu.buildFromTemplate([
       {
         label: 'Application',
@@ -68,13 +68,13 @@ class AppPrimaryMenu {
           { label: 'Toggle Sidebar', accelerator: (process.platform === 'darwin' ? 'Ctrl+Command+S' : 'Ctrl+Shift+S'), click: this._selectors.sidebarToggle },
           process.platform === 'darwin' ? undefined : { label: 'Toggle Menu', accelerator: 'CmdOrCtrl+\\', click: this._selectors.menuToggle },
           { type: 'separator' },
-          { label: 'Navigate Back', accelerator: 'CmdOrCtrl+[', click: this._selectors.mailboxNavBack },
-          { label: 'Navigate Back', accelerator: 'CmdOrCtrl+Left', click: this._selectors.mailboxNavBack },
-          { label: 'Navigate Forward', accelerator: 'CmdOrCtrl+]', click: this._selectors.mailboxNavForward },
+          { label: 'Navigate Back', accelerator: 'CmdOrCtrl+[', click: this._selectors.musicboxNavBack },
+          { label: 'Navigate Back', accelerator: 'CmdOrCtrl+Left', click: this._selectors.musicboxNavBack },
+          { label: 'Navigate Forward', accelerator: 'CmdOrCtrl+]', click: this._selectors.musicboxNavForward },
           { type: 'separator' },
-          { label: 'Zoom Mailbox In', accelerator: 'CmdOrCtrl+Plus', click: this._selectors.zoomIn },
-          { label: 'Zoom Mailbox Out', accelerator: 'CmdOrCtrl+-', click: this._selectors.zoomOut },
-          { label: 'Reset Mailbox Zoom', accelerator: 'CmdOrCtrl+0', click: this._selectors.zoomReset },
+          { label: 'Zoom Musicbox In', accelerator: 'CmdOrCtrl+Plus', click: this._selectors.zoomIn },
+          { label: 'Zoom Musicbox Out', accelerator: 'CmdOrCtrl+-', click: this._selectors.zoomOut },
+          { label: 'Reset Musicbox Zoom', accelerator: 'CmdOrCtrl+0', click: this._selectors.zoomReset },
           { type: 'separator' },
           { label: 'Reload', accelerator: 'CmdOrCtrl+R', click: this._selectors.reload },
           { label: 'Developer Tools', accelerator: process.platform === 'darwin' ? 'Cmd+Alt+J' : 'Ctrl+Shift+J', click: this._selectors.devTools }
@@ -87,14 +87,14 @@ class AppPrimaryMenu {
           { label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize' },
           { label: 'Cycle Windows', accelerator: 'CmdOrCtrl+`', click: this._selectors.cycleWindows }
         ]
-        .concat(mailboxes.length <= 1 ? [] : [
+        .concat(musicboxes.length <= 1 ? [] : [
           { type: 'separator' },
-          { label: 'Previous Mailbox', accelerator: 'CmdOrCtrl+<', click: this._selectors.prevMailbox },
-          { label: 'Next Mailbox', accelerator: 'CmdOrCtrl+>', click: this._selectors.nextMailbox },
+          { label: 'Previous Musicbox', accelerator: 'CmdOrCtrl+<', click: this._selectors.prevMusicbox },
+          { label: 'Next Musicbox', accelerator: 'CmdOrCtrl+>', click: this._selectors.nextMusicbox },
           { type: 'separator' }
         ])
-        .concat(mailboxes.length <= 1 ? [] : mailboxes.map((mailbox, index) => {
-          return { label: mailbox.email || 'Untitled', accelerator: 'CmdOrCtrl+' + (index + 1), click: () => { this._selectors.changeMailbox(mailbox.id) } }
+        .concat(musicboxes.length <= 1 ? [] : musicboxes.map((musicbox, index) => {
+          return { label: musicbox.email || 'Untitled', accelerator: 'CmdOrCtrl+' + (index + 1), click: () => { this._selectors.changeMusicbox(musicbox.id) } }
         }))
       },
       {
@@ -111,12 +111,12 @@ class AppPrimaryMenu {
   }
 
   /**
-  * Builds and applies the mailboxes menu
-  * @param mailboxes=autoget: the current list of mailboxes
+  * Builds and applies the musicboxes menu
+  * @param musicboxes=autoget: the current list of musicboxes
   */
-  updateApplicationMenu (mailboxes = mailboxStore.orderedMailboxes()) {
-    this._lastMailboxes = mailboxes
-    Menu.setApplicationMenu(this.build(mailboxes))
+  updateApplicationMenu (musicboxes = musicboxStore.orderedMusicboxes()) {
+    this._lastMusicboxes = musicboxes
+    Menu.setApplicationMenu(this.build(musicboxes))
   }
 
   /* ****************************************************************************/
@@ -124,18 +124,18 @@ class AppPrimaryMenu {
   /* ****************************************************************************/
 
   /**
-  * Handles the mailboxes changing
+  * Handles the musicboxes changing
   */
-  handleMailboxesChanged () {
-    if (this._lastMailboxes === null) {
+  handleMusicboxesChanged () {
+    if (this._lastMusicboxes === null) {
       this.updateApplicationMenu()
     } else {
       // Real lazy compare tbh
-      const nextMailboxes = mailboxStore.orderedMailboxes()
-      const lastIdent = this._lastMailboxes.map((m) => m.email).join('|')
-      const nextIdent = nextMailboxes.map((m) => m.email).join('|')
+      const nextMusicboxes = musicboxStore.orderedMusicboxes()
+      const lastIdent = this._lastMusicboxes.map((m) => m.email).join('|')
+      const nextIdent = nextMusicboxes.map((m) => m.email).join('|')
       if (lastIdent !== nextIdent) {
-        this.updateApplicationMenu(nextMailboxes)
+        this.updateApplicationMenu(nextMusicboxes)
       }
     }
   }
@@ -144,11 +144,11 @@ class AppPrimaryMenu {
   // Click handlers
   /* ****************************************************************************/
 
-  changeToPrevMailbox () {
+  changeToPrevMusicbox () {
 
   }
 
-  changeToNextMailbox () {
+  changeToNextMusicbox () {
 
   }
 }

@@ -1,12 +1,14 @@
 {
-  "name": "wmail",
+  "name": "musicbox",
+  "productName": "MusicBox",
   "version": "2.3.1",
   "prerelease": true,
-  "description": "The missing desktop client for Gmail and Google Inbox",
+  "description": "The missing desktop client for streaming music sites",
   "scripts": {
     "prestart": "webpack",
     "start": "electron bin/app/index.js",
     "test": "standard",
+    "lint": "eslint src --ignore-path .gitignore -c .eslint",
     "install-all": "echo ':wmail' && npm install && cd src/app && echo ':wmail-app' && npm install && cd ../../src/scenes/mailboxes && echo ':wmail-scenes-mailboxes' && npm install",
     "outdated-all": "echo ':wmail' && npm outdated && cd src/app && echo ':wmail-app' && npm outdated && cd ../../src/scenes/mailboxes && echo ':wmail-scenes-mailboxes' && npm outdated",
     "dev:platform": "webpack --task=platform && electron bin/app/index.js",
@@ -17,9 +19,9 @@
   },
   "keywords": [],
   "author": {
-    "name": "Thomas Beverley",
-    "email": "tom.beverley.wmail@gmail.com",
-    "url": "https://github.com/Thomas101/"
+    "name": "George McGinley Smith",
+    "email": "george@gsdg.co.uk",
+    "url": "http://gsgd.co.uk"
   },
   "homepage": "https://thomas101.github.io/wmail/",
   "license": "MPL-2.0",
@@ -28,8 +30,10 @@
   "dependencies": {
     "babel": "6.23.0",
     "babel-core": "6.23.1",
+    "babel-eslint": "^8.0.1",
     "babel-loader": "6.3.2",
-    "babel-preset-es2015": "6.22.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "6.23.0",
     "babel-preset-stage-0": "6.22.0",
     "clean-webpack-plugin": "0.1.15",
@@ -50,6 +54,8 @@
     "webpack-target-electron-renderer": "0.4.0"
   },
   "devDependencies": {
+    "eslint": "^4.8.0",
+    "eslint-plugin-react": "^7.4.0",
     "standard": "8.6.0"
   },
   "standard": {

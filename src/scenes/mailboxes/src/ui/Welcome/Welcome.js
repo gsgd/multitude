@@ -1,5 +1,5 @@
 const React = require('react')
-const { mailboxWizardActions } = require('../../stores/mailboxWizard')
+const { musicboxWizardActions } = require('../../stores/musicboxWizard')
 const { RaisedButton, FontIcon } = require('material-ui')
 const Colors = require('material-ui/styles/colors')
 
@@ -13,7 +13,7 @@ const styles = {
     backgroundSize: 'contain',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    backgroundImage: 'url("../../icons/app_512.png")'
+    backgroundImage: 'url("../../images/deezer_icon_512.png")'
   },
   container: {
     textAlign: 'center',
@@ -60,15 +60,15 @@ module.exports = React.createClass({
       <div style={styles.container}>
         <div style={styles.heading}>
           <div style={styles.icon} />
-          <h1 style={styles.headingTitle}>Welcome to WMail</h1>
-          <h2 style={styles.headingSubtitle}>...the open-source desktop client for Gmail and Google Inbox</h2>
+          <h1 style={styles.headingTitle}>Welcome to Musically</h1>
+          <h2 style={styles.headingSubtitle}>...the open-source desktop client for Deezer and such</h2>
         </div>
         <div style={styles.setupItem}>
           <RaisedButton
-            label='Add your first mailbox'
+            label='Add your first musicbox'
             icon={(<FontIcon className='material-icons'>mail_outline</FontIcon>)}
             primary
-            onClick={() => mailboxWizardActions.openAddMailbox()} />
+            onClick={() => musicboxWizardActions.openAddMusicbox()} />
           <p style={styles.setupItemExtended}>
             Get started by adding your first Gmail or Google Inbox accout
           </p>

@@ -13,6 +13,7 @@ class KeyboardShortcuts {
   constructor (selectors) {
     this._selectors = selectors
     this._shortcuts = []
+    this._globalShortcuts = []
   }
 
   /* ****************************************************************************/
@@ -24,13 +25,29 @@ class KeyboardShortcuts {
    */
   register () {
     let shortcuts = new Map([
-      ['CmdOrCtrl+{', this._selectors.prevMailbox],
-      ['CmdOrCtrl+}', this._selectors.nextMailbox]
+      ['CmdOrCtrl+{', this._selectors.prevMusicbox],
+      ['CmdOrCtrl+}', this._selectors.nextMusicbox],
     ])
     this.unregister()
     shortcuts.forEach((callback, accelerator) => {
       globalShortcut.register(accelerator, callback)
       this._shortcuts.push(accelerator)
+    })
+  }
+
+  /**
+   * Registers global keyboard shortcuts.
+   */
+  registerGlobal () {
+    let shortcuts = new Map([
+      ['MediaPlayPause', this._selectors.playPause],
+      ['MediaNextTrack', this._selectors.nextTrack],
+      ['MediaPreviousTrack', this._selectors.previousTrack]
+    ])
+    this.unregisterGlobal()
+    shortcuts.forEach((callback, accelerator) => {
+      globalShortcut.register(accelerator, callback)
+      this._globalShortcuts.push(accelerator)
     })
   }
 
@@ -42,6 +59,16 @@ class KeyboardShortcuts {
       globalShortcut.unregister(accelerator)
     })
     this._shortcuts = []
+  }
+
+  /**
+   * Unregisters any previously registered global keyboard shortcuts.
+   */
+  unregisterGlobal () {
+    this._globalShortcuts.forEach((accelerator) => {
+      globalShortcut.unregister(accelerator)
+    })
+    this._globalShortcuts = []
   }
 
 }

@@ -4,6 +4,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const settingStore = require('../stores/settingStore')
 const mailboxStore = require('../stores/mailboxStore')
+const musicboxStore = require('../stores/musicboxStore')
 const unusedFilename = require('unused-filename')
 
 const COOKIE_PERSIST_WAIT = 1000 * 30 // 30 secs
@@ -36,6 +37,14 @@ class MailboxesSessionManager {
   */
   getMailboxFromPartition (partition) {
     return mailboxStore.getMailbox(partition.replace('persist:', ''))
+  }
+
+  /**
+  * @param partition: the partition id
+  * @return the mailbox model for the partition
+  */
+  getMusicboxFromPartition (partition) {
+    return musicboxStore.getMusicbox(partition.replace('persist:', ''))
   }
 
   /* ****************************************************************************/
@@ -214,8 +223,9 @@ class MailboxesSessionManager {
   * @param partition: the partition string for this session
   */
   artificiallyPersistCookies (session, partition) {
-    if (this.persistCookieThrottle[partition] !== undefined) { return }
+    // if (this.persistCookieThrottle[partition] !== undefined) { return }
     const mailbox = this.getMailboxFromPartition(partition)
+    const musicbox = this.getMusicboxFromPartition(partition)
     if (!mailbox || !mailbox.artificiallyPersistCookies) { return }
 
     this.persistCookieThrottle[partition] = setTimeout(() => {

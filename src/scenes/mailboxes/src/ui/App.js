@@ -1,6 +1,7 @@
 const React = require('react')
 const flux = {
   mailbox: require('../stores/mailbox'),
+  musicbox: require('../stores/musicbox'),
   google: require('../stores/google'),
   settings: require('../stores/settings')
 }
@@ -8,12 +9,13 @@ const {
   ipcRenderer, remote: {shell}
 } = window.nativeRequire('electron')
 const {
-  mailboxDispatch, navigationDispatch
+  mailboxDispatch, musicboxDispatch, navigationDispatch
 } = require('../Dispatch')
 const AppContent = require('./AppContent')
 const TimerMixin = require('react-timer-mixin')
 const constants = require('shared/constants')
 const UnreadNotifications = require('../Notifications/UnreadNotifications')
+const TrackNotifications = require('../Notifications/TrackNotifications')
 const shallowCompare = require('react-addons-shallow-compare')
 const Tray = require('./Tray')
 const AppBadge = require('./AppBadge')
@@ -38,8 +40,11 @@ module.exports = React.createClass({
 
     this.unreadNotifications = new UnreadNotifications()
     this.unreadNotifications.start()
+    this.trackNotifications = new TrackNotifications()
+    this.trackNotifications.start()
 
-    flux.mailbox.S.listen(this.mailboxesChanged)
+    // flux.mailbox.S.listen(this.mailboxesChanged)
+    flux.musicbox.S.listen(this.musicboxesChanged)
     flux.settings.S.listen(this.settingsChanged)
     flux.google.A.startPollingUpdates()
 
@@ -50,8 +55,10 @@ module.exports = React.createClass({
 
   componentWillUnmount () {
     this.unreadNotifications.stop()
+    this.trackNotifications.stop()
 
-    flux.mailbox.S.unlisten(this.mailboxesChanged)
+    // flux.mailbox.S.unlisten(this.mailboxesChanged)
+    flux.musicbox.S.unlisten(this.musicboxesChanged)
     flux.settings.S.unlisten(this.settingsChanged)
     flux.google.A.stopPollingUpdates()
 
@@ -66,23 +73,24 @@ module.exports = React.createClass({
 
   getInitialState () {
     const settingsStore = flux.settings.S.getState()
-    const mailboxStore = flux.mailbox.S.getState()
+    // const mailboxStore = flux.mailbox.S.getState()
+    const musicboxStore = flux.musicbox.S.getState()
     return {
-      activeMailboxId: mailboxStore.activeMailboxId(),
-      messagesUnreadCount: mailboxStore.totalUnreadCountForAppBadge(),
+      activeMusicboxId: musicboxStore.activeMusicboxId(),
+      messagesUnreadCount: musicboxStore.totalUnreadCountForAppBadge(),
       uiSettings: settingsStore.ui,
       traySettings: settingsStore.tray
     }
   },
 
-  mailboxesChanged (store) {
+  musicboxesChanged (store) {
     this.setState({
-      activeMailboxId: store.activeMailboxId(),
+      activeMusicboxId: store.activeMusicboxId(),
       messagesUnreadCount: store.totalUnreadCountForAppBadge()
     })
-    ipcRenderer.send('mailboxes-changed', {
-      mailboxes: store.allMailboxes().map((mailbox) => {
-        return { id: mailbox.id, name: mailbox.name, email: mailbox.email }
+    ipcRenderer.send('musicboxes-changed', {
+      musicboxes: store.allMusicboxes().map((musicbox) => {
+        return { id: musicbox.id, name: musicbox.name, email: musicbox.email }
       })
     })
   },

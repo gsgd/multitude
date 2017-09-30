@@ -130,6 +130,40 @@ class MailboxesWindow extends WMailWindow {
   }
 
   /**
+  * Switches mailbox
+  * @param mailboxId: the id of the mailbox to switch to
+  */
+  switchMusicbox (musicboxId) {
+    this.window.webContents.send('switch-musicbox', { musicboxId: musicboxId })
+  }
+
+  /**
+  * Switches to the previous musicbox
+  */
+  switchPrevMusicbox () {
+    this.window.webContents.send('switch-musicbox', { prev: true })
+  }
+
+  /**
+  * Switches to the next musicbox
+  */
+  switchNextMusicbox () {
+    this.window.webContents.send('switch-musicbox', { next: true })
+  }
+
+  playPause () {
+    this.window.webContents.send('musicbox-play-pause', { })
+  }
+
+  nextTrack () {
+    this.window.webContents.send('musicbox-next-track', { })
+  }
+
+  previousTrack () {
+    this.window.webContents.send('musicbox-previous-track', { })
+  }
+
+  /**
   * Launches the preferences modal
   */
   launchPreferences () {

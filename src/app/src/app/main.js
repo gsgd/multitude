@@ -108,20 +108,20 @@
     zoomIn: () => { windowManager.mailboxesWindow.mailboxZoomIn() },
     zoomOut: () => { windowManager.mailboxesWindow.mailboxZoomOut() },
     zoomReset: () => { windowManager.mailboxesWindow.mailboxZoomReset() },
-    changeMailbox: (mailboxId) => {
+    changeMusicbox: (musicboxId) => {
       windowManager.mailboxesWindow.show()
       windowManager.mailboxesWindow.focus()
-      windowManager.mailboxesWindow.switchMailbox(mailboxId)
+      windowManager.mailboxesWindow.switchMusicbox(musicboxId)
     },
-    prevMailbox: () => {
+    prevMusicbox: () => {
       windowManager.mailboxesWindow.show()
       windowManager.mailboxesWindow.focus()
-      windowManager.mailboxesWindow.switchPrevMailbox()
+      windowManager.mailboxesWindow.switchPrevMusicbox()
     },
-    nextMailbox: () => {
+    nextMusicbox: () => {
       windowManager.mailboxesWindow.show()
       windowManager.mailboxesWindow.focus()
-      windowManager.mailboxesWindow.switchNextMailbox()
+      windowManager.mailboxesWindow.switchNextMusicbox()
     },
     cycleWindows: () => { windowManager.focusNextWindow() },
     aboutDialog: () => {
@@ -142,7 +142,10 @@
     find: () => { windowManager.mailboxesWindow.findStart() },
     findNext: () => { windowManager.mailboxesWindow.findNext() },
     mailboxNavBack: () => { windowManager.mailboxesWindow.navigateMailboxBack() },
-    mailboxNavForward: () => { windowManager.mailboxesWindow.navigateMailboxForward() }
+    mailboxNavForward: () => { windowManager.mailboxesWindow.navigateMailboxForward() },
+    playPause: () => { windowManager.mailboxesWindow.playPause() },
+    nextTrack: () => { windowManager.mailboxesWindow.nextTrack() },
+    previousTrack: () => { windowManager.mailboxesWindow.previousTrack() }
   }
   const appMenu = new AppPrimaryMenu(selectors)
   const keyboardShortcuts = new KeyboardShortcuts(selectors)
@@ -214,6 +217,7 @@
   app.on('ready', () => {
     appMenu.updateApplicationMenu()
     windowManager.mailboxesWindow.start(openHidden)
+    keyboardShortcuts.registerGlobal()
   })
 
   app.on('window-all-closed', () => {
@@ -236,6 +240,7 @@
 
   app.on('before-quit', () => {
     keyboardShortcuts.unregister()
+    keyboardShortcuts.unregisterGlobal()
     windowManager.forceQuit = true
   })
 

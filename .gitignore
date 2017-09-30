@@ -9,3 +9,4 @@ WMail-win32-ia32/
 WMail-win32-x64/
 WMail-win32-ia32-Installer/
 *.log
+actual*.js

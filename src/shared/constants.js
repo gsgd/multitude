@@ -1,6 +1,7 @@
 module.exports = Object.freeze({
   APP_ID: 'tombeverley.wmail',
 
+  MUSICBOX_INDEX_KEY: '__mindex__',
   MAILBOX_INDEX_KEY: '__index__',
   MAILBOX_SLEEP_WAIT: 1000 * 30, // 30 seconds
 

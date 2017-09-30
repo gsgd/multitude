@@ -148,7 +148,10 @@ module.exports = React.createClass({
 
   blur () { this.getWebviewNode().blur() },
 
-  openDevTools () { this.getWebviewNode().openDevTools() },
+  openDevTools () { 
+    const webview = this.getWebviewNode()
+    webview.isDevToolsOpened() ? webview.closeDevTools() : webview.openDevTools()
+  },
 
   send (name, obj) { this.getWebviewNode().send(name, obj) },
 

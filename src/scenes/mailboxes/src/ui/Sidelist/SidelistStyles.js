@@ -132,6 +132,48 @@ module.exports = {
   },
 
   /**
+  * Musicbox Item
+  */
+  musicboxItemContainer: {
+    marginTop: 10,
+    marginBottom: 10,
+    position: 'relative'
+  },
+  musicboxAvatar: {
+    borderWidth: 4,
+    borderStyle: 'solid',
+    cursor: 'pointer',
+  },
+  musicboxBadge: {
+    backgroundColor: 'rgba(238, 54, 55, 0.95)',
+    color: Colors.red50,
+    fontWeight: '100',
+    width: 'auto',
+    minWidth: 24,
+    paddingLeft: 4,
+    paddingRight: 4,
+    borderRadius: 12,
+    WebkitUserSelect: 'none',
+    cursor: 'pointer'
+  },
+  musicboxBadgeContainer: {
+    position: 'absolute',
+    top: -3,
+    right: 3,
+    cursor: 'pointer'
+  },
+  musicboxActiveIndicator: {
+    position: 'absolute',
+    left: 2,
+    top: 25,
+    width: 6,
+    height: 6,
+    marginTop: -3,
+    borderRadius: '50%',
+    cursor: 'pointer'
+  },
+
+  /**
   * News Item
   */
   newsItemContainer: {

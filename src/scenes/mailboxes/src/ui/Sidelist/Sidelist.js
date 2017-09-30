@@ -1,6 +1,8 @@
 const React = require('react')
 const SidelistMailboxes = require('./SidelistMailboxes')
+const SidelistMusicboxes = require('./SidelistMusicboxes')
 const SidelistItemAddMailbox = require('./SidelistItemAddMailbox')
+const SidelistItemAddMusicbox = require('./SidelistItemAddMusicbox')
 const SidelistItemSettings = require('./SidelistItemSettings')
 const SidelistItemWizard = require('./SidelistItemWizard')
 const SidelistItemNews = require('./SidelistItemNews')
@@ -87,12 +89,12 @@ module.exports = React.createClass({
         <div
           style={scrollerStyle}
           className='ReactComponent-Sidelist-Scroller'>
-          <SidelistMailboxes />
+          <SidelistMusicboxes />
         </div>
         <div style={footerStyle}>
           {showWizard ? (<SidelistItemWizard />) : undefined}
           {hasUpdateInfo && (showNewsInSidebar || hasUnopenedNewsId) ? (<SidelistItemNews />) : undefined}
-          <SidelistItemAddMailbox />
+          <SidelistItemAddMusicbox />
           <SidelistItemSettings />
         </div>
       </div>
