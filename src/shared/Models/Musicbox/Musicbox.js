@@ -27,6 +27,7 @@ class Musicbox extends Model {
 
     this.__musicbox__ = new Deezer(
       this.type,
+      this.__data__.deezerCurrentUrl,
       this.__data__.deezerAuth,
       this.__data__.deezerConf,
       this.__data__.deezerLabelInfo_v2,
@@ -52,11 +53,16 @@ class Musicbox extends Model {
     }
   }
   get url () {
-    // console.log('Musicbox.get url', this.type, Musicbox.TYPE_DEEZER);
+    // console.log('Musicbox.get url', this.type, Musicbox.TYPE_DEEZER, `http://www.deezer.com`);
     switch (this.type) {
-      case Musicbox.TYPE_DEEZER: return 'http://www.deezer.com/album/49018652'
+      case Musicbox.TYPE_DEEZER: return `http://www.deezer.com`
       default: return undefined
     }
+  }
+
+  get pageUrl () {
+    // console.log('get pageUrl', this.__data__.pageUrl);
+    if (this.__data__.pageUrl) { return `${this.url}${this.__data__.pageUrl}` }
   }
 
   /* **************************************************************************/

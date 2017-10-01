@@ -373,6 +373,11 @@ class MusicboxActions {
 
   playingChanged (id, playing) { return { id: id, playing: playing } }
 
+  pageChanged (id, pageUrl) {
+    // console.log('MusicboxActions.pageChanged', id, pageUrl)
+    return { id: id, pageUrl: pageUrl }
+  }
+
 }
 
 const actions = alt.createActions(MusicboxActions)

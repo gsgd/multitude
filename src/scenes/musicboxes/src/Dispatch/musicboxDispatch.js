@@ -192,6 +192,11 @@ class MusicboxDispatch {
     // console.log('playingChanged', playing);
     this.emit('playingChanged', playing)
   }
+
+  pageChanged (pageUrl) {
+    // console.log('musicboxDispatch.pageChanged', pageUrl);
+    this.emit('pageChanged', pageUrl)
+  }
 }
 
 module.exports = new MusicboxDispatch()

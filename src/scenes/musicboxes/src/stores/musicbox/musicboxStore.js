@@ -174,6 +174,7 @@ class MusicboxStore {
       // Update player info
       handleTrackChanged: actions.TRACK_CHANGED,
       handlePlayingChanged: actions.PLAYING_CHANGED,
+      handlePageChanged: actions.PAGE_CHANGED,
 
       // Active Update
       handleIncreaseActiveZoom: actions.INCREASE_ACTIVE_ZOOM,
@@ -443,6 +444,8 @@ class MusicboxStore {
   handleTrackChanged ({id, track}) {
     // console.log('musicboxStore.handleTrackChanged', track, track.imageUrl);
     const data = this.musicboxes.get(id).cloneData()
+    if (data.currentTrack == track) { return }
+
     data.currentTrack = track
     this.saveMusicbox(id, data)
     if (track.imageUrl) {
@@ -468,6 +471,18 @@ class MusicboxStore {
     // console.log('musicboxStore.handlePlayingChanged', playing);
     const data = this.musicboxes.get(id).cloneData()
     data.isPlaying = playing
+    this.saveMusicbox(id, data)
+  }
+
+  /**
+  * Handles the deezer config updating
+  * @param id: the id of the musicbox
+  * @param updates: the updates to merge in
+  */
+  handlePageChanged ({id, pageUrl}) {
+    // console.log('musicboxStore.handlePageChanged', pageUrl);
+    const data = this.musicboxes.get(id).cloneData()
+    data.pageUrl = pageUrl
     this.saveMusicbox(id, data)
   }
 

@@ -66,6 +66,7 @@ class DeezerChangeEmitter {
     // window.Events.subscribe(window.Events.player.playing, this.handlePlaying.bind(this))
     window.Events.subscribe(window.Events.player.displayCurrentSong, this.handleDisplayCurrentSong.bind(this))
     window.Events.subscribe(window.Events.player.tracklist_changed, this.handleTracklistChanged.bind(this))
+    window.Events.subscribe(window.Events.navigation.page_changed, this.handlePageChanged.bind(this))
   }
 
   speak(text) {
@@ -113,6 +114,11 @@ class DeezerChangeEmitter {
   handleTracklistChanged(event, data) {
     // this.transmitEvent('musicbox-state-update', window.__DZR_APP_STATE__)
     // console.log('handleTracklistChanged', event, data, window.__DZR_APP_STATE__);
+  }
+
+  handlePageChanged(event, data) {
+    // console.log('handlePageChanged', event, data);
+    this.transmitEvent('musicbox-window-page-changed', data.path)
   }
   /* **************************************************************************/
   // Event Emitter

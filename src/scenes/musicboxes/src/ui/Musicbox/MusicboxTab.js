@@ -45,6 +45,7 @@ module.exports = React.createClass({
     musicboxDispatch.on('reload', this.handleReload)
     musicboxDispatch.on('trackChanged', this.handleTrackChanged)
     musicboxDispatch.on('playingChanged', this.handlePlayingChanged)
+    musicboxDispatch.on('pageChanged', this.handlePageChanged)
     musicboxDispatch.respond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
     ipcRenderer.on('musicbox-toggle-dev-tools', this.handleIPCToggleDevTools)
     ipcRenderer.on('musicbox-window-find-start', this.handleIPCSearchStart)
@@ -103,7 +104,7 @@ module.exports = React.createClass({
       currentTrack: musicbox.currentTrack,
       isActive: isActive,
       isSearching: musicboxState.isSearchingMusicbox(props.musicboxId, props.service),
-      browserSrc: props.src || musicbox.resolveServiceUrl(props.service),
+      browserSrc: props.src || musicbox.pageUrl || musicbox.resolveServiceUrl(props.service),
       language: settingState.language,
       focusedUrl: null
     }
@@ -126,7 +127,7 @@ module.exports = React.createClass({
           musicbox: musicbox,
           isActive: isActive,
           isSearching: musicboxState.isSearchingMusicbox(musicboxId, service),
-          browserSrc: this.props.src || musicbox.resolveServiceUrl(service)
+          // browserSrc: this.props.src || musicbox.pageUrl || musicbox.resolveServiceUrl(service)
         }
       })
     } else {
@@ -241,6 +242,12 @@ module.exports = React.createClass({
     musicboxActions.playingChanged(this.props.musicboxId, playing)
   },
 
+  handlePageChanged (pageUrl) {
+    // console.log('MusicboxTab.handlePageChanged', pageUrl)
+    musicboxActions.pageChanged(this.props.musicboxId, pageUrl)
+  },
+
+
   /* **************************************************************************/
   // Browser Events
   /* **************************************************************************/
@@ -272,6 +279,7 @@ module.exports = React.createClass({
       case 'open-settings': navigationDispatch.openSettings(); break
       case 'musicbox-window-track-changed': musicboxDispatch.trackChanged(evt.channel.data); break
       case 'musicbox-window-playing': musicboxDispatch.playingChanged(evt.channel.data); break
+      case 'musicbox-window-page-changed': musicboxDispatch.pageChanged(evt.channel.data); break
       default: break
     }
   },
