@@ -1,6 +1,7 @@
 const Model = require('../Model')
 const uuid = require('uuid')
 const Deezer = require('./Deezer')
+const Overcast = require('./Overcast')
 const SERVICES = require('./MusicboxServices')
 const TYPES = require('./MusicboxTypes')
 
@@ -15,6 +16,7 @@ class Musicbox extends Model {
   static get SERVICES () { return Object.assign({}, SERVICES) }
 
   static get TYPE_DEEZER () { return TYPES.DEEZER }
+  static get TYPE_OVERCAST () { return TYPES.OVERCAST }
 
   /* **************************************************************************/
   // Lifecycle
@@ -25,14 +27,26 @@ class Musicbox extends Model {
     super(data)
     this.__id__ = id
 
-    this.__musicbox__ = new Deezer(
-      this.type,
-      this.__data__.deezerCurrentUrl,
-      this.__data__.deezerAuth,
-      this.__data__.deezerConf,
-      this.__data__.deezerLabelInfo_v2,
-      this.__data__.deezerUnreadMessageInfo_v2
-    )
+    switch (this.type) {
+    case Musicbox.TYPE_DEEZER:
+      this.__musicbox__ = new Deezer(
+        this.type,
+        this.__data__.deezerAuth,
+        this.__data__.deezerConf,
+        this.__data__.deezerLabelInfo_v2,
+        this.__data__.deezerUnreadMessageInfo_v2
+      )
+      break
+    case Musicbox.TYPE_OVERCAST:
+      this.__musicbox__ = new Overcast(
+        this.type,
+        this.__data__.overcastAuth,
+        this.__data__.overcastConf,
+        this.__data__.overcastLabelInfo_v2,
+        this.__data__.overcastUnreadMessageInfo_v2
+      )
+      break
+    }
   }
 
   /* **************************************************************************/
@@ -49,6 +63,7 @@ class Musicbox extends Model {
   get typeName () {
     switch (this.type) {
       case Musicbox.TYPE_DEEZER: return 'Deezer'
+      case Musicbox.TYPE_OVERCAST: return 'Overcast'
       default: return undefined
     }
   }
@@ -56,6 +71,7 @@ class Musicbox extends Model {
     // console.log('Musicbox.get url', this.type, Musicbox.TYPE_DEEZER, `http://www.deezer.com`);
     switch (this.type) {
       case Musicbox.TYPE_DEEZER: return `http://www.deezer.com`
+      case Musicbox.TYPE_OVERCAST: return `https://overcast.fm`
       default: return undefined
     }
   }
@@ -73,6 +89,8 @@ class Musicbox extends Model {
     switch (this.type) {
       case Musicbox.TYPE_DEEZER:
         return Array.from(Deezer.SUPPORTED_SERVICES)
+      case Musicbox.TYPE_OVERCAST:
+        return Array.from(Overcast.SUPPORTED_SERVICES)
       default:
         return []
     }
@@ -81,6 +99,8 @@ class Musicbox extends Model {
     switch (this.type) {
       case Musicbox.TYPE_DEEZER:
         return Array.from(Deezer.DEFAULT_SERVICES)
+      case Musicbox.TYPE_OVERCAST:
+        return Array.from(Overcast.DEFAULT_SERVICES)
       default:
         return []
     }
@@ -102,6 +122,8 @@ class Musicbox extends Model {
       switch (this.type) {
         case Musicbox.TYPE_DEEZER:
           return Deezer.SERVICE_URLS[service]
+        case Musicbox.TYPE_OVERCAST:
+          return Overcast.SERVICE_URLS[service]
         default:
           return undefined
       }
@@ -120,6 +142,8 @@ class Musicbox extends Model {
       switch (this.type) {
         case Musicbox.TYPE_DEEZER:
           return Deezer.SERVICE_NAMES[service]
+        case Musicbox.TYPE_OVERCAST:
+          return Overcast.SERVICE_NAMES[service]
         default:
           return undefined
       }
@@ -136,6 +160,16 @@ class Musicbox extends Model {
   get showNotifications () { return this._value_('showNotifications', true) }
   get isPlaying () { return this._value_('isPlaying', false) }
   get artificiallyPersistCookies () { return this._value_('artificiallyPersistCookies', false) }
+  get init () {
+    let data = this._value_('tracklist', {
+      track: {"data":[]},
+      index: 0,
+    });
+    data.type = 'player_default_playlist'
+    data.auto_play = this.isPlaying
+    data.show_lyrics = false
+    return data
+  }
 
   /* **************************************************************************/
   // Properties : Account Details
@@ -144,7 +178,7 @@ class Musicbox extends Model {
   get avatarURL () { return this.__data__.avatar }
   get hasCustomAvatar () { return this.__data__.customAvatar !== undefined }
   get customAvatarId () { return this.__data__.customAvatar }
-  get currentTrack () { return this.__data__.currentTrack }
+  get currentTrack () { return this._value_('currentTrack', false) }
 
   get color () {
     if (this.__data__.color) {

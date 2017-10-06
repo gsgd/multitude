@@ -36,6 +36,14 @@ class MusicboxWizardActions {
   }
 
   /**
+  * Starts the auth process for google inbox
+  */
+  authOvercastMusicbox () {
+    // console.log('authDeezerMusicbox');
+    return { provisionalId: Musicbox.provisionId() }
+  }
+
+  /**
   * Reauthetnicates a google mailbox
   * @param mailboxId: the id of the mailbox
   */

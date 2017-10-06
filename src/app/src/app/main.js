@@ -244,6 +244,7 @@
   app.on('before-quit', () => {
     keyboardShortcuts.unregister()
     keyboardShortcuts.unregisterGlobal()
+    windowManager.musicboxesWindow.stopAll()
     windowManager.forceQuit = true
   })
 

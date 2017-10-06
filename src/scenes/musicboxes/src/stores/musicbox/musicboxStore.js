@@ -152,6 +152,8 @@ class MusicboxStore {
     // Listeners
     /* ****************************************/
 
+    // console.log(this, actions);
+
     this.bindListeners({
       // Load
       handleLoad: actions.LOAD,
@@ -173,6 +175,7 @@ class MusicboxStore {
 
       // Update player info
       handleTrackChanged: actions.TRACK_CHANGED,
+      handleTracklistChanged: actions.TRACKLIST_CHANGED,
       handlePlayingChanged: actions.PLAYING_CHANGED,
       handlePageChanged: actions.PAGE_CHANGED,
 
@@ -441,16 +444,17 @@ class MusicboxStore {
   * @param id: the id of the musicbox
   * @param updates: the updates to merge in
   */
-  handleTrackChanged ({id, track}) {
-    // console.log('musicboxStore.handleTrackChanged', track, track.imageUrl);
+  handleTrackChanged ({id, musicboxId, trackDetail}) {
+    // console.log('musicboxStore.handleTrackChanged', id, musicboxId, trackDetail);
+    if (id != musicboxId) { return }
     const data = this.musicboxes.get(id).cloneData()
-    if (data.currentTrack == track) { return }
+    if (JSON.stringify(data.currentTrack) == JSON.stringify(trackDetail)) { return }
 
-    data.currentTrack = track
+    data.currentTrack = trackDetail
     this.saveMusicbox(id, data)
-    if (track.imageUrl) {
-      // console.log('musicboxStore.handleTrackChanged.imageUrl', track.imageUrl);
-      const imageUtil = new ImageUtil(track.imageUrl)
+    if (trackDetail.imageUrl) {
+      // console.log('musicboxStore.handleTrackChanged.imageUrl', trackDetail.imageUrl);
+      const imageUtil = new ImageUtil(trackDetail.imageUrl)
       // // console.log('musicboxStore.handleTrackChanged.imageUtil', imageUtil);
       imageUtil.b64.then((b64image) => {
         // // console.log('handleTrackChanged.b64image', b64image);
@@ -467,8 +471,23 @@ class MusicboxStore {
   * @param id: the id of the musicbox
   * @param updates: the updates to merge in
   */
-  handlePlayingChanged ({id, playing}) {
-    // console.log('musicboxStore.handlePlayingChanged', playing);
+  handleTracklistChanged ({id, musicboxId, tracklist}) {
+    // console.log('musicboxStore.handleTrackChanged', id, musicboxId, trackDetail);
+    if (id != musicboxId) { return }
+    const data = this.musicboxes.get(id).cloneData()
+
+    data.tracklist = tracklist
+    this.saveMusicbox(id, data)
+  }
+
+  /**
+  * Handles the deezer config updating
+  * @param id: the id of the musicbox
+  * @param updates: the updates to merge in
+  */
+  handlePlayingChanged ({id, musicboxId, playing}) {
+    // console.log('musicboxStore.handlePlayingChanged', id, musicboxId, playing);
+    if (id != musicboxId) { return }
     const data = this.musicboxes.get(id).cloneData()
     data.isPlaying = playing
     this.saveMusicbox(id, data)
@@ -479,7 +498,8 @@ class MusicboxStore {
   * @param id: the id of the musicbox
   * @param updates: the updates to merge in
   */
-  handlePageChanged ({id, pageUrl}) {
+  handlePageChanged ({id, musicboxId, pageUrl}) {
+    if (id != musicboxId) { return }
     // console.log('musicboxStore.handlePageChanged', pageUrl);
     const data = this.musicboxes.get(id).cloneData()
     data.pageUrl = pageUrl

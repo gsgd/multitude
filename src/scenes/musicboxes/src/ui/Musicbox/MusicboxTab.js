@@ -19,7 +19,6 @@ module.exports = React.createClass({
 
   displayName: 'MusicboxTab',
   propTypes: Object.assign({
-    musicboxId: React.PropTypes.string.isRequired,
     service: React.PropTypes.string.isRequired,
     preload: React.PropTypes.string,
     src: React.PropTypes.string,
@@ -44,14 +43,17 @@ module.exports = React.createClass({
     musicboxDispatch.on('load', this.handleReload)
     musicboxDispatch.on('reload', this.handleReload)
     musicboxDispatch.on('trackChanged', this.handleTrackChanged)
+    musicboxDispatch.on('tracklistChanged', this.handleTracklistChanged)
     musicboxDispatch.on('playingChanged', this.handlePlayingChanged)
     musicboxDispatch.on('pageChanged', this.handlePageChanged)
+    musicboxDispatch.on('musicboxInit', this.handleMusicboxInit)
     musicboxDispatch.respond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
     ipcRenderer.on('musicbox-toggle-dev-tools', this.handleIPCToggleDevTools)
     ipcRenderer.on('musicbox-window-find-start', this.handleIPCSearchStart)
     ipcRenderer.on('musicbox-window-find-next', this.handleIPCSearchNext)
     ipcRenderer.on('musicbox-window-navigate-back', this.handleIPCNavigateBack)
     ipcRenderer.on('musicbox-window-navigate-forward', this.handleIPCNavigateForward)
+    ipcRenderer.on('musicbox-stop-all', this.handleIPCPlayPause)
     ipcRenderer.on('musicbox-play-pause', this.handleIPCPlayPause)
     ipcRenderer.on('musicbox-next-track', this.handleIPCNextTrack)
     ipcRenderer.on('musicbox-previous-track', this.handleIPCPreviousTrack)
@@ -70,8 +72,13 @@ module.exports = React.createClass({
     // Handle dispatch events
     musicboxDispatch.off('devtools', this.handleOpenDevTools)
     musicboxDispatch.off('refocus', this.handleRefocus)
+    musicboxDispatch.off('load', this.handleReload)
     musicboxDispatch.off('reload', this.handleReload)
     musicboxDispatch.off('trackChanged', this.handleTrackChanged)
+    musicboxDispatch.off('tracklistChanged', this.handleTracklistChanged)
+    musicboxDispatch.off('playingChanged', this.handlePlayingChanged)
+    musicboxDispatch.off('pageChanged', this.handlePageChanged)
+    musicboxDispatch.off('musicboxInit', this.handleMusicboxInit)
     musicboxDispatch.unrespond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
     ipcRenderer.removeListener('musicbox-toggle-dev-tools', this.handleIPCToggleDevTools)
     ipcRenderer.removeListener('musicbox-window-find-start', this.handleIPCSearchStart)
@@ -175,7 +182,7 @@ module.exports = React.createClass({
   * @param evt: the event that fired
   */
   handleOpenDevTools (evt) {
-    console.log('handleOpenDevTools', evt);
+    // console.log('handleOpenDevTools', evt);
     if (evt.musicboxId === this.props.musicboxId) {
       if (!evt.service && this.state.isActive) {
         this.refs[BROWSER_REF].toggleDevTools()
@@ -225,12 +232,31 @@ module.exports = React.createClass({
   },
 
   /**
+  * Handles the deezer config updating
+  * @param id: the id of the musicbox
+  * @param updates: the updates to merge in
+  */
+  handleMusicboxInit (musicboxId) {
+    // console.log('handleMusicboxInit', this.state.musicbox, this.props.musicboxId, musicboxId);
+    this.refs[BROWSER_REF].send(this.props.controls.init, this.state.musicbox.init)
+  },
+
+  /**
   * Handles track changing
   * @param evt: the event that fired
   */
   handleTrackChanged (track) {
-    // console.log('handleTrackChanged', track);
+    // console.log('MusicboxTab.handleTrackChanged', track);
     musicboxActions.trackChanged(this.props.musicboxId, track)
+  },
+
+  /**
+  * Handles tracklist changing
+  * @param evt: the event that fired
+  */
+  handleTracklistChanged (tracklist) {
+    // console.log('handleTrackChanged', track);
+    musicboxActions.tracklistChanged(this.props.musicboxId, tracklist)
   },
 
   /**
@@ -246,7 +272,6 @@ module.exports = React.createClass({
     // console.log('MusicboxTab.handlePageChanged', pageUrl)
     musicboxActions.pageChanged(this.props.musicboxId, pageUrl)
   },
-
 
   /* **************************************************************************/
   // Browser Events
@@ -275,11 +300,14 @@ module.exports = React.createClass({
   */
   dispatchBrowserIPCMessage (evt) {
     // console.log('dispatchBrowserIPCMessage', evt);
+    const musicboxId = evt.path[0].id
     switch (evt.channel.type) {
       case 'open-settings': navigationDispatch.openSettings(); break
-      case 'musicbox-window-track-changed': musicboxDispatch.trackChanged(evt.channel.data); break
-      case 'musicbox-window-playing': musicboxDispatch.playingChanged(evt.channel.data); break
-      case 'musicbox-window-page-changed': musicboxDispatch.pageChanged(evt.channel.data); break
+      case 'musicbox-window-init': musicboxDispatch.musicboxInit(musicboxId, evt.channel.data); break
+      case 'musicbox-window-track-changed': musicboxDispatch.trackChanged(musicboxId, evt.channel.data); break
+      case 'musicbox-window-tracklist-changed': musicboxDispatch.tracklistChanged(musicboxId, evt.channel.data); break
+      case 'musicbox-window-playing': musicboxDispatch.playingChanged(musicboxId, evt.channel.data); break
+      case 'musicbox-window-page-changed': musicboxDispatch.pageChanged(musicboxId, evt.channel.data); break
       default: break
     }
   },
@@ -455,6 +483,7 @@ module.exports = React.createClass({
   */
   handleIPCPlayPause () {
     if (this.state.isActive) {
+      // console.log(this.props.controls.playPause);
       this.refs[BROWSER_REF].send(this.props.controls.playPause, { })
     }
   },
@@ -522,6 +551,7 @@ module.exports = React.createClass({
           preload={preload}
           partition={'persist:' + musicboxId}
           src={browserSrc}
+          id={musicboxId}
 
           {...webviewEventProps}
           loadCommit={(evt) => {

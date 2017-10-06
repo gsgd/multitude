@@ -369,13 +369,31 @@ class MusicboxActions {
   * track changed
   * @param id: the id of the musicbox
   */
-  trackChanged (id, track) { return { id: id, track: track } }
+  trackChanged (id, evt) {
+    // console.log('MusicboxActions.trackChanged', id, evt)
+    const { musicboxId, trackDetail } = evt
+    return { id, musicboxId, trackDetail }
+  }
 
-  playingChanged (id, playing) { return { id: id, playing: playing } }
+  /**
+  * track changed
+  * @param id: the id of the musicbox
+  */
+  tracklistChanged (id, evt) {
+    // console.log('MusicboxActions.trackChanged', id, evt)
+    const { musicboxId, tracklist } = evt
+    return { id, musicboxId, tracklist }
+  }
 
-  pageChanged (id, pageUrl) {
+  playingChanged (id, evt) {
+    const { musicboxId, playing } = evt
+    return { id, musicboxId, playing }
+  }
+
+  pageChanged (id, evt) {
+    const { musicboxId, pageUrl } = evt
     // console.log('MusicboxActions.pageChanged', id, pageUrl)
-    return { id: id, pageUrl: pageUrl }
+    return { id, musicboxId, pageUrl }
   }
 
 }

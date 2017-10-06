@@ -64,6 +64,7 @@ class WindowManager {
   */
   quit () {
     this.forceQuit = true
+    this.musicboxesWindow.stopAll()
     this.musicboxesWindow.close()
   }
 

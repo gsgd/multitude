@@ -6,6 +6,7 @@ const Welcome = require('../Welcome/Welcome')
 const Musicbox = require('shared/Models/Musicbox/Musicbox')
 
 const DeezerMusicboxStreamingTab = require('./Deezer/DeezerMusicboxStreamingTab')
+const OvercastMusicboxStreamingTab = require('./Overcast/OvercastMusicboxStreamingTab')
 
 module.exports = React.createClass({
   displayName: 'MusicboxWindows',
@@ -77,7 +78,17 @@ module.exports = React.createClass({
   renderTab (key, musicboxType, musicboxId, service) {
     // console.log('MusicboxWindows.renderTab', key, musicboxType, musicboxId, service)
     switch (service) {
-      case Musicbox.SERVICES.DEFAULT: return (<DeezerMusicboxStreamingTab musicboxId={musicboxId} key={key} />)
+      case Musicbox.SERVICES.DEFAULT: return this.renderStreamingTab(key, musicboxType, musicboxId)
+    }
+
+    return undefined
+  },
+
+  renderStreamingTab(key, musicboxType, musicboxId) {
+    // console.log('MusicboxWindows.renderStreamingTab', key, musicboxType, musicboxId)
+    switch (musicboxType) {
+      case Musicbox.TYPE_DEEZER: return (<DeezerMusicboxStreamingTab musicboxId={musicboxId} key={key} />)
+      case Musicbox.TYPE_OVERCAST: return (<OvercastMusicboxStreamingTab musicboxId={musicboxId} key={key} />)
     }
 
     return undefined

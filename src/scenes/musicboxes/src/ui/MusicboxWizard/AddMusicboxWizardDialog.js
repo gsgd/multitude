@@ -91,6 +91,18 @@ module.exports = React.createClass({
               primary
               onClick={() => musicboxWizardActions.authDeezerMusicbox()} />
           </div>
+          <div style={styles.musicboxCell}>
+            <Avatar
+              src='../../images/deezer_icon_512.png'
+              size={80}
+              style={styles.musicboxAvatar}
+              onClick={() => musicboxWizardActions.authOvercastMusicbox()} />
+            <p>Add your Overcast account here</p>
+            <RaisedButton
+              label='Add Overcast'
+              primary
+              onClick={() => musicboxWizardActions.authOvercastMusicbox()} />
+          </div>
         </div>
       </Dialog>
     )

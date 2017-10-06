@@ -34,6 +34,7 @@ const WEBVIEW_EVENTS = [
 const REACT_WEBVIEW_EVENTS = WEBVIEW_EVENTS.map((name) => camelCase(name))
 
 const WEBVIEW_PROPS = {
+  id: React.PropTypes.string,
   autosize: React.PropTypes.bool,
   blinkfeatures: React.PropTypes.string,
   disableblinkfeatures: React.PropTypes.string,

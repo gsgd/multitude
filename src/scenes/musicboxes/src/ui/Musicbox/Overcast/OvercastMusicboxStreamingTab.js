@@ -4,7 +4,7 @@ const Musicbox = require('shared/Models/Musicbox/Musicbox')
 const { composeStore, composeActions } = require('../../../stores/compose')
 const { musicboxStore } = require('../../../stores/musicbox')
 const { settingsStore } = require('../../../stores/settings')
-const { deezerActions } = require('../../../stores/deezer')
+const { overcastActions } = require('../../../stores/overcast')
 const { musicboxDispatch } = require('../../../Dispatch')
 const URL = window.nativeRequire('url')
 const {
@@ -18,7 +18,7 @@ module.exports = React.createClass({
   // Class
   /* **************************************************************************/
 
-  displayName: 'DeezerMusicboxStreamingTab',
+  displayName: 'OvercastMusicboxStreamingTab',
   propTypes: {
     musicboxId: React.PropTypes.string.isRequired
   },
@@ -36,8 +36,7 @@ module.exports = React.createClass({
     // Handle dispatch events
     musicboxDispatch.on('openMessage', this.handleOpenMessage)
     musicboxDispatch.on('fadeTo', this.handleFadeTo)
-    musicboxDispatch.on('musicboxInit', this.handleInitDeezer)
-    musicboxDispatch.respond('get-deezer-unread-count:' + this.props.musicboxId, this.handleGetDeezerUnreadCount)
+    musicboxDispatch.respond('get-overcast-unread-count:' + this.props.musicboxId, this.handleGetOvercastUnreadCount)
 
     // Fire an artifical compose change in case the compose event is waiting
     this.composeChanged(composeStore.getState())
@@ -52,14 +51,13 @@ module.exports = React.createClass({
     // Handle dispatch events
     musicboxDispatch.off('openMessage', this.handleOpenMessage)
     musicboxDispatch.off('fadeTo', this.handleFadeTo)
-    musicboxDispatch.off('musicboxInit', this.handleInitDeezer)
-    musicboxDispatch.unrespond('get-deezer-unread-count:' + this.props.musicboxId, this.handleGetDeezerUnreadCount)
+    musicboxDispatch.unrespond('get-overcast-unread-count:' + this.props.musicboxId, this.handleGetOvercastUnreadCount)
   },
 
   componentWillReceiveProps (nextProps) {
     if (this.props.musicboxId !== nextProps.musicboxId) {
-      musicboxDispatch.unrespond('get-deezer-unread-count:' + this.props.musicboxId, this.handleGetDeezerUnreadCount)
-      musicboxDispatch.respond('get-deezer-unread-count:' + nextProps.musicboxId, this.handleGetDeezerUnreadCount)
+      musicboxDispatch.unrespond('get-overcast-unread-count:' + this.props.musicboxId, this.handleGetOvercastUnreadCount)
+      musicboxDispatch.respond('get-overcast-unread-count:' + nextProps.musicboxId, this.handleGetOvercastUnreadCount)
     }
   },
 
@@ -121,7 +119,7 @@ module.exports = React.createClass({
   },
 
   /**
-  * Handles volume fade
+  * Handles opening a new message
   * @param evt: the event that fired
   */
   handleFadeTo (evt) {
@@ -130,12 +128,11 @@ module.exports = React.createClass({
 
   controls () {
     return {
-      customJS: "setTimeout(function() { window.dzPlayer.isAdvertisingAllowed = function() { return false; }; $('.ads').remove(); $('body').removeClass('has-ads-bottom').removeClass('has-ads-top')}, 1000)",
-      init: 'deezer-init',
-      pause: 'deezer-pause',
-      playPause: 'deezer-play-pause',
-      nextTrack: 'deezer-next-track',
-      previousTrack: 'deezer-previous-track'
+      // customJS: "setTimeout(function() { window.dzPlayer.isAdvertisingAllowed = function() { return false; }; $('.ads').remove(); $('body').removeClass('has-ads-bottom').removeClass('has-ads-top')}, 1000)",
+      pause: 'overcast-pause',
+      playPause: 'overcast-play-pause',
+      nextTrack: 'overcast-next-track',
+      previousTrack: 'overcast-previous-track'
     }
   },
 
@@ -143,16 +140,8 @@ module.exports = React.createClass({
   * Fetches the gmail unread count
   * @return promise
   */
-  handleGetDeezerUnreadCount () {
-    return this.refs[REF].sendWithResponse('get-deezer-unread-count', {}, 1000)
-  },
-
-  /**
-  * Sends the init data
-  */
-  handleInitDeezer (data) {
-    // console.log('handleInitDeezer', data);
-    return this.refs[REF].send('deezer-init', data)
+  handleGetOvercastUnreadCount () {
+    return this.refs[REF].sendWithResponse('get-overcast-unread-count', {}, 1000)
   },
 
   /* **************************************************************************/
@@ -165,7 +154,7 @@ module.exports = React.createClass({
   */
   dispatchBrowserIPCMessage (evt) {
     switch (evt.channel.type) {
-      case 'unread-count-changed': deezerActions.suggestSyncMusicboxUnreadCount(this.props.musicboxId); break
+      case 'unread-count-changed': overcastActions.suggestSyncMusicboxUnreadCount(this.props.musicboxId); break
       case 'js-new-window': this.handleBrowserJSNewWindow(evt); break
       default: break
     }
@@ -189,9 +178,9 @@ module.exports = React.createClass({
   handleOpenNewWindow (url) {
     const purl = URL.parse(url, true)
     let mode = 'external'
-    if (purl.host === 'inbox.deezer.com') {
+    if (purl.host === 'inbox.overcast.com') {
       mode = 'source'
-    } else if (purl.host === 'mail.deezer.com') {
+    } else if (purl.host === 'mail.overcast.com') {
       if (purl.query.ui === '2' || purl.query.view === 'om') {
         mode = 'tab'
       } else {
@@ -220,7 +209,7 @@ module.exports = React.createClass({
     return (
       <MusicboxTab
         ref={REF}
-        preload='../platform/webviewInjection/deezerStreaming'
+        preload='../platform/webviewInjection/overcastStreaming'
         musicboxId={this.props.musicboxId}
         service={Musicbox.SERVICES.DEFAULT}
         newWindow={(evt) => { this.handleOpenNewWindow(evt.url) }}

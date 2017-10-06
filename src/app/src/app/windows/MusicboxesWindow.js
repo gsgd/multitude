@@ -41,6 +41,7 @@ class MusicboxesWindow extends WMailWindow {
       titleBarStyle: settingStore.ui.showTitlebar ? 'default' : 'hidden',
       title: 'WMail',
       backgroundColor: '#f2f2f2',
+      selectedTextBackgroundColor: '#929292',
       webPreferences: {
         nodeIntegration: true
       }
@@ -149,6 +150,10 @@ class MusicboxesWindow extends WMailWindow {
   */
   switchNextMusicbox () {
     this.window.webContents.send('switch-musicbox', { next: true })
+  }
+
+  stopAll () {
+    this.window.webContents.send('musicbox-stop-all', { })
   }
 
   playPause () {

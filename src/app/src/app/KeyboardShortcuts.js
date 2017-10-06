@@ -46,6 +46,7 @@ class KeyboardShortcuts {
     ])
     this.unregisterGlobal()
     shortcuts.forEach((callback, accelerator) => {
+      // console.log('registerGlobal', callback, accelerator);
       globalShortcut.register(accelerator, callback)
       this._globalShortcuts.push(accelerator)
     })

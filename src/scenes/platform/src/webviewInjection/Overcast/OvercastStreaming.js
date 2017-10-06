@@ -3,7 +3,7 @@ const {ipcRenderer} = require('electron')
 // const GoogleWindowOpen = require('./GoogleWindowOpen')
 const path = require('path')
 const fs = require('fs')
-const DeezerChangeEmitter = require('./DeezerChangeEmitter')
+const OvercastChangeEmitter = require('./OvercastChangeEmitter')
 // const GmailChangeEmitter = require('./GmailChangeEmitter')
 // const GinboxChangeEmitter = require('./GinboxChangeEmitter')
 // const GinboxApi = require('./GinboxApi')
@@ -11,7 +11,7 @@ const DeezerChangeEmitter = require('./DeezerChangeEmitter')
 const elconsole = require('../elconsole')
 const StreamingService = require('../Service/StreamingService')
 
-class DeezerStreaming extends StreamingService {
+class OvercastStreaming extends StreamingService {
 
   /* **************************************************************************/
   // Lifecycle
@@ -20,32 +20,14 @@ class DeezerStreaming extends StreamingService {
   constructor () {
     super()
 
-    this.sidebarStylesheet = document.createElement('style')
-
-    // Inject some styles
-    injector.injectStyle(`
-      button[data-type="log_out"] {
-        visibility: hidden !important;
-      }
-    `)
-
     // Bind our listeners
-    ipcRenderer.on('deezer-init', this.handleInit.bind(this))
-    ipcRenderer.on('deezer-play-pause', this.handlePlayPause.bind(this))
-    ipcRenderer.on('deezer-next-track', this.handleNextTrack.bind(this))
-    ipcRenderer.on('deezer-previous-track', this.handlePreviousTrack.bind(this))
+    ipcRenderer.on('overcast-play-pause', this.handlePlayPause.bind(this))
+    ipcRenderer.on('overcast-play', this.handlePlay.bind(this))
+    ipcRenderer.on('overcast-pause', this.handlePause.bind(this))
+    ipcRenderer.on('overcast-next-track', this.handleSeekForward.bind(this))
+    ipcRenderer.on('overcast-previous-track', this.handleSeekBackward.bind(this))
 
-    this.changeEmitter = new DeezerChangeEmitter()
-  }
-
-  get volume () {
-    // console.log('dz get volume');
-    return dzPlayer.getVolume()
-  }
-
-  set volume (level) {
-    // console.log('dz set volume');
-    dzPlayer.control.setVolume(level)
+    this.changeEmitter = new OvercastChangeEmitter()
   }
 
   /* **************************************************************************/
@@ -54,6 +36,14 @@ class DeezerStreaming extends StreamingService {
 
   get isGmail () { return window.location.host.indexOf('mail.google') !== -1 }
   get isGinbox () { return window.location.host.indexOf('inbox.google') !== -1 }
+
+  get volume () {
+    return this.changeEmitter.player.volume
+  }
+
+  set volume (level) {
+    this.changeEmitter.player.volume = level
+  }
 
   /* **************************************************************************/
   // Loaders
@@ -68,25 +58,36 @@ class DeezerStreaming extends StreamingService {
   * @param evt: the event that fired
   * @param data: the data sent with the event
   */
-  handlePlayPause (evt, data) { 
-    window.dzPlayer.control.togglePause()
+  handlePlayPause (evt, data) {
+    this.changeEmitter.player.paused ? this.handlePlay(evt, data) : this.handlePause(evt, data)
   }
 
-  handleNextTrack (evt, data) { 
-    window.dzPlayer.control.nextSong()
+  /**
+  * Handles media events
+  * @param evt: the event that fired
+  * @param data: the data sent with the event
+  */
+  handlePlay (evt, data) {
+    this.changeEmitter.player.play()
   }
 
-  handlePreviousTrack (evt, data) { 
-    window.dzPlayer.control.prevSong()
+  /**
+  * Handles media events
+  * @param evt: the event that fired
+  * @param data: the data sent with the event
+  */
+  handlePause (evt, data) { 
+    this.changeEmitter.player.pause()
   }
 
-  handleInit (evt, data) {
-    if (!data || !data.track) { return }
-    
-    document.addEventListener('DOMContentLoaded', () => { window.PLAYER_INIT = data })
+  handleSeekForward (evt, data) { 
+    document.getElementById('seekforwardbutton').click()
+  }
 
+  handleSeekBackward (evt, data) { 
+    document.getElementById('seekbackbutton').click()
   }
 
 }
 
-module.exports = DeezerStreaming
+module.exports = OvercastStreaming

@@ -121,7 +121,7 @@ class MusicboxDispatch {
   * @param service: the service to open for
   */
   toggleDevTools (musicboxId, service) {
-    console.log('musicboxDispatch.toggleDevTools');
+    // console.log('musicboxDispatch.toggleDevTools');
     this.emit('devtools', { musicboxId: musicboxId, service: service })
   }
 
@@ -183,19 +183,36 @@ class MusicboxDispatch {
     })
   }
 
-  trackChanged (track) {
-    // console.log('trackChanged', track);
-    this.emit('trackChanged', track)
+  fadeTo (volume, duration) {
+    this.emit('fadeTo', {
+      volume: volume,
+      duration: duration
+    })
   }
 
-  playingChanged (playing) {
-    // console.log('playingChanged', playing);
-    this.emit('playingChanged', playing)
+  musicboxInit (musicboxId) {
+    // console.log('musicboxInit', musicboxId);
+    this.emit('musicboxInit', { musicboxId })
   }
 
-  pageChanged (pageUrl) {
+  trackChanged (musicboxId, trackDetail) {
+    // console.log('trackChanged', trackDetail);
+    this.emit('trackChanged', { musicboxId, trackDetail })
+  }
+
+  tracklistChanged (musicboxId, tracklist) {
+    // console.log('trackChanged', trackDetail);
+    this.emit('tracklistChanged', { musicboxId, tracklist })
+  }
+
+  playingChanged (musicboxId, playing) {
+    // console.log('playingChanged', musicboxId, playing);
+    this.emit('playingChanged', { musicboxId, playing })
+  }
+
+  pageChanged (musicboxId, pageUrl) {
     // console.log('musicboxDispatch.pageChanged', pageUrl);
-    this.emit('pageChanged', pageUrl)
+    this.emit('pageChanged', { musicboxId, pageUrl })
   }
 }
 

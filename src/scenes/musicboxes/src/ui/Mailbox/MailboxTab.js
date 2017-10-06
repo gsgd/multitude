@@ -42,6 +42,7 @@ module.exports = React.createClass({
     mailboxDispatch.on('refocus', this.handleRefocus)
     mailboxDispatch.on('reload', this.handleReload)
     mailboxDispatch.respond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
+    ipcRenderer.on('mailbox-window-init', this.handleIPCInit)
     ipcRenderer.on('mailbox-window-find-start', this.handleIPCSearchStart)
     ipcRenderer.on('mailbox-window-find-next', this.handleIPCSearchNext)
     ipcRenderer.on('mailbox-window-navigate-back', this.handleIPCNavigateBack)
@@ -63,6 +64,7 @@ module.exports = React.createClass({
     mailboxDispatch.off('refocus', this.handleRefocus)
     mailboxDispatch.off('reload', this.handleReload)
     mailboxDispatch.unrespond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
+    ipcRenderer.removeListener('mailbox-window-init', this.handleIPCInit)
     ipcRenderer.removeListener('mailbox-window-find-start', this.handleIPCSearchStart)
     ipcRenderer.removeListener('mailbox-window-find-next', this.handleIPCSearchNext)
     ipcRenderer.removeListener('mailbox-window-navigate-back', this.handleIPCNavigateBack)
@@ -156,7 +158,7 @@ module.exports = React.createClass({
   * @param evt: the event that fired
   */
   handleOpenDevTools (evt) {
-    console.log('handleOpenDevTools', evt);
+    // console.log('handleOpenDevTools', evt);
     if (evt.mailboxId === this.props.mailboxId) {
       if (!evt.service && this.state.isActive) {
         this.refs[BROWSER_REF].toggleDevTools()

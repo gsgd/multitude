@@ -75,6 +75,7 @@ class MusicboxWizardStore {
       handleCancelAddMusicbox: actions.CANCEL_ADD_MUSICBOX,
 
       handleAuthDeezerMusicbox: actions.AUTH_DEEZER_MUSICBOX,
+      handleAuthOvercastMusicbox: actions.AUTH_OVERCAST_MUSICBOX,
       // handleAuthDeezerMusicboxSuccess: actions.AUTH_DEEZER_MUSICBOX,
       handleReauthDeezerMusicbox: actions.REAUTH_DEEZER_MUSICBOX,
 
@@ -137,6 +138,12 @@ class MusicboxWizardStore {
     ipcRenderer.send('auth-deezer', { id: provisionalId, type: Musicbox.TYPE_DEEZER })
   }
 
+  handleAuthOvercastMusicbox ({ provisionalId }) {
+    this.addMusicboxOpen = false
+    return this.handleAuthOvercastMusicboxSuccess( { provisionalId, type: Musicbox.TYPE_OVERCAST })
+    ipcRenderer.send('auth-overcast', { id: provisionalId, type: Musicbox.TYPE_OVERCAST })
+  }
+
   handleReauthDeezerMusicbox ({ musicboxId }) {
     this.addMusicboxOpen = false
     ipcRenderer.send('auth-deezer', { id: musicboxId, mode: 'reauth' })
@@ -182,6 +189,17 @@ class MusicboxWizardStore {
     //   reporter.reportError('[AUTH ERR]' + err.errorString)
     //   this.completeClear()
     // })
+  }
+  handleAuthOvercastMusicboxSuccess ({ provisionalId, type, temporaryAuth, mode }) {
+    // console.log('handleAuthOvercastMusicboxSuccess', provisionalId, type, temporaryAuth, mode);
+    this.provisionalId = provisionalId
+    this.provisionalJS = {
+      type: type,
+      overcastAuth: temporaryAuth
+    }
+    this.createMusicbox()
+    this.completeClear()
+    this.configurationCompleteOpen = true
   }
 
   handleAuthDeezerMusicboxFailure ({ evt, data }) {
