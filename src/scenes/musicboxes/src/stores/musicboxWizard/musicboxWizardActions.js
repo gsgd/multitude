@@ -30,47 +30,9 @@ class MusicboxWizardActions {
   /**
   * Starts the auth process for google inbox
   */
-  authDeezerMusicbox () {
-    // console.log('authDeezerMusicbox');
-    return { provisionalId: Musicbox.provisionId() }
-  }
-
-  /**
-  * Starts the auth process for google inbox
-  */
-  authOvercastMusicbox () {
-    // console.log('authDeezerMusicbox');
-    return { provisionalId: Musicbox.provisionId() }
-  }
-
-  /**
-  * Reauthetnicates a google mailbox
-  * @param mailboxId: the id of the mailbox
-  */
-  reauthDeezerMusicbox (mailboxId) {
-    return { mailboxId: mailboxId }
-  }
-
-  /* **************************************************************************/
-  // Authentication callbacks
-  /* **************************************************************************/
-
-  /**
-  * Handles a mailbox authenticating
-  * @param evt: the event that came over the ipc
-  * @param data: the data that came across the ipc
-  */
-  authDeezerMusicboxSuccess (evt, data) {
-    return { provisionalId: data.id, type: data.type, temporaryAuth: data.temporaryAuth, mode: data.mode }
-  }
-
-  /**
-  * Handles a mailbox authenticating error
-  * @param evt: the ipc event that fired
-  * @param data: the data that came across the ipc
-  */
-  authDeezerMusicboxFailure (evt, data) {
-    return { evt: evt, data: data }
+  addMusicbox (type) {
+    // console.log('addDeezerMusicbox');
+    return { provisionalId: Musicbox.provisionId(), type: type }
   }
 
   /* **************************************************************************/
@@ -101,7 +63,5 @@ class MusicboxWizardActions {
 }
 
 const actions = alt.createActions(MusicboxWizardActions)
-ipcRenderer.on('auth-deezer-complete', actions.authDeezerMusicboxSuccess)
-ipcRenderer.on('auth-deezer-error', actions.authDeezerMusicboxFailure)
 
 module.exports = actions

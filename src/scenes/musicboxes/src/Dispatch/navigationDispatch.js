@@ -31,14 +31,14 @@ class NavigationDispatch {
   }
 
   /**
-  * Opens the settings at a mailbox
-  * @param mailboxId: the id of the mailbox
+  * Opens the settings at a musicbox
+  * @param musicboxId: the id of the musicbox
   */
-  openMailboxSettings (mailboxId) {
+  openMusicboxSettings (musicboxId) {
     this.emit('opensettings', {
       route: {
         tab: 'accounts',
-        mailboxId: mailboxId
+        musicboxId: musicboxId
       }
     })
   }

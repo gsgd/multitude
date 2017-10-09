@@ -2,6 +2,7 @@ const React = require('react')
 const { Dialog, RaisedButton, Avatar } = require('material-ui')
 const { musicboxWizardStore, musicboxWizardActions } = require('../../stores/musicboxWizard')
 const shallowCompare = require('react-addons-shallow-compare')
+const { Musicbox } = require('shared/Models/Musicbox')
 
 const styles = {
   musicboxRow: {
@@ -84,24 +85,24 @@ module.exports = React.createClass({
               src='../../images/deezer_icon_512.png'
               size={80}
               style={styles.musicboxAvatar}
-              onClick={() => musicboxWizardActions.authDeezerMusicbox()} />
+              onClick={() => musicboxWizardActions.addMusicbox(Musicbox.TYPE_DEEZER)} />
             <p>Add your Deezer account here</p>
             <RaisedButton
               label='Add Deezer'
               primary
-              onClick={() => musicboxWizardActions.authDeezerMusicbox()} />
+              onClick={() => musicboxWizardActions.addMusicbox(Musicbox.TYPE_DEEZER)} />
           </div>
           <div style={styles.musicboxCell}>
             <Avatar
               src='../../images/deezer_icon_512.png'
               size={80}
               style={styles.musicboxAvatar}
-              onClick={() => musicboxWizardActions.authOvercastMusicbox()} />
+              onClick={() => musicboxWizardActions.addMusicbox(Musicbox.TYPE_OVERCAST)} />
             <p>Add your Overcast account here</p>
             <RaisedButton
               label='Add Overcast'
               primary
-              onClick={() => musicboxWizardActions.authOvercastMusicbox()} />
+              onClick={() => musicboxWizardActions.addMusicbox(Musicbox.TYPE_OVERCAST)} />
           </div>
         </div>
       </Dialog>

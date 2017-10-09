@@ -74,13 +74,7 @@ class MusicboxWizardStore {
       handleOpenAddMusicbox: actions.OPEN_ADD_MUSICBOX,
       handleCancelAddMusicbox: actions.CANCEL_ADD_MUSICBOX,
 
-      handleAuthDeezerMusicbox: actions.AUTH_DEEZER_MUSICBOX,
-      handleAuthOvercastMusicbox: actions.AUTH_OVERCAST_MUSICBOX,
-      // handleAuthDeezerMusicboxSuccess: actions.AUTH_DEEZER_MUSICBOX,
-      handleReauthDeezerMusicbox: actions.REAUTH_DEEZER_MUSICBOX,
-
-      handleAuthDeezerMusicboxSuccess: actions.AUTH_DEEZER_MUSICBOX_SUCCESS,
-      handleAuthDeezerMusicboxFailure: actions.AUTH_DEEZER_MUSICBOX_FAILURE,
+      handleAddMusicbox: actions.ADD_MUSICBOX,
 
       handleConfigureMusicbox: actions.CONFIGURE_MUSICBOX,
       handleConfigureServices: actions.CONFIGURE_MUSICBOX_SERVICES,
@@ -132,87 +126,20 @@ class MusicboxWizardStore {
   // Starting Authentication
   /* **************************************************************************/
 
-  handleAuthDeezerMusicbox ({ provisionalId }) {
+  handleAddMusicbox ({ provisionalId, type }) {
     this.addMusicboxOpen = false
-    return this.handleAuthDeezerMusicboxSuccess( { provisionalId, type: Musicbox.TYPE_DEEZER })
-    ipcRenderer.send('auth-deezer', { id: provisionalId, type: Musicbox.TYPE_DEEZER })
-  }
-
-  handleAuthOvercastMusicbox ({ provisionalId }) {
-    this.addMusicboxOpen = false
-    return this.handleAuthOvercastMusicboxSuccess( { provisionalId, type: Musicbox.TYPE_OVERCAST })
-    ipcRenderer.send('auth-overcast', { id: provisionalId, type: Musicbox.TYPE_OVERCAST })
-  }
-
-  handleReauthDeezerMusicbox ({ musicboxId }) {
-    this.addMusicboxOpen = false
-    ipcRenderer.send('auth-deezer', { id: musicboxId, mode: 'reauth' })
+    this.provisionalId = provisionalId
+    this.provisionalJS = {
+      type: type,
+    }
+    this.createMusicbox()
+    this.completeClear()
+    this.configurationCompleteOpen = true
   }
 
   /* **************************************************************************/
   // Authentication Callbacks
   /* **************************************************************************/
-
-  handleAuthDeezerMusicboxSuccess ({ provisionalId, type, temporaryAuth, mode }) {
-    // console.log('handleAuthDeezerMusicboxSuccess');
-    // musicboxActions.setDeezerAuth.defer(provisionalId, true)
-    // deezerActions.syncMusicboxProfile.defer(provisionalId)
-    // deezerActions.syncMusicboxUnreadCount.defer(provisionalId)
-    this.provisionalId = provisionalId
-    this.provisionalJS = {
-      type: type,
-      deezerAuth: temporaryAuth
-    }
-    this.createMusicbox()
-    this.completeClear()
-    this.configurationCompleteOpen = true
-    // deezerHTTP.upgradeAuthCodeToPermenant(temporaryAuth).then((auth) => {
-    //   if (mode === 'reauth') {
-    //     musicboxActions.setDeezerAuth.defer(provisionalId, auth)
-    //     deezerActions.syncMusicboxProfile.defer(provisionalId)
-    //     deezerActions.syncMusicboxUnreadCount.defer(provisionalId)
-    //     this.completeClear()
-    //   } else {
-    //     this.provisionalId = provisionalId
-    //     this.provisionalJS = {
-    //       type: type,
-    //       deezerAuth: auth
-    //     }
-    //
-    //     this.configurationOpen = true
-    //     this.emitChange()
-    //   }
-    // }).catch((err) => {
-    //   console.error('[AUTH ERR]', err)
-    //   console.error(err.errorString)
-    //   console.error(err.errorStack)
-    //   reporter.reportError('[AUTH ERR]' + err.errorString)
-    //   this.completeClear()
-    // })
-  }
-  handleAuthOvercastMusicboxSuccess ({ provisionalId, type, temporaryAuth, mode }) {
-    // console.log('handleAuthOvercastMusicboxSuccess', provisionalId, type, temporaryAuth, mode);
-    this.provisionalId = provisionalId
-    this.provisionalJS = {
-      type: type,
-      overcastAuth: temporaryAuth
-    }
-    this.createMusicbox()
-    this.completeClear()
-    this.configurationCompleteOpen = true
-  }
-
-  handleAuthDeezerMusicboxFailure ({ evt, data }) {
-    if (data.errorMessage.toLowerCase().indexOf('user') === 0) {
-      // User cancelled
-    } else {
-      console.error('[AUTH ERR]', data)
-      console.error(data.errorString)
-      console.error(data.errorStack)
-      reporter.reportError('[AUTH ERR]' + data.errorString)
-    }
-    this.completeClear()
-  }
 
   /* **************************************************************************/
   // Config
