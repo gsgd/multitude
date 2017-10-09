@@ -370,8 +370,8 @@ class MusicboxActions {
   * @param id: the id of the musicbox
   */
   trackChanged (id, evt) {
-    // console.log('MusicboxActions.trackChanged', id, evt)
     const { musicboxId, trackDetail } = evt
+    // console.log('mbA.trackChanged', id, evt, musicboxId, trackDetail)
     return { id, musicboxId, trackDetail }
   }
 
@@ -387,6 +387,7 @@ class MusicboxActions {
 
   playingChanged (id, evt) {
     const { musicboxId, playing } = evt
+    // console.log('mbA.playingChanged', id, evt, musicboxId, playing);
     return { id, musicboxId, playing }
   }
 

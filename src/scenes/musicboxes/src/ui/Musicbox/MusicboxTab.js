@@ -45,6 +45,7 @@ module.exports = React.createClass({
     musicboxDispatch.on('trackChanged', this.handleTrackChanged)
     musicboxDispatch.on('tracklistChanged', this.handleTracklistChanged)
     musicboxDispatch.on('playingChanged', this.handlePlayingChanged)
+    musicboxDispatch.on('stopOthers', this.handleStopOthers)
     musicboxDispatch.on('pageChanged', this.handlePageChanged)
     musicboxDispatch.on('musicboxInit', this.handleMusicboxInit)
     musicboxDispatch.respond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
@@ -245,32 +246,52 @@ module.exports = React.createClass({
   * Handles track changing
   * @param evt: the event that fired
   */
-  handleTrackChanged (track) {
-    // console.log('MusicboxTab.handleTrackChanged', track);
-    musicboxActions.trackChanged(this.props.musicboxId, track)
+  handleTrackChanged ({ musicboxId, trackDetail }) {
+    // console.log('mbT.handleTrackChanged', this.props.musicboxId, { musicboxId, trackDetail });
+    if (this.props.musicboxId != musicboxId) { return }
+    musicboxActions.trackChanged(this.props.musicboxId, { musicboxId, trackDetail })
   },
 
   /**
   * Handles tracklist changing
   * @param evt: the event that fired
   */
-  handleTracklistChanged (tracklist) {
-    // console.log('handleTrackChanged', track);
-    musicboxActions.tracklistChanged(this.props.musicboxId, tracklist)
+  handleTracklistChanged ({ musicboxId, tracklist }) {
+    // console.log('handleTrackChanged', { musicboxId, tracklist });
+    if (this.props.musicboxId != musicboxId) { return }
+    musicboxActions.tracklistChanged(this.props.musicboxId, { musicboxId, tracklist })
   },
 
   /**
-  * Handles track changing
+  * Handles playing changing
   * @param evt: the event that fired
   */
-  handlePlayingChanged (playing) {
-    // console.log('handlePlayingChanged', playing);
-    musicboxActions.playingChanged(this.props.musicboxId, playing)
+  handlePlayingChanged ({ musicboxId, playing }) {
+    // console.log('mbS.handlePlayingChanged', this.props.musicboxId, { musicboxId, playing });
+    if (this.props.musicboxId != musicboxId) { return }
+
+    musicboxActions.playingChanged(this.props.musicboxId, { musicboxId, playing })
+    // notify other musicboxes that we don't want them to play
+    if (playing) {
+      musicboxDispatch.stopOthers(musicboxId)
+    }
   },
 
-  handlePageChanged (pageUrl) {
+  /**
+  * Stop other player
+  * @param evt: the event that fired
+  */
+  handleStopOthers ({ musicboxId }) {
+    // console.log('handleStopOthers', { musicboxId });
+    if (this.props.musicboxId != musicboxId) {
+      this.send(this.props.controls.pause)
+    }
+  },
+
+  handlePageChanged ({ musicboxId, pageUrl }) {
     // console.log('MusicboxTab.handlePageChanged', pageUrl)
-    musicboxActions.pageChanged(this.props.musicboxId, pageUrl)
+    if (this.props.musicboxId != musicboxId) { return }
+    musicboxActions.pageChanged(this.props.musicboxId, { musicboxId, pageUrl })
   },
 
   /* **************************************************************************/

@@ -75,33 +75,29 @@ class TrackNotifications {
     if (this.__dispatching__) { return }
     if (flux.settings.S.getState().os.notificationsEnabled === false) { return }
     const now = new Date().getTime()
+
     const firstRun = now - this.__constructTime__ < constants.TRACK_NOTIFICATION_FIRST_RUN_GRACE_MS
+    // console.log('sendTrackNotification.firstRun', firstRun)
+    if (firstRun) { return }
 
     store.allMusicboxes().forEach((musicbox, k) => {
-      // console.log('sendTrackNotification:store.allMusicboxes().forEach', musicbox, k);
-      if (!musicbox.showNotifications || !musicbox.currentTrack) { return }
+      // console.log('sendTrackNotification:store.allMusicboxes().forEach', firstRun, musicbox.currentTrack, musicbox.showNotifications);
+      if (!musicbox.showNotifications || typeof musicbox.currentTrack == 'undefined') { return }
 
-      const { currentTrack } = musicbox
+      const { currentTrack, isPlaying } = musicbox
 
-      if(this.currentTrack == JSON.stringify(currentTrack)) { return }
+      // console.log('sendTrackNotification.this.currentTrack', this.currentTrack);
+      // console.log('sendTrackNotification.stringify', JSON.stringify(currentTrack));
+      // console.log('sendTrackNotification.other', currentTrack, isPlaying);
+      if(this.currentTrack == JSON.stringify(currentTrack) || !isPlaying) { return }
       this.currentTrack = currentTrack
 
-      if (!musicbox.isPlaying) { return }
-
-
-      if (!firstRun) {
-        this.showNotification(musicbox, currentTrack)
-        if (currentTrack.artist) {
-          this.speak(`Now Playing ${currentTrack.title}, by ${currentTrack.artist}, from ${currentTrack.album}`)
-        } else {
-          this.speak(`Now Playing ${currentTrack.title}, from ${currentTrack.album}`)
-        }
+      this.showNotification(musicbox, currentTrack)
+      if (currentTrack.artist) {
+        this.speak(`Now Playing ${currentTrack.title}, by ${currentTrack.artist}, from ${currentTrack.album}`)
+      } else {
+        this.speak(`Now Playing ${currentTrack.title}, from ${currentTrack.album}`)
       }
-      // return now
-
-      // if (lastInternalDate !== 0) {
-      //   flux.musicbox.A.setGoogleLastNotifiedInternalDate.defer(musicbox.id, lastInternalDate)
-      // }
     })
   }
 
@@ -117,8 +113,10 @@ class TrackNotifications {
       silent: true, //flux.settings.S.getState().os.notificationsSilent,
       icon: [track.imageUrl],
       image: [track.imageUrl],
-      tag: 'TrackNotifications',
-      data: { musicbox: musicbox.id }
+      persitent: true,
+      tag: 'track-notification',
+      renotify: false,
+      data: { musicbox: musicbox.id },
     })
     notification.onclick = this.handleNotificationClicked
     return notification

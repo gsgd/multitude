@@ -31,6 +31,8 @@ class DeezerStreaming extends StreamingService {
 
     // Bind our listeners
     ipcRenderer.on('deezer-init', this.handleInit.bind(this))
+    ipcRenderer.on('deezer-play', this.handlePlay.bind(this))
+    ipcRenderer.on('deezer-pause', this.handlePause.bind(this))
     ipcRenderer.on('deezer-play-pause', this.handlePlayPause.bind(this))
     ipcRenderer.on('deezer-next-track', this.handleNextTrack.bind(this))
     ipcRenderer.on('deezer-previous-track', this.handlePreviousTrack.bind(this))
@@ -63,28 +65,34 @@ class DeezerStreaming extends StreamingService {
   // Event handlers
   /* **************************************************************************/
 
+  handleInit (evt, data) {
+    if (!data || !data.track) { return }
+    document.addEventListener('DOMContentLoaded', () => { window.PLAYER_INIT = data })
+  }
   /**
   * Handles media events
   * @param evt: the event that fired
   * @param data: the data sent with the event
   */
-  handlePlayPause (evt, data) { 
+
+  handlePlay (evt, data) {
+    window.dzPlayer.control.play()
+  }
+
+  handlePause (evt, data) {
+    window.dzPlayer.control.pause()
+  }
+
+  handlePlayPause (evt, data) {
     window.dzPlayer.control.togglePause()
   }
 
-  handleNextTrack (evt, data) { 
+  handleNextTrack (evt, data) {
     window.dzPlayer.control.nextSong()
   }
 
-  handlePreviousTrack (evt, data) { 
+  handlePreviousTrack (evt, data) {
     window.dzPlayer.control.prevSong()
-  }
-
-  handleInit (evt, data) {
-    if (!data || !data.track) { return }
-    
-    document.addEventListener('DOMContentLoaded', () => { window.PLAYER_INIT = data })
-
   }
 
 }

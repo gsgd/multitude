@@ -445,7 +445,7 @@ class MusicboxStore {
   * @param updates: the updates to merge in
   */
   handleTrackChanged ({id, musicboxId, trackDetail}) {
-    // console.log('musicboxStore.handleTrackChanged', id, musicboxId, trackDetail);
+    // console.log('mbS.handleTrackChanged', id, musicboxId, trackDetail);
     if (id != musicboxId) { return }
     const data = this.musicboxes.get(id).cloneData()
     if (JSON.stringify(data.currentTrack) == JSON.stringify(trackDetail)) { return }

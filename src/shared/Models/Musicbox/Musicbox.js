@@ -158,7 +158,7 @@ class Musicbox extends Model {
   get showUnreadBadge () { return this._value_('showUnreadBadge', true) }
   get unreadCountsTowardsAppUnread () { return this._value_('unreadCountsTowardsAppUnread', true) }
   get showNotifications () { return this._value_('showNotifications', true) }
-  get isPlaying () { return this._value_('isPlaying', false) }
+  get isPlaying () { return this._value_('isPlaying', undefined) }
   get artificiallyPersistCookies () { return this._value_('artificiallyPersistCookies', false) }
   get init () {
     let data = this._value_('tracklist', {

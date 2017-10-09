@@ -196,7 +196,7 @@ class MusicboxDispatch {
   }
 
   trackChanged (musicboxId, trackDetail) {
-    // console.log('trackChanged', trackDetail);
+    // console.log('mbD.trackChanged', musicboxId, trackDetail);
     this.emit('trackChanged', { musicboxId, trackDetail })
   }
 
@@ -208,6 +208,11 @@ class MusicboxDispatch {
   playingChanged (musicboxId, playing) {
     // console.log('playingChanged', musicboxId, playing);
     this.emit('playingChanged', { musicboxId, playing })
+  }
+
+  stopOthers (musicboxId) {
+    // console.log('playingChanged', musicboxId, playing);
+    this.emit('stopOthers', { musicboxId })
   }
 
   pageChanged (musicboxId, pageUrl) {
