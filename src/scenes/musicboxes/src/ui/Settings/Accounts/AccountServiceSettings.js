@@ -3,9 +3,9 @@ const {
   Paper, IconButton, FontIcon, FlatButton, Popover, Menu, MenuItem, Checkbox, Toggle,
   Table, TableBody, TableRow, TableRowColumn, TableHeader, TableHeaderColumn
 } = require('material-ui')
-const mailboxActions = require('../../../stores/mailbox/mailboxActions')
+const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const shallowCompare = require('react-addons-shallow-compare')
-const Mailbox = require('shared/Models/Mailbox/Mailbox')
+const Musicbox = require('shared/Models/Musicbox/Musicbox')
 const Colors = require('material-ui/styles/colors')
 
 const settingStyles = require('../settingStyles')
@@ -39,7 +39,7 @@ module.exports = React.createClass({
 
   displayName: 'AccountServiceSettings',
   propTypes: {
-    mailbox: React.PropTypes.object.isRequired
+    musicbox: React.PropTypes.object.isRequired
   },
 
   /* **************************************************************************/
@@ -63,18 +63,18 @@ module.exports = React.createClass({
 
   /**
   * Renders the service name
-  * @param mailboxType: the type of mailbox
+  * @param musicboxType: the type of musicbox
   * @param service: the service type
   * @return the human name for the service
   */
-  getServiceName (mailboxType, service) {
-    if (mailboxType === Mailbox.TYPE_GMAIL || mailboxType === Mailbox.TYPE_GINBOX) {
+  getServiceName (musicboxType, service) {
+    if (musicboxType === Musicbox.TYPE_GMAIL || musicboxType === Musicbox.TYPE_GINBOX) {
       switch (service) {
-        case Mailbox.SERVICES.STORAGE: return 'Google Drive'
-        case Mailbox.SERVICES.CONTACTS: return 'Google Contacts'
-        case Mailbox.SERVICES.NOTES: return 'Google Keep'
-        case Mailbox.SERVICES.CALENDAR: return 'Google Calendar'
-        case Mailbox.SERVICES.COMMUNICATION: return 'Google Hangouts'
+        case Musicbox.SERVICES.STORAGE: return 'Google Drive'
+        case Musicbox.SERVICES.CONTACTS: return 'Google Contacts'
+        case Musicbox.SERVICES.NOTES: return 'Google Keep'
+        case Musicbox.SERVICES.CALENDAR: return 'Google Calendar'
+        case Musicbox.SERVICES.COMMUNICATION: return 'Google Hangouts'
       }
     }
 
@@ -82,18 +82,18 @@ module.exports = React.createClass({
   },
 
   /**
-  * @param mailboxType: the type of mailbox
+  * @param musicboxType: the type of musicbox
   * @param service: the service type
   * @return the url of the service icon
   */
-  getServiceIconUrl (mailboxType, service) {
-    if (mailboxType === Mailbox.TYPE_GMAIL || mailboxType === Mailbox.TYPE_GINBOX) {
+  getServiceIconUrl (musicboxType, service) {
+    if (musicboxType === Musicbox.TYPE_GMAIL || musicboxType === Musicbox.TYPE_GINBOX) {
       switch (service) {
-        case Mailbox.SERVICES.STORAGE: return '../../images/google_services/logo_drive_128px.png'
-        case Mailbox.SERVICES.CONTACTS: return '../../images/google_services/logo_contacts_128px.png'
-        case Mailbox.SERVICES.NOTES: return '../../images/google_services/logo_keep_128px.png'
-        case Mailbox.SERVICES.CALENDAR: return '../../images/google_services/logo_calendar_128px.png'
-        case Mailbox.SERVICES.COMMUNICATION: return '../../images/google_services/logo_hangouts_128px.png'
+        case Musicbox.SERVICES.STORAGE: return '../../images/google_services/logo_drive_128px.png'
+        case Musicbox.SERVICES.CONTACTS: return '../../images/google_services/logo_contacts_128px.png'
+        case Musicbox.SERVICES.NOTES: return '../../images/google_services/logo_keep_128px.png'
+        case Musicbox.SERVICES.CALENDAR: return '../../images/google_services/logo_calendar_128px.png'
+        case Musicbox.SERVICES.COMMUNICATION: return '../../images/google_services/logo_hangouts_128px.png'
       }
     }
 
@@ -102,12 +102,12 @@ module.exports = React.createClass({
 
   /**
   * Renders the services
-  * @param mailbox: the mailbox
+  * @param musicbox: the musicbox
   * @param services: the services list
   * @param sleepableServices: the list of services that are able to sleep
   * @return jsx
   */
-  renderServices (mailbox, services, sleepableServices) {
+  renderServices (musicbox, services, sleepableServices) {
     if (services.length) {
       const sleepableServicesSet = new Set(sleepableServices)
 
@@ -135,32 +135,32 @@ module.exports = React.createClass({
                   <TableRowColumn style={serviceStyles.actionCell}>
                     <img
                       style={serviceStyles.avatar}
-                      src={this.getServiceIconUrl(mailbox.type, service)} />
+                      src={this.getServiceIconUrl(musicbox.type, service)} />
                   </TableRowColumn>
                   <TableRowColumn style={serviceStyles.titleCell}>
-                    {this.getServiceName(mailbox.type, service)}
+                    {this.getServiceName(musicbox.type, service)}
                   </TableRowColumn>
                   <TableRowColumn style={serviceStyles.actionCell}>
                     <Checkbox
-                      onCheck={(evt, checked) => mailboxActions.toggleServiceSleepable(mailbox.id, service, checked)}
+                      onCheck={(evt, checked) => musicboxActions.toggleServiceSleepable(musicbox.id, service, checked)}
                       checked={sleepableServicesSet.has(service)} />
                   </TableRowColumn>
                   <TableRowColumn style={serviceStyles.actionCell}>
                     <IconButton
-                      onClick={() => mailboxActions.moveServiceUp(mailbox.id, service)}
+                      onClick={() => musicboxActions.moveServiceUp(musicbox.id, service)}
                       disabled={index === 0}>
                       <FontIcon className='material-icons'>arrow_upwards</FontIcon>
                     </IconButton>
                   </TableRowColumn>
                   <TableRowColumn style={serviceStyles.actionCell}>
                     <IconButton
-                      onClick={() => mailboxActions.moveServiceDown(mailbox.id, service)}
+                      onClick={() => musicboxActions.moveServiceDown(musicbox.id, service)}
                       disabled={index === arr.length - 1}>
                       <FontIcon className='material-icons'>arrow_downwards</FontIcon>
                     </IconButton>
                   </TableRowColumn>
                   <TableRowColumn style={serviceStyles.actionCell}>
-                    <IconButton onClick={() => mailboxActions.removeService(mailbox.id, service)}>
+                    <IconButton onClick={() => musicboxActions.removeService(musicbox.id, service)}>
                       <FontIcon className='material-icons'>delete</FontIcon>
                     </IconButton>
                   </TableRowColumn>
@@ -187,11 +187,11 @@ module.exports = React.createClass({
 
   /**
   * Renders the add popover
-  * @param mailbox: the mailbox
+  * @param musicbox: the musicbox
   * @param disabledServices: the list of disabled services
   * @return jsx
   */
-  renderAddPopover (mailbox, disabledServices) {
+  renderAddPopover (musicbox, disabledServices) {
     if (disabledServices.length) {
       const { addPopoverOpen, addPopoverAnchor } = this.state
       return (
@@ -212,9 +212,9 @@ module.exports = React.createClass({
                     key={service}
                     onClick={() => {
                       this.setState({ addPopoverOpen: false })
-                      mailboxActions.addService(mailbox.id, service)
+                      musicboxActions.addService(musicbox.id, service)
                     }}
-                    primaryText={this.getServiceName(mailbox.type, service)} />)
+                    primaryText={this.getServiceName(musicbox.type, service)} />)
               })}
             </Menu>
           </Popover>
@@ -226,22 +226,22 @@ module.exports = React.createClass({
   },
 
   render () {
-    const { mailbox, ...passProps } = this.props
+    const { musicbox, ...passProps } = this.props
 
-    const enabledServicesSet = new Set(mailbox.enabledServies)
-    const disabledServices = mailbox.supportedServices
-      .filter((s) => s !== Mailbox.SERVICES.DEFAULT && !enabledServicesSet.has(s))
+    const enabledServicesSet = new Set(musicbox.enabledServies)
+    const disabledServices = musicbox.supportedServices
+      .filter((s) => s !== Musicbox.SERVICES.DEFAULT && !enabledServicesSet.has(s))
 
     return (
       <Paper zDepth={1} style={settingStyles.paper} {...passProps}>
         <h1 style={settingStyles.subheading}>Services</h1>
-        {this.renderServices(mailbox, mailbox.enabledServies, mailbox.sleepableServices)}
-        {this.renderAddPopover(mailbox, disabledServices)}
+        {this.renderServices(musicbox, musicbox.enabledServies, musicbox.sleepableServices)}
+        {this.renderAddPopover(musicbox, disabledServices)}
         <Toggle
-          toggled={mailbox.compactServicesUI}
+          toggled={musicbox.compactServicesUI}
           label='Compact Services UI'
           labelPosition='right'
-          onToggle={(evt, toggled) => mailboxActions.setCompactServicesUI(mailbox.id, toggled)} />
+          onToggle={(evt, toggled) => musicboxActions.setCompactServicesUI(musicbox.id, toggled)} />
       </Paper>
     )
   }

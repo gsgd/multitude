@@ -1,8 +1,8 @@
 const React = require('react')
 const {Paper, Toggle, SelectField, MenuItem} = require('material-ui')
-const Mailbox = require('shared/Models/Mailbox/Mailbox')
-const Google = require('shared/Models/Mailbox/Google')
-const mailboxActions = require('../../../stores/mailbox/mailboxActions')
+const Musicbox = require('shared/Models/Musicbox/Musicbox')
+const Deezer = require('shared/Models/Musicbox/Deezer')
+const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const Colors = require('material-ui/styles/colors')
@@ -14,7 +14,7 @@ module.exports = React.createClass({
 
   displayName: 'AccountUnreadSettings',
   propTypes: {
-    mailbox: React.PropTypes.object.isRequired
+    musicbox: React.PropTypes.object.isRequired
   },
 
   /* **************************************************************************/
@@ -26,83 +26,83 @@ module.exports = React.createClass({
   },
 
   render () {
-    const { mailbox, ...passProps } = this.props
+    const { musicbox, ...passProps } = this.props
 
     return (
       <Paper zDepth={1} style={styles.paper} {...passProps}>
         <h1 style={styles.subheading}>Unread &amp; Notifications</h1>
         <Toggle
-          defaultToggled={mailbox.showUnreadBadge}
+          defaultToggled={musicbox.showUnreadBadge}
           label='Show unread badge'
           labelPosition='right'
-          onToggle={(evt, toggled) => mailboxActions.setShowUnreadBage(mailbox.id, toggled)} />
+          onToggle={(evt, toggled) => musicboxActions.setShowUnreadBage(musicbox.id, toggled)} />
         <Toggle
-          defaultToggled={mailbox.unreadCountsTowardsAppUnread}
+          defaultToggled={musicbox.unreadCountsTowardsAppUnread}
           label='Add unread messages to app unread count'
           labelPosition='right'
-          onToggle={(evt, toggled) => mailboxActions.setUnreadCountsTowardsAppUnread(mailbox.id, toggled)} />
+          onToggle={(evt, toggled) => musicboxActions.setUnreadCountsTowardsAppUnread(musicbox.id, toggled)} />
         <Toggle
-          defaultToggled={mailbox.showNotifications}
+          defaultToggled={musicbox.showNotifications}
           label='Show notifications'
           labelPosition='right'
-          onToggle={(evt, toggled) => mailboxActions.setShowNotifications(mailbox.id, toggled)} />
-        {mailbox.type === Mailbox.TYPE_GINBOX ? (
+          onToggle={(evt, toggled) => musicboxActions.setShowNotifications(musicbox.id, toggled)} />
+        {musicbox.type === Musicbox.TYPE_GINBOX ? (
           <SelectField
             fullWidth
-            value={mailbox.google.unreadMode}
+            value={musicbox.google.unreadMode}
             onChange={(evt, index, unreadMode) => {
-              mailboxActions.updateGoogleConfig(mailbox.id, { unreadMode: unreadMode })
+              musicboxActions.updateDeezerConfig(musicbox.id, { unreadMode: unreadMode })
             }}
             floatingLabelText='Unread Mode'>
             <MenuItem
-              key={Google.UNREAD_MODES.GINBOX_DEFAULT}
-              value={Google.UNREAD_MODES.GINBOX_DEFAULT}
+              key={Deezer.UNREAD_MODES.GINBOX_DEFAULT}
+              value={Deezer.UNREAD_MODES.GINBOX_DEFAULT}
               primaryText='All Unread Unbundled Messages' />
             <MenuItem
-              key={Google.UNREAD_MODES.INBOX_UNREAD}
-              value={Google.UNREAD_MODES.INBOX_UNREAD}
+              key={Deezer.UNREAD_MODES.INBOX_UNREAD}
+              value={Deezer.UNREAD_MODES.INBOX_UNREAD}
               primaryText='All Unread Messages' />
             <MenuItem
-              key={Google.UNREAD_MODES.INBOX}
-              value={Google.UNREAD_MODES.INBOX}
+              key={Deezer.UNREAD_MODES.INBOX}
+              value={Deezer.UNREAD_MODES.INBOX}
               primaryText='All Messages in inbox' />
           </SelectField>
         ) : undefined}
-        {mailbox.type === Mailbox.TYPE_GMAIL ? (
+        {musicbox.type === Musicbox.TYPE_GMAIL ? (
           <SelectField
             fullWidth
-            value={mailbox.google.unreadMode}
+            value={musicbox.google.unreadMode}
             onChange={(evt, index, unreadMode) => {
-              mailboxActions.updateGoogleConfig(mailbox.id, { unreadMode: unreadMode })
+              musicboxActions.updateDeezerConfig(musicbox.id, { unreadMode: unreadMode })
             }}
             floatingLabelText='Unread Mode'>
             <MenuItem
-              key={Google.UNREAD_MODES.INBOX_UNREAD}
-              value={Google.UNREAD_MODES.INBOX_UNREAD}
+              key={Deezer.UNREAD_MODES.INBOX_UNREAD}
+              value={Deezer.UNREAD_MODES.INBOX_UNREAD}
               primaryText='All Unread Messages' />
             <MenuItem
-              key={Google.UNREAD_MODES.PRIMARY_INBOX_UNREAD}
-              value={Google.UNREAD_MODES.PRIMARY_INBOX_UNREAD}
+              key={Deezer.UNREAD_MODES.PRIMARY_INBOX_UNREAD}
+              value={Deezer.UNREAD_MODES.PRIMARY_INBOX_UNREAD}
               primaryText='Unread Messages in Primary Category' />
             <MenuItem
-              key={Google.UNREAD_MODES.INBOX_UNREAD_IMPORTANT}
-              value={Google.UNREAD_MODES.INBOX_UNREAD_IMPORTANT}
+              key={Deezer.UNREAD_MODES.INBOX_UNREAD_IMPORTANT}
+              value={Deezer.UNREAD_MODES.INBOX_UNREAD_IMPORTANT}
               primaryText='Unread Important Messages' />
             <MenuItem
-              key={Google.UNREAD_MODES.INBOX}
-              value={Google.UNREAD_MODES.INBOX}
+              key={Deezer.UNREAD_MODES.INBOX}
+              value={Deezer.UNREAD_MODES.INBOX}
               primaryText='All Messages in inbox' />
           </SelectField>
         ) : undefined}
-        {mailbox.type === Mailbox.TYPE_GMAIL ? (
+        {musicbox.type === Musicbox.TYPE_GMAIL ? (
           <div>
             <Toggle
-              defaultToggled={mailbox.google.takeLabelCountFromUI}
+              defaultToggled={musicbox.google.takeLabelCountFromUI}
               label='Scrape unread count directly from UI'
               labelPosition='right'
-              disabled={!mailbox.google.canChangeTakeLabelCountFromUI}
+              disabled={!musicbox.google.canChangeTakeLabelCountFromUI}
               onToggle={(evt, toggled) => {
-                mailboxActions.updateGoogleConfig(mailbox.id, { takeLabelCountFromUI: toggled })
+                musicboxActions.updateDeezerConfig(musicbox.id, { takeLabelCountFromUI: toggled })
               }} />
             <div style={{color: Colors.grey500}}>
               <small>This will take the unread count directly from the Gmail user interface. This can improve unread count accuracy</small>

@@ -1,7 +1,7 @@
 const React = require('react')
 const { Paper, RaisedButton, FontIcon } = require('material-ui')
 const { ColorPickerButton } = require('../../../Components')
-const mailboxActions = require('../../../stores/mailbox/mailboxActions')
+const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 
@@ -12,7 +12,7 @@ module.exports = React.createClass({
 
   displayName: 'AccountAvatarSettings',
   propTypes: {
-    mailbox: React.PropTypes.object.isRequired
+    musicbox: React.PropTypes.object.isRequired
   },
 
   /* **************************************************************************/
@@ -41,7 +41,7 @@ module.exports = React.createClass({
         ctx.drawImage(image, 0, 0, width, height)
 
         // Save it to disk
-        mailboxActions.setCustomAvatar(this.props.mailbox.id, canvas.toDataURL())
+        musicboxActions.setCustomAvatar(this.props.musicbox.id, canvas.toDataURL())
       }
       image.src = reader.result
     }, false)
@@ -57,7 +57,7 @@ module.exports = React.createClass({
   },
 
   render () {
-    const { mailbox, ...passProps } = this.props
+    const { musicbox, ...passProps } = this.props
 
     return (
       <Paper zDepth={1} style={styles.paper} {...passProps}>
@@ -78,15 +78,15 @@ module.exports = React.createClass({
         <div style={styles.button}>
           <RaisedButton
             icon={<FontIcon className='material-icons'>not_interested</FontIcon>}
-            onClick={() => mailboxActions.setCustomAvatar(mailbox.id, undefined)}
+            onClick={() => musicboxActions.setCustomAvatar(musicbox.id, undefined)}
             label='Reset Account Icon' />
         </div>
         <div style={styles.button}>
           <ColorPickerButton
             label='Account Colour'
             icon={<FontIcon className='material-icons'>color_lens</FontIcon>}
-            value={mailbox.color}
-            onChange={(col) => mailboxActions.setColor(mailbox.id, col)} />
+            value={musicbox.color}
+            onChange={(col) => musicboxActions.setColor(musicbox.id, col)} />
         </div>
       </Paper>
     )

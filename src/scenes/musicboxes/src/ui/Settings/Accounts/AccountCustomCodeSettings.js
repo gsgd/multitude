@@ -1,10 +1,10 @@
 const React = require('react')
 const { Paper, RaisedButton, FontIcon } = require('material-ui')
 const CustomCodeEditingModal = require('./CustomCodeEditingModal')
-const mailboxActions = require('../../../stores/mailbox/mailboxActions')
+const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
-const {mailboxDispatch} = require('../../../Dispatch')
+const {musicboxDispatch} = require('../../../Dispatch')
 const { USER_SCRIPTS_WEB_URL } = require('shared/constants')
 const Colors = require('material-ui/styles/colors')
 const {
@@ -18,7 +18,7 @@ module.exports = React.createClass({
 
   displayName: 'AccountCustomCodeSettings',
   propTypes: {
-    mailbox: React.PropTypes.object.isRequired
+    musicbox: React.PropTypes.object.isRequired
   },
 
   /* **************************************************************************/
@@ -38,13 +38,13 @@ module.exports = React.createClass({
 
   handleSave (evt, code) {
     if (this.state.editingCSS) {
-      mailboxActions.setCustomCSS(this.props.mailbox.id, code)
+      musicboxActions.setCustomCSS(this.props.musicbox.id, code)
     } else if (this.state.editingJS) {
-      mailboxActions.setCustomJS(this.props.mailbox.id, code)
+      musicboxActions.setCustomJS(this.props.musicbox.id, code)
     }
 
     this.setState({ editingJS: false, editingCSS: false })
-    mailboxDispatch.reloadAllServices(this.props.mailbox.id)
+    musicboxDispatch.reloadAllServices(this.props.musicbox.id)
   },
 
   /* **************************************************************************/
@@ -56,14 +56,14 @@ module.exports = React.createClass({
   },
 
   render () {
-    const { mailbox, ...passProps } = this.props
+    const { musicbox, ...passProps } = this.props
     let editingCode
     let editingTitle
     if (this.state.editingCSS) {
-      editingCode = mailbox.customCSS
+      editingCode = musicbox.customCSS
       editingTitle = 'Custom CSS'
     } else if (this.state.editingJS) {
-      editingCode = mailbox.customJS
+      editingCode = musicbox.customJS
       editingTitle = 'Custom JS'
     }
 

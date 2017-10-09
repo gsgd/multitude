@@ -148,7 +148,7 @@ module.exports = React.createClass({
             {currentTab !== 'accounts' ? undefined : (
               <AccountSettings
                 showRestart={this.handleShowRestart}
-                initialMailboxId={(initialRoute || {}).mailboxId} />
+                initialMusicboxId={(initialRoute || {}).musicboxId} />
             )}
           </Tab>
           <Tab label='Advanced' value='advanced'>

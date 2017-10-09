@@ -1,7 +1,7 @@
 const React = require('react')
 const Colors = require('material-ui/styles/colors')
 const { Paper, FlatButton, FontIcon } = require('material-ui')
-const mailboxActions = require('../../../stores/mailbox/mailboxActions')
+const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const TimerMixin = require('react-timer-mixin')
@@ -14,7 +14,7 @@ module.exports = React.createClass({
   displayName: 'AccountManagementSettings',
   mixins: [TimerMixin],
   propTypes: {
-    mailbox: React.PropTypes.object.isRequired
+    musicbox: React.PropTypes.object.isRequired
   },
 
   /* **************************************************************************/
@@ -26,7 +26,7 @@ module.exports = React.createClass({
   },
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.mailbox.id !== nextProps.mailbox.id) {
+    if (this.props.musicbox.id !== nextProps.musicbox.id) {
       this.setState({ confirmingDelete: false })
       this.clearTimeout(this.confirmingDeleteTO)
     }
@@ -51,7 +51,7 @@ module.exports = React.createClass({
   */
   handleDeleteTapped (evt) {
     if (this.state.confirmingDelete) {
-      mailboxActions.remove(this.props.mailbox.id)
+      musicboxActions.remove(this.props.musicbox.id)
     } else {
       this.setState({ confirmingDelete: true })
       this.confirmingDeleteTO = this.setTimeout(() => {
@@ -70,7 +70,7 @@ module.exports = React.createClass({
 
   render () {
     const passProps = Object.assign({}, this.props)
-    delete passProps.mailbox
+    delete passProps.musicbox
 
     return (
       <Paper zDepth={1} style={styles.paper} {...passProps}>

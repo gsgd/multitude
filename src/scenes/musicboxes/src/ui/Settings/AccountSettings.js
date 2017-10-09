@@ -3,7 +3,7 @@ const {SelectField, MenuItem, Avatar, Paper} = require('material-ui')
 const {
   Grid: { Container, Row, Col }
 } = require('../../Components')
-const mailboxStore = require('../../stores/mailbox/mailboxStore')
+const musicboxStore = require('../../stores/musicbox/musicboxStore')
 const styles = require('./settingStyles')
 
 const AccountAvatarSettings = require('./Accounts/AccountAvatarSettings')
@@ -18,7 +18,7 @@ module.exports = React.createClass({
   displayName: 'AccountSettings',
   propTypes: {
     showRestart: React.PropTypes.func.isRequired,
-    initialMailboxId: React.PropTypes.string
+    initialMusicboxId: React.PropTypes.string
   },
 
   /* **************************************************************************/
@@ -26,18 +26,18 @@ module.exports = React.createClass({
   /* **************************************************************************/
 
   componentDidMount () {
-    mailboxStore.listen(this.mailboxesChanged)
+    musicboxStore.listen(this.musicboxesChanged)
   },
 
   componentWillUnmount () {
-    mailboxStore.unlisten(this.mailboxesChanged)
+    musicboxStore.unlisten(this.musicboxesChanged)
   },
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.initialMailboxId !== nextProps.initialMailboxId) {
-      const mailbox = mailboxStore.getState().getMailbox(nextProps.initialMailboxId)
-      if (mailbox) {
-        this.setState({ selected: mailbox })
+    if (this.props.initialMusicboxId !== nextProps.initialMusicboxId) {
+      const musicbox = musicboxStore.getState().getMusicbox(nextProps.initialMusicboxId)
+      if (musicbox) {
+        this.setState({ selected: musicbox })
       }
     }
   },
@@ -47,24 +47,24 @@ module.exports = React.createClass({
   /* **************************************************************************/
 
   getInitialState () {
-    const { initialMailboxId } = this.props
-    const store = mailboxStore.getState()
-    const all = store.allMailboxes()
+    const { initialMusicboxId } = this.props
+    const store = musicboxStore.getState()
+    const all = store.allMusicboxes()
     return {
-      mailboxes: all,
-      selected: (initialMailboxId ? store.getMailbox(initialMailboxId) : all[0]) || all[0]
+      musicboxes: all,
+      selected: (initialMusicboxId ? store.getMusicbox(initialMusicboxId) : all[0]) || all[0]
     }
   },
 
-  mailboxesChanged (store) {
-    const all = store.allMailboxes()
+  musicboxesChanged (store) {
+    const all = store.allMusicboxes()
     if (this.state.selected) {
       this.setState({
-        mailboxes: all,
-        selected: store.getMailbox(this.state.selected.id) || all[0]
+        musicboxes: all,
+        selected: store.getMusicbox(this.state.selected.id) || all[0]
       })
     } else {
-      this.setState({ mailboxes: all, selected: all[0] })
+      this.setState({ musicboxes: all, selected: all[0] })
     }
   },
 
@@ -72,18 +72,18 @@ module.exports = React.createClass({
   // User Interaction
   /* **************************************************************************/
 
-  handleAccountChange (evt, index, mailboxId) {
-    this.setState({ selected: mailboxStore.getState().getMailbox(mailboxId) })
+  handleAccountChange (evt, index, musicboxId) {
+    this.setState({ selected: musicboxStore.getState().getMusicbox(musicboxId) })
   },
 
   /* **************************************************************************/
   // Rendering
   /* **************************************************************************/
 
-  renderNoMailboxes () {
+  renderNoMusicboxes () {
     const passProps = Object.assign({}, this.props)
     delete passProps.showRestart
-    delete passProps.initialMailboxId
+    delete passProps.initialMusicboxId
 
     return (
       <div {...passProps}>
@@ -94,14 +94,14 @@ module.exports = React.createClass({
     )
   },
 
-  renderMailboxes () {
+  renderMusicboxes () {
     const {selected} = this.state
     const {showRestart, ...passProps} = this.props
-    delete passProps.initialMailboxId
+    delete passProps.initialMusicboxId
 
     let avatarSrc = ''
     if (selected.hasCustomAvatar) {
-      avatarSrc = mailboxStore.getState().getAvatar(selected.customAvatarId)
+      avatarSrc = musicboxStore.getState().getAvatar(selected.customAvatarId)
     } else if (selected.avatarURL) {
       avatarSrc = selected.avatarURL
     }
@@ -122,7 +122,7 @@ module.exports = React.createClass({
               fullWidth
               onChange={this.handleAccountChange}>
               {
-                this.state.mailboxes.map((m) => {
+                this.state.musicboxes.map((m) => {
                   return (
                     <MenuItem
                       value={m.id}
@@ -137,16 +137,16 @@ module.exports = React.createClass({
         <Container fluid>
           <Row>
             <Col md={6}>
-              <AccountUnreadSettings mailbox={selected} />
-              <AccountAvatarSettings mailbox={selected} />
-              <AccountCustomCodeSettings mailbox={selected} />
+              <AccountUnreadSettings musicbox={selected} />
+              <AccountAvatarSettings musicbox={selected} />
+              <AccountCustomCodeSettings musicbox={selected} />
             </Col>
             <Col md={6}>
               {pkg.prerelease ? (
-                <AccountServiceSettings mailbox={selected} />
+                <AccountServiceSettings musicbox={selected} />
               ) : undefined}
-              <AccountAdvancedSettings mailbox={selected} showRestart={showRestart} />
-              <AccountManagementSettings mailbox={selected} />
+              <AccountAdvancedSettings musicbox={selected} showRestart={showRestart} />
+              <AccountManagementSettings musicbox={selected} />
             </Col>
           </Row>
         </Container>
@@ -155,10 +155,10 @@ module.exports = React.createClass({
   },
 
   render () {
-    if (this.state.mailboxes.length) {
-      return this.renderMailboxes()
+    if (this.state.musicboxes.length) {
+      return this.renderMusicboxes()
     } else {
-      return this.renderNoMailboxes()
+      return this.renderNoMusicboxes()
     }
   }
 })
