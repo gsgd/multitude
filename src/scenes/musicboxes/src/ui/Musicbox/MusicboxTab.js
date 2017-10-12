@@ -319,8 +319,8 @@ module.exports = React.createClass({
   * Dispatches browser IPC messages to the correct call
   * @param evt: the event that fired
   */
-  dispatchBrowserIPCMessage (evt) {
-    // console.log('dispatchBrowserIPCMessage', evt);
+  dispatchFromBrowserIPCMessage (evt) {
+    // console.log('dispatchFromBrowserIPCMessage', evt);
     const musicboxId = evt.path[0].id
     switch (evt.channel.type) {
       case 'open-settings': navigationDispatch.openSettings(); break
@@ -591,7 +591,7 @@ module.exports = React.createClass({
             this.multiCallBrowserEvent([this.handleBrowserDomReady, webviewEventProps.domReady], [evt])
           }}
           ipcMessage={(evt) => {
-            this.multiCallBrowserEvent([this.dispatchBrowserIPCMessage, webviewEventProps.ipcMessage], [evt])
+            this.multiCallBrowserEvent([this.dispatchFromBrowserIPCMessage, webviewEventProps.ipcMessage], [evt])
           }}
           willNavigate={(evt) => {
             this.multiCallBrowserEvent([zoomFixFn, this.handleBrowserWillNavigate, webviewEventProps.willNavigate], [evt])

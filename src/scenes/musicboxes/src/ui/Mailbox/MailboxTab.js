@@ -232,7 +232,7 @@ module.exports = React.createClass({
   * Dispatches browser IPC messages to the correct call
   * @param evt: the event that fired
   */
-  dispatchBrowserIPCMessage (evt) {
+  dispatchFromBrowserIPCMessage (evt) {
     switch (evt.channel.type) {
       case 'open-settings': navigationDispatch.openSettings(); break
       default: break
@@ -453,7 +453,7 @@ module.exports = React.createClass({
             this.multiCallBrowserEvent([this.handleBrowserDomReady, webviewEventProps.domReady], [evt])
           }}
           ipcMessage={(evt) => {
-            this.multiCallBrowserEvent([this.dispatchBrowserIPCMessage, webviewEventProps.ipcMessage], [evt])
+            this.multiCallBrowserEvent([this.dispatchFromBrowserIPCMessage, webviewEventProps.ipcMessage], [evt])
           }}
           willNavigate={(evt) => {
             this.multiCallBrowserEvent([zoomFixFn, this.handleBrowserWillNavigate, webviewEventProps.willNavigate], [evt])

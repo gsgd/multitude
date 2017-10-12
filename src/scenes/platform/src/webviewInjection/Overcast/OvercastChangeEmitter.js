@@ -27,13 +27,13 @@ class OvercastChangeEmitter {
     if (this.player) {
       this.player.setAttribute('data-autoplay', 0)
       this.player.onloadstart = this.subscribeToEvents.bind(this)
-      this.player.onload = this.handleDisplayCurrentSong.bind(this);
     }
     // console.log('onLoaded.done');
   }
 
   subscribeToEvents(event, data) {
     // console.log('subscribe');
+    this.handleDisplayCurrentSong()
     this.player.onplay = this.handlePlaying.bind(this)
     this.player.onpause = this.handlePlaying.bind(this)
   }
@@ -59,11 +59,11 @@ class OvercastChangeEmitter {
     // console.log('handleDisplayCurrentSong', event, data);
     clearTimeout(this.__data__.currentDisplayDelay)
     this.__data__.currentDisplayDelay = setTimeout(()  => {
-      this.handleDisplayCurrentSong.call(this)
+      this.displayCurrentSong.call(this)
     }, 1000)
   }
 
-  handleDisplayCurrentSong() {
+  displayCurrentSong() {
     const img = $('meta[name="og:image"]').attr('content');
     // const title = window.$('meta[name="og:title"]').attr('content');
     const podcast = $('div.titlestack .caption2').text();

@@ -132,7 +132,7 @@ module.exports = React.createClass({
   * Dispatches browser IPC messages to the correct call
   * @param evt: the event that fired
   */
-  dispatchBrowserIPCMessage (evt) {
+  dispatchFromBrowserIPCMessage (evt) {
     switch (evt.channel.type) {
       case 'unread-count-changed': googleActions.suggestSyncMailboxUnreadCount(this.props.mailboxId); break
       case 'js-new-window': this.handleBrowserJSNewWindow(evt); break
@@ -194,7 +194,7 @@ module.exports = React.createClass({
         service={Mailbox.SERVICES.DEFAULT}
         newWindow={(evt) => { this.handleOpenNewWindow(evt.url) }}
         domReady={this.handleBrowserDomReady}
-        ipcMessage={this.dispatchBrowserIPCMessage} />
+        ipcMessage={this.dispatchFromBrowserIPCMessage} />
     )
   }
 })

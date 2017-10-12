@@ -152,7 +152,7 @@ module.exports = React.createClass({
   * Dispatches browser IPC messages to the correct call
   * @param evt: the event that fired
   */
-  dispatchBrowserIPCMessage (evt) {
+  dispatchFromBrowserIPCMessage (evt) {
     switch (evt.channel.type) {
       case 'unread-count-changed': overcastActions.suggestSyncMusicboxUnreadCount(this.props.musicboxId); break
       case 'js-new-window': this.handleBrowserJSNewWindow(evt); break
@@ -215,7 +215,7 @@ module.exports = React.createClass({
         newWindow={(evt) => { this.handleOpenNewWindow(evt.url) }}
         domReady={this.handleBrowserDomReady}
         controls={this.controls()}
-        ipcMessage={this.dispatchBrowserIPCMessage} />
+        ipcMessage={this.dispatchFromBrowserIPCMessage} />
     )
   }
 })
