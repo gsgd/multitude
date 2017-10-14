@@ -6,7 +6,7 @@ const path = require('path')
 const Minivents = require('minivents')
 const fs = require('fs')
 const writeFileAtomic = require('write-file-atomic')
-const { DB_WRITE_DELAY_MS } = require('../../shared/constants')
+const { DB_WRITE_DELAY_MS } = require('shared/constants')
 
 // Setup
 const appDirectory = new AppDirectory(pkg.name)

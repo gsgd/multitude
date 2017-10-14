@@ -35,7 +35,7 @@
   const AppPrimaryMenu = require('./AppPrimaryMenu')
   const KeyboardShortcuts = require('./KeyboardShortcuts')
   const WindowManager = require('./windows/WindowManager')
-  const constants = require('../shared/constants')
+  const constants = require('shared/constants')
   const storage = require('./storage')
   const settingStore = require('./stores/settingStore')
 
@@ -57,8 +57,7 @@
   const openHidden = (function () {
     if (settingStore.ui.openHidden) { return true }
     if (process.platform === 'darwin' && app.getLoginItemSettings().wasOpenedAsHidden) { return true }
-    if (argv.hidden || argv.hide) { return true }
-    return false
+    return (argv.hidden || argv.hide)
   })()
 
   /* ****************************************************************************/

@@ -51,7 +51,8 @@
     "url-loader": "0.5.7",
     "uuid": "3.0.1",
     "webpack": "1.14.0",
-    "webpack-target-electron-renderer": "0.4.0"
+    "webpack-target-electron-renderer": "0.4.0",
+    "shared": "file:src/shared"
   },
   "devDependencies": {
     "eslint": "^4.8.0",

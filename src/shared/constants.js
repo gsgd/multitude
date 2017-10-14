@@ -23,5 +23,19 @@ module.exports = Object.freeze({
   REFOCUS_MAILBOX_INTERVAL_MS: 300,
 
   DB_EXTENSION: 'wmaildb',
-  DB_WRITE_DELAY_MS: 500 // 0.5secs
+  DB_WRITE_DELAY_MS: 500, // 0.5secs
+
+  // send to musicbox
+  MUSICBOX_WINDOW_INIT: 'musicbox-window-init',
+  MUSICBOX_WINDOW_PLAY: 'musicbox-window-play',
+  MUSICBOX_WINDOW_PAUSE: 'musicbox-window-pause',
+  MUSICBOX_WINDOW_PLAY_PAUSE: 'musicbox-window-play-pause',
+  MUSICBOX_WINDOW_NEXT_TRACK: 'musicbox-window-next-track',
+  MUSICBOX_WINDOW_PREVIOUS_TRACK: 'musicbox-window-previous-track',
+  // receive from musicbox
+  MUSICBOX_WINDOW_INIT_REQUEST: 'musicbox-window-init-request',
+  MUSICBOX_WINDOW_PLAYING: 'musicbox-window-playing',
+  MUSICBOX_WINDOW_TRACK_CHANGED: 'musicbox-window-track-changed',
+  MUSICBOX_WINDOW_TRACKLIST_CHANGED: 'musicbox-window-tracklist-changed',
+  MUSICBOX_WINDOW_PAGE_CHANGED: 'musicbox-window-page-changed'
 })

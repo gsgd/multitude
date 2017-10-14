@@ -10,7 +10,7 @@ const {
     TraySettings,
     UISettings
   }
-} = require('../../shared/Models')
+} = require('shared/Models')
 
 class SettingStore {
   constructor () {

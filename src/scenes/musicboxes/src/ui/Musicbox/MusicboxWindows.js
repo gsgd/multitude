@@ -5,8 +5,7 @@ const { musicboxStore } = require('../../stores/musicbox')
 const Welcome = require('../Welcome/Welcome')
 const Musicbox = require('shared/Models/Musicbox/Musicbox')
 
-const DeezerMusicboxStreamingTab = require('./Deezer/DeezerMusicboxStreamingTab')
-const OvercastMusicboxStreamingTab = require('./Overcast/OvercastMusicboxStreamingTab')
+const MusicboxStreamingTab = require('./Streaming/MusicboxStreamingTab')
 
 module.exports = React.createClass({
   displayName: 'MusicboxWindows',
@@ -63,8 +62,7 @@ module.exports = React.createClass({
   /* **************************************************************************/
 
   shouldComponentUpdate (nextProps, nextState) {
-    if (JSON.stringify(this.state.tabIds) !== JSON.stringify(nextState.tabIds)) { return true }
-    return false
+    return (JSON.stringify(this.state.tabIds) !== JSON.stringify(nextState.tabIds))
   },
 
   /**
@@ -78,20 +76,20 @@ module.exports = React.createClass({
   renderTab (key, musicboxType, musicboxId, service) {
     // console.log('MusicboxWindows.renderTab', key, musicboxType, musicboxId, service)
     switch (service) {
-      case Musicbox.SERVICES.DEFAULT: return this.renderStreamingTab(key, musicboxType, musicboxId)
+      case Musicbox.SERVICES.DEFAULT: return this.renderStreamingTab(key, musicboxType, musicboxId, service)
     }
 
     return undefined
   },
 
-  renderStreamingTab(key, musicboxType, musicboxId) {
-    // console.log('MusicboxWindows.renderStreamingTab', key, musicboxType, musicboxId)
-    switch (musicboxType) {
-      case Musicbox.TYPE_DEEZER: return (<DeezerMusicboxStreamingTab musicboxId={musicboxId} key={key} />)
-      case Musicbox.TYPE_OVERCAST: return (<OvercastMusicboxStreamingTab musicboxId={musicboxId} key={key} />)
-    }
-
-    return undefined
+  renderStreamingTab (key, musicboxType, musicboxId, service) {
+    // console.log('MusicboxWindows.renderStreamingTab', key, musicboxType, musicboxId, service)
+    return (<MusicboxStreamingTab
+      musicboxId={musicboxId}
+      key={key}
+      service={service}
+      preload={`../platform/webviewInjection/${musicboxType}Streaming`}
+    />)
   },
 
   render () {

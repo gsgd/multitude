@@ -1,7 +1,7 @@
 const persistence = require('../storage/mailboxStorage')
 const Minivents = require('minivents')
-const Mailbox = require('../../shared/Models/Mailbox/Mailbox')
-const { MAILBOX_INDEX_KEY } = require('../../shared/constants')
+const Mailbox = require('shared/Models/Mailbox/Mailbox')
+const { MAILBOX_INDEX_KEY } = require('shared/constants')
 
 class MailboxStore {
   /* ****************************************************************************/

@@ -1,37 +1,25 @@
-const {ipcRenderer} = require('electron')
+const ChangeEmitter = require('../ChangeEmitter/ChangeEmitter')
 
-class OvercastChangeEmitter {
+const { MUSICBOX_WINDOW_PLAYING, MUSICBOX_WINDOW_PAGE_CHANGED,
+  MUSICBOX_WINDOW_TRACK_CHANGED } = require('shared/constants')
+
+class OvercastChangeEmitter extends ChangeEmitter {
 
   /* **************************************************************************/
   // Lifecycle
   /* **************************************************************************/
 
-  /**
-  * @param gmailApi: the gmail api instance
-  */
-  constructor () {
-    this.__data__ = {
-      intervals: []
-    }
-    // console.log('constructor');
-    document.addEventListener('DOMContentLoaded', this.onLoaded.bind(this))
-    // console.log('constructor.done');
-  }
-
-  onLoaded(event) {
-    // console.log('onLoaded');
-
-    this.transmitEvent('musicbox-window-page-changed', window.location.pathname)
+  onLoaded (event) {
+    this.transmitEvent(MUSICBOX_WINDOW_PAGE_CHANGED, window.location.pathname)
 
     this.__data__.player = document.getElementById('audioplayer')
     if (this.player) {
       this.player.setAttribute('data-autoplay', 0)
       this.player.onloadstart = this.subscribeToEvents.bind(this)
     }
-    // console.log('onLoaded.done');
   }
 
-  subscribeToEvents(event, data) {
+  subscribeToEvents (event, data) {
     // console.log('subscribe');
     this.handleDisplayCurrentSong()
     this.player.onplay = this.handlePlaying.bind(this)
@@ -50,52 +38,39 @@ class OvercastChangeEmitter {
   // Event Handlers
   /* **************************************************************************/
 
-  handlePlaying(event, playing) {
+  handlePlaying (event, playing) {
     // console.log('handlePlaying', event, playing);
-    this.transmitEvent('musicbox-window-playing', !this.player.paused)
+    this.transmitEvent(MUSICBOX_WINDOW_PLAYING, !this.player.paused)
   }
 
-  handleDisplayCurrentSong() {
+  handleDisplayCurrentSong () {
     // console.log('handleDisplayCurrentSong', event, data);
     clearTimeout(this.__data__.currentDisplayDelay)
-    this.__data__.currentDisplayDelay = setTimeout(()  => {
-      this.displayCurrentSong.call(this)
+    this.__data__.currentDisplayDelay = setTimeout(() => {
+      this.displayCurrentSong()
     }, 1000)
   }
 
-  displayCurrentSong() {
-    const img = $('meta[name="og:image"]').attr('content');
+  displayCurrentSong () {
+    const img = window.$('meta[name="og:image"]').attr('content')
     // const title = window.$('meta[name="og:title"]').attr('content');
-    const podcast = $('div.titlestack .caption2').text();
-    const title   = $('div.titlestack .title').text();
+    const podcast = window.$('div.titlestack .caption2').text()
+    const title = window.$('div.titlestack .title').text()
 
     const trackDetail = {
       title: title,
       artist: '',
       album: podcast,
-      imageUrl: img,
+      imageUrl: img
     }
 
     // console.log('handleDisplayCurrentSong', trackDetail);
-    this.transmitEvent('musicbox-window-track-changed', trackDetail)
+    this.transmitEvent(MUSICBOX_WINDOW_TRACK_CHANGED, trackDetail)
   }
 
-  handlePageChanged(event, data) {
+  handlePageChanged (event, data) {
     // console.log('handlePageChanged', event, data);
-    this.transmitEvent('musicbox-window-page-changed', data.path)
-  }
-  /* **************************************************************************/
-  // Event Emitter
-  /* **************************************************************************/
-
-  /**
-  * Passing events up across the bridge
-  */
-  transmitEvent (type, data) {
-    ipcRenderer.sendToHost({
-      type: type,
-      data: data
-    })
+    this.transmitEvent(MUSICBOX_WINDOW_PAGE_CHANGED, data.path)
   }
 }
 

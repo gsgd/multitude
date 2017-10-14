@@ -8,6 +8,14 @@ const MusicboxSearch = require('./MusicboxSearch')
 const MusicboxTargetUrl = require('./MusicboxTargetUrl')
 const shallowCompare = require('react-addons-shallow-compare')
 
+const {
+  MUSICBOX_WINDOW_INIT, MUSICBOX_WINDOW_INIT_REQUEST,
+  MUSICBOX_WINDOW_PAUSE, MUSICBOX_WINDOW_PLAY_PAUSE,
+  MUSICBOX_WINDOW_NEXT_TRACK, MUSICBOX_WINDOW_PREVIOUS_TRACK,
+  MUSICBOX_WINDOW_TRACK_CHANGED, MUSICBOX_WINDOW_TRACKLIST_CHANGED,
+  MUSICBOX_WINDOW_PLAYING, MUSICBOX_WINDOW_PAGE_CHANGED
+} = require('shared/constants')
+
 const BROWSER_REF = 'browser'
 const SEARCH_REF = 'search'
 
@@ -42,19 +50,20 @@ module.exports = React.createClass({
     musicboxDispatch.on('refocus', this.handleRefocus)
     musicboxDispatch.on('load', this.handleReload)
     musicboxDispatch.on('reload', this.handleReload)
+    musicboxDispatch.on('fadeTo', this.handleFadeTo)
     musicboxDispatch.on('trackChanged', this.handleTrackChanged)
     musicboxDispatch.on('tracklistChanged', this.handleTracklistChanged)
     musicboxDispatch.on('playingChanged', this.handlePlayingChanged)
     musicboxDispatch.on('stopOthers', this.handleStopOthers)
     musicboxDispatch.on('pageChanged', this.handlePageChanged)
-    musicboxDispatch.on('musicboxInit', this.handleMusicboxInit)
+    musicboxDispatch.on('musicboxInitRequest', this.handleMusicboxInitRequest)
     musicboxDispatch.respond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
     ipcRenderer.on('musicbox-toggle-dev-tools', this.handleIPCToggleDevTools)
     ipcRenderer.on('musicbox-window-find-start', this.handleIPCSearchStart)
     ipcRenderer.on('musicbox-window-find-next', this.handleIPCSearchNext)
     ipcRenderer.on('musicbox-window-navigate-back', this.handleIPCNavigateBack)
     ipcRenderer.on('musicbox-window-navigate-forward', this.handleIPCNavigateForward)
-    ipcRenderer.on('musicbox-stop-all', this.handleIPCPlayPause)
+    ipcRenderer.on('musicbox-stop-all', this.handleIPCPause)
     ipcRenderer.on('musicbox-play-pause', this.handleIPCPlayPause)
     ipcRenderer.on('musicbox-next-track', this.handleIPCNextTrack)
     ipcRenderer.on('musicbox-previous-track', this.handleIPCPreviousTrack)
@@ -75,11 +84,15 @@ module.exports = React.createClass({
     musicboxDispatch.off('refocus', this.handleRefocus)
     musicboxDispatch.off('load', this.handleReload)
     musicboxDispatch.off('reload', this.handleReload)
+    musicboxDispatch.off('fadeTo', this.handleFadeTo)
     musicboxDispatch.off('trackChanged', this.handleTrackChanged)
     musicboxDispatch.off('tracklistChanged', this.handleTracklistChanged)
     musicboxDispatch.off('playingChanged', this.handlePlayingChanged)
     musicboxDispatch.off('pageChanged', this.handlePageChanged)
-    musicboxDispatch.off('musicboxInit', this.handleMusicboxInit)
+    musicboxDispatch.off('musicboxInitRequest', this.handleMusicboxInit)
+    musicboxDispatch.off('stopOthers', this.handleStopOthers)
+    musicboxDispatch.off('pageChanged', this.handlePageChanged)
+    musicboxDispatch.off('musicboxInitRequest', this.handleMusicboxInitRequest)
     musicboxDispatch.unrespond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
     ipcRenderer.removeListener('musicbox-toggle-dev-tools', this.handleIPCToggleDevTools)
     ipcRenderer.removeListener('musicbox-window-find-start', this.handleIPCSearchStart)
@@ -134,8 +147,7 @@ module.exports = React.createClass({
         return {
           musicbox: musicbox,
           isActive: isActive,
-          isSearching: musicboxState.isSearchingMusicbox(musicboxId, service),
-          // browserSrc: this.props.src || musicbox.pageUrl || musicbox.resolveServiceUrl(service)
+          isSearching: musicboxState.isSearchingMusicbox(musicboxId, service)
         }
       })
     } else {
@@ -161,10 +173,6 @@ module.exports = React.createClass({
         return undefined
       }
     })
-  },
-
-  customJS () {
-    this.refs[BROWSER_REF].getWebviewNode().executeJavaScript(this.props.controls.customJS)
   },
 
   /* **************************************************************************/
@@ -233,13 +241,20 @@ module.exports = React.createClass({
   },
 
   /**
-  * Handles the deezer config updating
-  * @param id: the id of the musicbox
-  * @param updates: the updates to merge in
+  * Handles request for init data
+  * @param musicboxId: int the id of the musicbox
   */
-  handleMusicboxInit (musicboxId) {
+  handleMusicboxInitRequest (musicboxId) {
     // console.log('handleMusicboxInit', this.state.musicbox, this.props.musicboxId, musicboxId);
-    this.refs[BROWSER_REF].send(this.props.controls.init, this.state.musicbox.init)
+    this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_INIT, this.state.musicbox.init)
+  },
+
+  /**
+  * Handles volume fading
+  * @param evt: the event that fired
+  */
+  handleFadeTo (evt) {
+    this.refs[BROWSER_REF].send('musicbox-fade-to', evt)
   },
 
   /**
@@ -248,7 +263,7 @@ module.exports = React.createClass({
   */
   handleTrackChanged ({ musicboxId, trackDetail }) {
     // console.log('mbT.handleTrackChanged', this.props.musicboxId, { musicboxId, trackDetail });
-    if (this.props.musicboxId != musicboxId) { return }
+    if (this.props.musicboxId !== musicboxId) { return }
     musicboxActions.trackChanged(this.props.musicboxId, { musicboxId, trackDetail })
   },
 
@@ -258,7 +273,7 @@ module.exports = React.createClass({
   */
   handleTracklistChanged ({ musicboxId, tracklist }) {
     // console.log('handleTrackChanged', { musicboxId, tracklist });
-    if (this.props.musicboxId != musicboxId) { return }
+    if (this.props.musicboxId !== musicboxId) { return }
     musicboxActions.tracklistChanged(this.props.musicboxId, { musicboxId, tracklist })
   },
 
@@ -268,7 +283,7 @@ module.exports = React.createClass({
   */
   handlePlayingChanged ({ musicboxId, playing }) {
     // console.log('mbS.handlePlayingChanged', this.props.musicboxId, { musicboxId, playing });
-    if (this.props.musicboxId != musicboxId) { return }
+    if (this.props.musicboxId !== musicboxId) { return }
 
     musicboxActions.playingChanged(this.props.musicboxId, { musicboxId, playing })
     // notify other musicboxes that we don't want them to play
@@ -283,14 +298,14 @@ module.exports = React.createClass({
   */
   handleStopOthers ({ musicboxId }) {
     // console.log('handleStopOthers', { musicboxId });
-    if (this.props.musicboxId != musicboxId) {
-      this.send(this.props.controls.pause)
+    if (this.props.musicboxId !== musicboxId) {
+      this.send(MUSICBOX_WINDOW_PAUSE)
     }
   },
 
   handlePageChanged ({ musicboxId, pageUrl }) {
     // console.log('MusicboxTab.handlePageChanged', pageUrl)
-    if (this.props.musicboxId != musicboxId) { return }
+    if (this.props.musicboxId !== musicboxId) { return }
     musicboxActions.pageChanged(this.props.musicboxId, { musicboxId, pageUrl })
   },
 
@@ -324,11 +339,11 @@ module.exports = React.createClass({
     const musicboxId = evt.path[0].id
     switch (evt.channel.type) {
       case 'open-settings': navigationDispatch.openSettings(); break
-      case 'musicbox-window-init': musicboxDispatch.musicboxInit(musicboxId, evt.channel.data); break
-      case 'musicbox-window-track-changed': musicboxDispatch.trackChanged(musicboxId, evt.channel.data); break
-      case 'musicbox-window-tracklist-changed': musicboxDispatch.tracklistChanged(musicboxId, evt.channel.data); break
-      case 'musicbox-window-playing': musicboxDispatch.playingChanged(musicboxId, evt.channel.data); break
-      case 'musicbox-window-page-changed': musicboxDispatch.pageChanged(musicboxId, evt.channel.data); break
+      case MUSICBOX_WINDOW_INIT_REQUEST: musicboxDispatch.musicboxInitRequest(musicboxId, evt.channel.data); break
+      case MUSICBOX_WINDOW_TRACK_CHANGED: musicboxDispatch.trackChanged(musicboxId, evt.channel.data); break
+      case MUSICBOX_WINDOW_TRACKLIST_CHANGED: musicboxDispatch.tracklistChanged(musicboxId, evt.channel.data); break
+      case MUSICBOX_WINDOW_PLAYING: musicboxDispatch.playingChanged(musicboxId, evt.channel.data); break
+      case MUSICBOX_WINDOW_PAGE_CHANGED: musicboxDispatch.pageChanged(musicboxId, evt.channel.data); break
       default: break
     }
   },
@@ -353,9 +368,6 @@ module.exports = React.createClass({
       })
     }
 
-    // custom for the tab
-    this.customJS()
-
     // Push the custom user content
     if (this.state.musicbox.hasCustomCSS || this.state.musicbox.hasCustomJS) {
       this.refs[BROWSER_REF].send('inject-custom-content', {
@@ -363,8 +375,6 @@ module.exports = React.createClass({
         js: this.state.musicbox.customJS
       })
     }
-
-
   },
 
   /**
@@ -504,26 +514,34 @@ module.exports = React.createClass({
   */
   handleIPCPlayPause () {
     if (this.state.isActive) {
-      // console.log(this.props.controls.playPause);
-      this.refs[BROWSER_REF].send(this.props.controls.playPause, { })
+      this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_PLAY_PAUSE, { })
+    }
+  },
+
+  /**
+  * Handle playPause event
+  */
+  handleIPCPause () {
+    if (this.state.isActive) {
+      this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_PAUSE, { })
     }
   },
 
   /**
   * Handle nextTrack event
   */
-  handleIPCNextTrack () { 
+  handleIPCNextTrack () {
     if (this.state.isActive) {
-      this.refs[BROWSER_REF].send(this.props.controls.nextTrack, { })
+      this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_NEXT_TRACK, { })
     }
   },
 
   /**
   * Handle previousTrack event
   */
-  handleIPCPreviousTrack () { 
+  handleIPCPreviousTrack () {
     if (this.state.isActive) {
-      this.refs[BROWSER_REF].send(this.props.controls.previousTrack, { })
+      this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_PREVIOUS_TRACK, { })
     }
   },
 

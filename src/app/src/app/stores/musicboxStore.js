@@ -1,7 +1,7 @@
 const persistence = require('../storage/musicboxStorage')
 const Minivents = require('minivents')
-const Musicbox = require('../../shared/Models/Musicbox/Musicbox')
-const { MUSICBOX_INDEX_KEY } = require('../../shared/constants')
+const Musicbox = require('shared/Models/Musicbox/Musicbox')
+const { MUSICBOX_INDEX_KEY } = require('shared/constants')
 
 class MusicboxStore {
   /* ****************************************************************************/

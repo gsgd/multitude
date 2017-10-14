@@ -1,6 +1,6 @@
 const {ipcMain, BrowserWindow} = require('electron')
 const googleapis = require('googleapis')
-const credentials = require('../shared/credentials')
+const credentials = require('shared/credentials')
 
 const APP_REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
 

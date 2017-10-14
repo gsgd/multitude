@@ -1,11 +1,8 @@
 const alt = require('../alt')
 const actions = require('./musicboxWizardActions')
 const { Musicbox, Deezer } = require('shared/Models/Musicbox')
-const { ipcRenderer } = window.nativeRequire('electron')
-const reporter = require('../../reporter')
 const musicboxActions = require('../musicbox/musicboxActions')
-const deezerActions = require('../deezer/deezerActions')
-// const deezerHTTP = require('../deezer/deezerHTTP')
+
 const pkg = window.appPackage()
 
 // console.log(actions);
@@ -102,12 +99,7 @@ class MusicboxWizardStore {
   * Creates the musicbox from the provisional js
   */
   createMusicbox () {
-    const provisionalType = this.provisonaMusicboxType()
     musicboxActions.create.defer(this.provisionalId, this.provisionalJS)
-    if (provisionalType === Musicbox.TYPE_DEEZER) {
-      deezerActions.syncMusicboxProfile.defer(this.provisionalId)
-      deezerActions.syncMusicboxUnreadCount.defer(this.provisionalId)
-    }
   }
 
   /* **************************************************************************/
@@ -130,7 +122,7 @@ class MusicboxWizardStore {
     this.addMusicboxOpen = false
     this.provisionalId = provisionalId
     this.provisionalJS = {
-      type: type,
+      type: type
     }
     this.createMusicbox()
     this.completeClear()

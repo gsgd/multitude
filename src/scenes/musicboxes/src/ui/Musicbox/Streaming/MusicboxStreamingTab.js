@@ -1,11 +1,9 @@
 const React = require('react')
 const MusicboxTab = require('../MusicboxTab')
-const Musicbox = require('shared/Models/Musicbox/Musicbox')
-const { composeStore, composeActions } = require('../../../stores/compose')
+// const Musicbox = require('shared/Models/Musicbox/Musicbox')
 const { musicboxStore } = require('../../../stores/musicbox')
 const { settingsStore } = require('../../../stores/settings')
-const { overcastActions } = require('../../../stores/overcast')
-const { musicboxDispatch } = require('../../../Dispatch')
+// const { musicboxDispatch } = require('../../../Dispatch')
 const URL = window.nativeRequire('url')
 const {
   remote: {shell}, ipcRenderer
@@ -18,9 +16,10 @@ module.exports = React.createClass({
   // Class
   /* **************************************************************************/
 
-  displayName: 'OvercastMusicboxStreamingTab',
+  displayName: 'MusicboxStreamingTab',
   propTypes: {
-    musicboxId: React.PropTypes.string.isRequired
+    musicboxId: React.PropTypes.string.isRequired,
+    preload: React.PropTypes.string.isRequired
   },
 
   /* **************************************************************************/
@@ -29,35 +28,18 @@ module.exports = React.createClass({
 
   componentDidMount () {
     // Stores
-    composeStore.listen(this.composeChanged)
     musicboxStore.listen(this.musicboxChanged)
     settingsStore.listen(this.settingsChanged)
-
-    // Handle dispatch events
-    musicboxDispatch.on('openMessage', this.handleOpenMessage)
-    musicboxDispatch.on('fadeTo', this.handleFadeTo)
-    musicboxDispatch.respond('get-overcast-unread-count:' + this.props.musicboxId, this.handleGetOvercastUnreadCount)
-
-    // Fire an artifical compose change in case the compose event is waiting
-    this.composeChanged(composeStore.getState())
   },
 
   componentWillUnmount () {
     // Stores
-    composeStore.unlisten(this.composeChanged)
     musicboxStore.unlisten(this.musicboxChanged)
     settingsStore.unlisten(this.settingsChanged)
-
-    // Handle dispatch events
-    musicboxDispatch.off('openMessage', this.handleOpenMessage)
-    musicboxDispatch.off('fadeTo', this.handleFadeTo)
-    musicboxDispatch.unrespond('get-overcast-unread-count:' + this.props.musicboxId, this.handleGetOvercastUnreadCount)
   },
 
   componentWillReceiveProps (nextProps) {
     if (this.props.musicboxId !== nextProps.musicboxId) {
-      musicboxDispatch.unrespond('get-overcast-unread-count:' + this.props.musicboxId, this.handleGetOvercastUnreadCount)
-      musicboxDispatch.respond('get-overcast-unread-count:' + nextProps.musicboxId, this.handleGetOvercastUnreadCount)
     }
   },
 
@@ -80,17 +62,6 @@ module.exports = React.createClass({
     })
   },
 
-  composeChanged (composeState) {
-    // Look to see if we should dispatch a compose event down to the UI
-    // We clear this directly here rather resetting state
-    if (composeState.composing) {
-      if (this.state.musicboxCount === 1 || composeState.targetMusicbox === this.props.musicboxId) {
-        this.refs[REF].send('compose-message', composeState.getMessageInfo())
-        composeActions.clearCompose.defer()
-      }
-    }
-  },
-
   settingsChanged (settingsState) {
     this.setState((prevState) => {
       const update = { os: settingsState.os }
@@ -108,42 +79,6 @@ module.exports = React.createClass({
   // Dispatcher Events
   /* **************************************************************************/
 
-  /**
-  * Handles opening a new message
-  * @param evt: the event that fired
-  */
-  handleOpenMessage (evt) {
-    if (evt.musicboxId === this.props.musicboxId) {
-      this.refs[REF].send('open-message', { messageId: evt.messageId, threadId: evt.threadId })
-    }
-  },
-
-  /**
-  * Handles opening a new message
-  * @param evt: the event that fired
-  */
-  handleFadeTo (evt) {
-    this.refs[REF].send('musicbox-fade-to', evt)
-  },
-
-  controls () {
-    return {
-      // customJS: "setTimeout(function() { window.dzPlayer.isAdvertisingAllowed = function() { return false; }; $('.ads').remove(); $('body').removeClass('has-ads-bottom').removeClass('has-ads-top')}, 1000)",
-      pause: 'overcast-pause',
-      playPause: 'overcast-play-pause',
-      nextTrack: 'overcast-next-track',
-      previousTrack: 'overcast-previous-track'
-    }
-  },
-
-  /**
-  * Fetches the gmail unread count
-  * @return promise
-  */
-  handleGetOvercastUnreadCount () {
-    return this.refs[REF].sendWithResponse('get-overcast-unread-count', {}, 1000)
-  },
-
   /* **************************************************************************/
   // Browser Events
   /* **************************************************************************/
@@ -154,8 +89,6 @@ module.exports = React.createClass({
   */
   dispatchFromBrowserIPCMessage (evt) {
     switch (evt.channel.type) {
-      case 'unread-count-changed': overcastActions.suggestSyncMusicboxUnreadCount(this.props.musicboxId); break
-      case 'js-new-window': this.handleBrowserJSNewWindow(evt); break
       default: break
     }
   },
@@ -209,12 +142,11 @@ module.exports = React.createClass({
     return (
       <MusicboxTab
         ref={REF}
-        preload='../platform/webviewInjection/overcastStreaming'
+        preload={this.props.preload}
         musicboxId={this.props.musicboxId}
-        service={Musicbox.SERVICES.DEFAULT}
+        service={this.props.service}
         newWindow={(evt) => { this.handleOpenNewWindow(evt.url) }}
         domReady={this.handleBrowserDomReady}
-        controls={this.controls()}
         ipcMessage={this.dispatchFromBrowserIPCMessage} />
     )
   }

@@ -190,9 +190,9 @@ class MusicboxDispatch {
     })
   }
 
-  musicboxInit (musicboxId) {
+  musicboxInitRequest (musicboxId) {
     // console.log('musicboxInit', musicboxId);
-    this.emit('musicboxInit', { musicboxId })
+    this.emit('musicboxInitRequest', { musicboxId })
   }
 
   trackChanged (musicboxId, trackDetail) {
