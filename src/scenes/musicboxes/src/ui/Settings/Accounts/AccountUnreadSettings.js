@@ -1,7 +1,7 @@
 const React = require('react')
 const {Paper, Toggle, SelectField, MenuItem} = require('material-ui')
 const Musicbox = require('shared/Models/Musicbox/Musicbox')
-const Deezer = require('shared/Models/Musicbox/Deezer')
+const Streaming = require('shared/Models/Musicbox/Streaming')
 const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
@@ -51,20 +51,20 @@ module.exports = React.createClass({
             fullWidth
             value={musicbox.google.unreadMode}
             onChange={(evt, index, unreadMode) => {
-              musicboxActions.updateDeezerConfig(musicbox.id, { unreadMode: unreadMode })
+              musicboxActions.updateStreamingConfig(musicbox.id, { unreadMode: unreadMode })
             }}
             floatingLabelText='Unread Mode'>
             <MenuItem
-              key={Deezer.UNREAD_MODES.GINBOX_DEFAULT}
-              value={Deezer.UNREAD_MODES.GINBOX_DEFAULT}
+              key={Streaming.UNREAD_MODES.GINBOX_DEFAULT}
+              value={Streaming.UNREAD_MODES.GINBOX_DEFAULT}
               primaryText='All Unread Unbundled Messages' />
             <MenuItem
-              key={Deezer.UNREAD_MODES.INBOX_UNREAD}
-              value={Deezer.UNREAD_MODES.INBOX_UNREAD}
+              key={Streaming.UNREAD_MODES.INBOX_UNREAD}
+              value={Streaming.UNREAD_MODES.INBOX_UNREAD}
               primaryText='All Unread Messages' />
             <MenuItem
-              key={Deezer.UNREAD_MODES.INBOX}
-              value={Deezer.UNREAD_MODES.INBOX}
+              key={Streaming.UNREAD_MODES.INBOX}
+              value={Streaming.UNREAD_MODES.INBOX}
               primaryText='All Messages in inbox' />
           </SelectField>
         ) : undefined}
@@ -73,24 +73,24 @@ module.exports = React.createClass({
             fullWidth
             value={musicbox.google.unreadMode}
             onChange={(evt, index, unreadMode) => {
-              musicboxActions.updateDeezerConfig(musicbox.id, { unreadMode: unreadMode })
+              musicboxActions.updateStreamingConfig(musicbox.id, { unreadMode: unreadMode })
             }}
             floatingLabelText='Unread Mode'>
             <MenuItem
-              key={Deezer.UNREAD_MODES.INBOX_UNREAD}
-              value={Deezer.UNREAD_MODES.INBOX_UNREAD}
+              key={Streaming.UNREAD_MODES.INBOX_UNREAD}
+              value={Streaming.UNREAD_MODES.INBOX_UNREAD}
               primaryText='All Unread Messages' />
             <MenuItem
-              key={Deezer.UNREAD_MODES.PRIMARY_INBOX_UNREAD}
-              value={Deezer.UNREAD_MODES.PRIMARY_INBOX_UNREAD}
+              key={Streaming.UNREAD_MODES.PRIMARY_INBOX_UNREAD}
+              value={Streaming.UNREAD_MODES.PRIMARY_INBOX_UNREAD}
               primaryText='Unread Messages in Primary Category' />
             <MenuItem
-              key={Deezer.UNREAD_MODES.INBOX_UNREAD_IMPORTANT}
-              value={Deezer.UNREAD_MODES.INBOX_UNREAD_IMPORTANT}
+              key={Streaming.UNREAD_MODES.INBOX_UNREAD_IMPORTANT}
+              value={Streaming.UNREAD_MODES.INBOX_UNREAD_IMPORTANT}
               primaryText='Unread Important Messages' />
             <MenuItem
-              key={Deezer.UNREAD_MODES.INBOX}
-              value={Deezer.UNREAD_MODES.INBOX}
+              key={Streaming.UNREAD_MODES.INBOX}
+              value={Streaming.UNREAD_MODES.INBOX}
               primaryText='All Messages in inbox' />
           </SelectField>
         ) : undefined}
@@ -102,7 +102,7 @@ module.exports = React.createClass({
               labelPosition='right'
               disabled={!musicbox.google.canChangeTakeLabelCountFromUI}
               onToggle={(evt, toggled) => {
-                musicboxActions.updateDeezerConfig(musicbox.id, { takeLabelCountFromUI: toggled })
+                musicboxActions.updateStreamingConfig(musicbox.id, { takeLabelCountFromUI: toggled })
               }} />
             <div style={{color: Colors.grey500}}>
               <small>This will take the unread count directly from the Gmail user interface. This can improve unread count accuracy</small>

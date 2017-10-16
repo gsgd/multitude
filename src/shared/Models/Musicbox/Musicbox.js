@@ -1,10 +1,9 @@
 const Model = require('../Model')
 const uuid = require('uuid')
-const Deezer = require('./Deezer')
-const MFP = require('./MFP')
-const Overcast = require('./Overcast')
+const Streaming = require('./Streaming')
 const SERVICES = require('./MusicboxServices')
 const TYPES = require('./MusicboxTypes')
+const URLS = require('./MusicboxURLs')
 
 class Musicbox extends Model {
 
@@ -31,30 +30,21 @@ class Musicbox extends Model {
 
     switch (this.type) {
       case Musicbox.TYPE_DEEZER:
-        this.__musicbox__ = new Deezer(
+        this.__musicbox__ = new Streaming(
           this.type,
-          this.__data__.deezerAuth,
-          this.__data__.deezerConf,
-          this.__data__.deezerLabelInfo_v2,
-          this.__data__.deezerUnreadMessageInfo_v2
+          this.__data__.deezerConf
         )
         break
       case Musicbox.TYPE_MFP:
-        this.__musicbox__ = new MFP(
+        this.__musicbox__ = new Streaming(
           this.type,
-          this.__data__.mfpAuth,
-          this.__data__.mfpConf,
-          this.__data__.mfpLabelInfo_v2,
-          this.__data__.mfpUnreadMessageInfo_v2
+          this.__data__.mfpConf
         )
         break
       case Musicbox.TYPE_OVERCAST:
-        this.__musicbox__ = new Overcast(
+        this.__musicbox__ = new Streaming(
           this.type,
-          this.__data__.overcastAuth,
-          this.__data__.overcastConf,
-          this.__data__.overcastLabelInfo_v2,
-          this.__data__.overcastUnreadMessageInfo_v2
+          this.__data__.overcastConf
         )
         break
     }
@@ -75,17 +65,13 @@ class Musicbox extends Model {
     switch (this.type) {
       case Musicbox.TYPE_DEEZER: return 'Deezer'
       case Musicbox.TYPE_OVERCAST: return 'Overcast'
+      case Musicbox.TYPE_MFP: return 'musicForProgramming'
       default: return undefined
     }
   }
   get url () {
     // console.log('Musicbox.get url', this.type, Musicbox.TYPE_DEEZER, `http://www.deezer.com`);
-    switch (this.type) {
-      case Musicbox.TYPE_DEEZER: return `http://www.deezer.com`
-      case Musicbox.TYPE_MFP: return `http://musicforprogramming.net`
-      case Musicbox.TYPE_OVERCAST: return `https://overcast.fm`
-      default: return undefined
-    }
+    if (typeof URLS[this.type] !== 'undefined') { return URLS[this.type] }
   }
 
   get pageUrl () {
@@ -100,11 +86,11 @@ class Musicbox extends Model {
   get supportedServices () {
     switch (this.type) {
       case Musicbox.TYPE_DEEZER:
-        return Array.from(Deezer.SUPPORTED_SERVICES)
+        return Array.from(Streaming.SUPPORTED_SERVICES)
       case Musicbox.TYPE_OVERCAST:
-        return Array.from(Overcast.SUPPORTED_SERVICES)
+        return Array.from(Streaming.SUPPORTED_SERVICES)
       case Musicbox.TYPE_MFP:
-        return Array.from(MFP.SUPPORTED_SERVICES)
+        return Array.from(Streaming.SUPPORTED_SERVICES)
       default:
         return []
     }
@@ -112,11 +98,11 @@ class Musicbox extends Model {
   get defaultServices () {
     switch (this.type) {
       case Musicbox.TYPE_DEEZER:
-        return Array.from(Deezer.DEFAULT_SERVICES)
+        return Array.from(Streaming.DEFAULT_SERVICES)
       case Musicbox.TYPE_OVERCAST:
-        return Array.from(Overcast.DEFAULT_SERVICES)
+        return Array.from(Streaming.DEFAULT_SERVICES)
       case Musicbox.TYPE_MFP:
-        return Array.from(MFP.DEFAULT_SERVICES)
+        return Array.from(Streaming.DEFAULT_SERVICES)
       default:
         return []
     }
@@ -137,9 +123,9 @@ class Musicbox extends Model {
     } else {
       switch (this.type) {
         case Musicbox.TYPE_DEEZER:
-          return Deezer.SERVICE_URLS[service]
+        case Musicbox.TYPE_MFP:
         case Musicbox.TYPE_OVERCAST:
-          return Overcast.SERVICE_URLS[service]
+          return Streaming.SERVICE_URLS[service]
         default:
           return undefined
       }
@@ -157,9 +143,9 @@ class Musicbox extends Model {
     } else {
       switch (this.type) {
         case Musicbox.TYPE_DEEZER:
-          return Deezer.SERVICE_NAMES[service]
+        case Musicbox.TYPE_MFP:
         case Musicbox.TYPE_OVERCAST:
-          return Overcast.SERVICE_NAMES[service]
+          return Streaming.SERVICE_NAMES[service]
         default:
           return undefined
       }
@@ -171,8 +157,6 @@ class Musicbox extends Model {
   /* **************************************************************************/
 
   get zoomFactor () { return this._value_('zoomFactor', 1.0) }
-  get showUnreadBadge () { return this._value_('showUnreadBadge', true) }
-  get unreadCountsTowardsAppUnread () { return this._value_('unreadCountsTowardsAppUnread', true) }
   get showNotifications () { return this._value_('showNotifications', true) }
   get isPlaying () { return this._value_('isPlaying', undefined) }
   get artificiallyPersistCookies () { return this._value_('artificiallyPersistCookies', false) }
@@ -205,9 +189,7 @@ class Musicbox extends Model {
       return 'rgb(0,0,0)'
     }
   }
-  get email () { return this.__data__.email }
   get name () { return this.__data__.name }
-  get unread () { return this.__musicbox__.unreadCount }
 
   /* **************************************************************************/
   // Properties : Auth types

@@ -217,49 +217,19 @@ class MusicboxActions {
   /* **************************************************************************/
 
   /**
-  * Updates the deezer config inside a musicbox
+  * Updates the streaming config inside a musicbox
   * @param id: the id of the musicbox
   * @param updates: the updates to apply
   */
-  updateDeezerConfig (id, updates) { return { id: id, updates: updates } }
-
-  /**
-  * Sets the deezer unread count info
-  * @param id: the id of the musicbox
-  * @param countInfo: the info provided by deezer
-  */
-  setDeezerLabelInfo (id, info) {
-    return this.update(id, Object.keys(info).reduce((acc, key) => {
-      acc['deezerLabelInfo_v2.' + key] = info[key]
-      return acc
-    }, {}))
-  }
-
-  /**
-  * Sets the latest unread thread list
-  * @param id: the id of the musicbox
-  * @param threadList: the list of threads as an array
-  * @param resultSizeEstimate: the size of the results
-  * @param fetchedThreads: the full threads that have been fetched sent as an object keyed by id
-  */
-  setDeezerLatestUnreadThreads (id, threadList, resultSizeEstimate, fetchedThreads) {
-    return { id: id, threadList: threadList, fetchedThreads: fetchedThreads, resultSizeEstimate: resultSizeEstimate }
-  }
+  updateStreamingConfig (id, updates) { return { id: id, updates: updates } }
 
   /**
   * Sets the last fired history id
   * @param id: the id of the musicbox
   * @param historyId: the last historyId
   */
-  setDeezerLastNotifiedInternalDate (id, internalDate) {
-    return this.update(id, 'deezerUnreadMessageInfo_v2.lastNotifiedInternalDate', parseInt(internalDate))
-  }
-
-  /**
-  * Sets the deezer auth info
-  */
-  setDeezerAuth (id, auth) {
-    return this.update(id, 'deezerAuth', auth)
+  setStreamingLastNotifiedInternalDate (id, internalDate) {
+    return this.update(id, 'streamingUnreadMessageInfo_v2.lastNotifiedInternalDate', parseInt(internalDate))
   }
 
   /* **************************************************************************/
@@ -284,15 +254,6 @@ class MusicboxActions {
   * Changes the active musicbox to the next in the list
   */
   changeActiveToNext () { return {} }
-
-  /**
-  * Sets if the deezer config has a grant error
-  * @param id: the musicbox id
-  * @param hasError: true if there is an error, false otherwise
-  */
-  setDeezerHasGrantError (id, hasError) {
-    return { id: id, hasError: hasError }
-  }
 
   /* **************************************************************************/
   // Search

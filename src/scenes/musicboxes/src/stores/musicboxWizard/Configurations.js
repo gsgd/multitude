@@ -1,4 +1,4 @@
-const { Musicbox, Deezer } = require('shared/Models/Musicbox')
+const { Musicbox } = require('shared/Models/Musicbox')
 const configurations = {}
 configurations[Musicbox.TYPE_DEEZER] = {
   DEFAULT_DEEZER: { // Unread Messages in primary category

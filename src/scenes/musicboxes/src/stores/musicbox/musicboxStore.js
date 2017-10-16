@@ -188,10 +188,8 @@ class MusicboxStore {
       handleStartSearchingMusicbox: actions.START_SEARCHING_MUSICBOX,
       handleStopSearchingMusicbox: actions.STOP_SEARCHING_MUSICBOX,
 
-      // Deezer
-      handleUpdateDeezerConfig: actions.UPDATE_DEEZER_CONFIG,
-      handleSetDeezerLatestUnreadThreads: actions.SET_DEEZER_LATEST_UNREAD_THREADS,
-      handleSetDeezerHasGrantError: actions.SET_DEEZER_HAS_GRANT_ERROR,
+      // Streaming
+      handleUpdateDeezerConfig: actions.UPDATE_STREAMING_CONFIG,
 
       // Active & Ordering
       handleChangeActive: actions.CHANGE_ACTIVE,
@@ -446,9 +444,9 @@ class MusicboxStore {
   */
   handleTrackChanged ({id, musicboxId, trackDetail}) {
     // console.log('mbS.handleTrackChanged', id, musicboxId, trackDetail);
-    if (id != musicboxId) { return }
+    if (id !== musicboxId) { return }
     const data = this.musicboxes.get(id).cloneData()
-    if (JSON.stringify(data.currentTrack) == JSON.stringify(trackDetail)) { return }
+    if (JSON.stringify(data.currentTrack) === JSON.stringify(trackDetail)) { return }
 
     data.currentTrack = trackDetail
     this.saveMusicbox(id, data)
@@ -458,11 +456,8 @@ class MusicboxStore {
       // // console.log('musicboxStore.handleTrackChanged.imageUtil', imageUtil);
       imageUtil.b64.then((b64image) => {
         // // console.log('handleTrackChanged.b64image', b64image);
-        actions.setCustomAvatar(id, b64image);
+        actions.setCustomAvatar(id, b64image)
       })
-    }
-    else {
-      // console.log('musicboxStore.imageUrl.missing');
     }
   }
 
@@ -473,7 +468,7 @@ class MusicboxStore {
   */
   handleTracklistChanged ({id, musicboxId, tracklist}) {
     // console.log('musicboxStore.handleTrackChanged', id, musicboxId, trackDetail);
-    if (id != musicboxId) { return }
+    if (id !== musicboxId) { return }
     const data = this.musicboxes.get(id).cloneData()
 
     data.tracklist = tracklist
@@ -487,7 +482,7 @@ class MusicboxStore {
   */
   handlePlayingChanged ({id, musicboxId, playing}) {
     // console.log('musicboxStore.handlePlayingChanged', id, musicboxId, playing);
-    if (id != musicboxId) { return }
+    if (id !== musicboxId) { return }
     const data = this.musicboxes.get(id).cloneData()
     data.isPlaying = playing
     this.saveMusicbox(id, data)
@@ -499,7 +494,7 @@ class MusicboxStore {
   * @param updates: the updates to merge in
   */
   handlePageChanged ({id, musicboxId, pageUrl}) {
-    if (id != musicboxId) { return }
+    if (id !== musicboxId) { return }
     // console.log('musicboxStore.handlePageChanged', pageUrl);
     const data = this.musicboxes.get(id).cloneData()
     data.pageUrl = pageUrl

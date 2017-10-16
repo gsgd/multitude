@@ -1,4 +1,4 @@
 module.exports = {
-  Deezer: require('./Deezer'),
+  Streaming: require('./Streaming'),
   Musicbox: require('./Musicbox')
 }
