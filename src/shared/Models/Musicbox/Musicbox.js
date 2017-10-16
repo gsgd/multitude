@@ -1,6 +1,7 @@
 const Model = require('../Model')
 const uuid = require('uuid')
 const Deezer = require('./Deezer')
+const MFP = require('./MFP')
 const Overcast = require('./Overcast')
 const SERVICES = require('./MusicboxServices')
 const TYPES = require('./MusicboxTypes')
@@ -16,6 +17,7 @@ class Musicbox extends Model {
   static get SERVICES () { return Object.assign({}, SERVICES) }
 
   static get TYPE_DEEZER () { return TYPES.DEEZER }
+  static get TYPE_MFP () { return TYPES.MFP }
   static get TYPE_OVERCAST () { return TYPES.OVERCAST }
 
   /* **************************************************************************/
@@ -28,24 +30,33 @@ class Musicbox extends Model {
     this.__id__ = id
 
     switch (this.type) {
-    case Musicbox.TYPE_DEEZER:
-      this.__musicbox__ = new Deezer(
-        this.type,
-        this.__data__.deezerAuth,
-        this.__data__.deezerConf,
-        this.__data__.deezerLabelInfo_v2,
-        this.__data__.deezerUnreadMessageInfo_v2
-      )
-      break
-    case Musicbox.TYPE_OVERCAST:
-      this.__musicbox__ = new Overcast(
-        this.type,
-        this.__data__.overcastAuth,
-        this.__data__.overcastConf,
-        this.__data__.overcastLabelInfo_v2,
-        this.__data__.overcastUnreadMessageInfo_v2
-      )
-      break
+      case Musicbox.TYPE_DEEZER:
+        this.__musicbox__ = new Deezer(
+          this.type,
+          this.__data__.deezerAuth,
+          this.__data__.deezerConf,
+          this.__data__.deezerLabelInfo_v2,
+          this.__data__.deezerUnreadMessageInfo_v2
+        )
+        break
+      case Musicbox.TYPE_MFP:
+        this.__musicbox__ = new MFP(
+          this.type,
+          this.__data__.mfpAuth,
+          this.__data__.mfpConf,
+          this.__data__.mfpLabelInfo_v2,
+          this.__data__.mfpUnreadMessageInfo_v2
+        )
+        break
+      case Musicbox.TYPE_OVERCAST:
+        this.__musicbox__ = new Overcast(
+          this.type,
+          this.__data__.overcastAuth,
+          this.__data__.overcastConf,
+          this.__data__.overcastLabelInfo_v2,
+          this.__data__.overcastUnreadMessageInfo_v2
+        )
+        break
     }
   }
 
@@ -71,6 +82,7 @@ class Musicbox extends Model {
     // console.log('Musicbox.get url', this.type, Musicbox.TYPE_DEEZER, `http://www.deezer.com`);
     switch (this.type) {
       case Musicbox.TYPE_DEEZER: return `http://www.deezer.com`
+      case Musicbox.TYPE_MFP: return `http://musicforprogramming.net`
       case Musicbox.TYPE_OVERCAST: return `https://overcast.fm`
       default: return undefined
     }
@@ -91,6 +103,8 @@ class Musicbox extends Model {
         return Array.from(Deezer.SUPPORTED_SERVICES)
       case Musicbox.TYPE_OVERCAST:
         return Array.from(Overcast.SUPPORTED_SERVICES)
+      case Musicbox.TYPE_MFP:
+        return Array.from(MFP.SUPPORTED_SERVICES)
       default:
         return []
     }
@@ -101,6 +115,8 @@ class Musicbox extends Model {
         return Array.from(Deezer.DEFAULT_SERVICES)
       case Musicbox.TYPE_OVERCAST:
         return Array.from(Overcast.DEFAULT_SERVICES)
+      case Musicbox.TYPE_MFP:
+        return Array.from(MFP.DEFAULT_SERVICES)
       default:
         return []
     }
@@ -162,9 +178,9 @@ class Musicbox extends Model {
   get artificiallyPersistCookies () { return this._value_('artificiallyPersistCookies', false) }
   get init () {
     let data = this._value_('tracklist', {
-      track: {"data":[]},
-      index: 0,
-    });
+      track: {'data': []},
+      index: 0
+    })
     data.type = 'player_default_playlist'
     data.auto_play = this.isPlaying
     data.show_lyrics = false

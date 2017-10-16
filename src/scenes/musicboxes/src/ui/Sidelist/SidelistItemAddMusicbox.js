@@ -29,10 +29,10 @@ module.exports = React.createClass({
           iconClassName='material-icons'
           onClick={() => musicboxWizardActions.openAddMusicbox()}
           iconStyle={{ color: Colors.blueGrey400 }}>
-          subscriptions
+          add_circle
         </IconButton>
         <ReactTooltip
-          data-for='ReactComponent-Sidelist-Item-Add-Musicbox'
+          id='ReactComponent-Sidelist-Item-Add-Musicbox'
           place='right'
           type='dark'
           effect='solid' />

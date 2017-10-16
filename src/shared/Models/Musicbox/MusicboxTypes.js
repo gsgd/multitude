@@ -1,4 +1,5 @@
 module.exports = Object.freeze({
   DEEZER: 'deezer',
-  OVERCAST: 'overcast',
+  MFP: 'mfp',
+  OVERCAST: 'overcast'
 })

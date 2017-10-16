@@ -143,6 +143,7 @@ module.exports = {
     borderWidth: 4,
     borderStyle: 'solid',
     cursor: 'pointer',
+    background: '#000'
   },
   musicboxBadge: {
     backgroundColor: 'rgba(238, 54, 55, 0.95)',

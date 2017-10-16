@@ -1,7 +1,5 @@
 const React = require('react')
-const SidelistMailboxes = require('./SidelistMailboxes')
 const SidelistMusicboxes = require('./SidelistMusicboxes')
-const SidelistItemAddMailbox = require('./SidelistItemAddMailbox')
 const SidelistItemAddMusicbox = require('./SidelistItemAddMusicbox')
 const SidelistItemSettings = require('./SidelistItemSettings')
 const SidelistItemWizard = require('./SidelistItemWizard')
