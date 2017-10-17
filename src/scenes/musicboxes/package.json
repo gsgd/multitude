@@ -12,7 +12,7 @@
     "compare-version": "0.1.2",
     "fbjs": "0.8.9",
     "https-proxy-agent": "1.0.0",
-    "material-ui": "0.17.0",
+    "material-ui": "^0.17.0",
     "minivents": "2.0.2",
     "qs": "6.3.1",
     "querystring": "0.2.0",
@@ -23,9 +23,9 @@
     "react-tap-event-plugin": "2.0.1",
     "react-timer-mixin": "0.13.3",
     "react-tooltip": "3.2.7",
+    "shared": "file:../../shared",
     "urijs": "1.18.7",
-    "uuid": "3.0.1",
-    "shared": "file:../../shared"
+    "uuid": "3.0.1"
   },
   "devDependencies": {
     "standard": "8.6.0"

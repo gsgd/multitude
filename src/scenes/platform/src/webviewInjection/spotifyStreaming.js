@@ -1,8 +1,8 @@
 const elconsole = require('./elconsole')
 try {
-  const DeezerStreaming = require('./Deezer/DeezerStreaming')
+  const SpotifyStreaming = require('./Spotify/SpotifyStreaming')
   /*eslint-disable */
-  const deezerStreaming = new DeezerStreaming()
+  const spotifyStreaming = new SpotifyStreaming()
   /*eslint-enable */
 } catch (ex) {
   elconsole.error('Error', ex)

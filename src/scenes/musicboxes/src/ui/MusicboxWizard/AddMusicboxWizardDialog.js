@@ -5,26 +5,13 @@ const shallowCompare = require('react-addons-shallow-compare')
 const { Musicbox } = require('shared/Models/Musicbox')
 
 const styles = {
-  musicboxRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  musicboxCell: {
-    textAlign: 'center',
-    marginTop: 20,
-    marginBottom: 20,
-    marginLeft: 40,
-    marginRight: 40
-  },
-  musicboxAvatar: {
-    cursor: 'pointer'
-  },
   gridList: {},
   gridTile: {
-    background: '#3D3F24'
+    background: '#3D3F24',
+    cursor: 'pointer'
   },
-  gridTitleBackground: 'rgba(0, 0, 0, 0.8)',
+  // gridTitleBackground: 'rgba(0, 0, 0, 0.8)',
+  gridTitleBackground: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)',
   gridImgContainer: {
     height: '100%',
     position: 'relative'
@@ -44,7 +31,7 @@ const styles = {
 
 const tilesData = [
   {
-    img: '../../images/deezer_icon_512.png',
+    img: '../../images/deezer_icon_512.svg',
     title: 'Deezer',
     type: Musicbox.TYPE_DEEZER
   },
@@ -57,6 +44,11 @@ const tilesData = [
     img: '../../images/overcast_icon_512.svg',
     title: 'Overcast',
     type: Musicbox.TYPE_OVERCAST
+  },
+  {
+    img: '../../images/spotify_icon_512.svg',
+    title: 'Spotify',
+    type: Musicbox.TYPE_SPOTIFY
   }
 ]
 
@@ -126,14 +118,14 @@ module.exports = React.createClass({
               key={tile.img}
               title={tile.title}
               style={styles.gridTile}
-              subtitle={<span>Add your <b>{tile.title}</b> account</span>}
+              subtitle={<span>Add a <b>{tile.title}</b> tab</span>}
               titleBackground={styles.gridTitleBackground}
+              onClick={() => musicboxWizardActions.addMusicbox(tile.type)}
               actionIcon={
                 <IconButton
                   iconClassName='material-icons'
                   iconStyle={styles.gridIcon}
-                  hoveredStyle={styles.gridIconHover}
-                  onClick={() => musicboxWizardActions.addMusicbox(tile.type)}>
+                  hoveredStyle={styles.gridIconHover}>
                   add_circle
                 </IconButton>
               }>

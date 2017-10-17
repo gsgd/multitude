@@ -54,6 +54,18 @@
   if (!settingStore.app.enableUseZoomForDSF) {
     app.commandLine.appendSwitch('enable-use-zoom-for-dsf', 'false')
   }
+
+  app.commandLine.appendSwitch('ppapi-flash-path', '/Users/george/Library/Application Support/Google/Chrome/PepperFlash/27.0.0.170/PepperFlashPlayer.plugin')
+  app.commandLine.appendSwitch('ppapi-flash-version', '27.0.0.170')
+
+// You have to pass the filename of `widevinecdmadapter` here, it is
+// * `widevinecdmadapter.plugin` on macOS,
+// * `libwidevinecdmadapter.so` on Linux,
+// * `widevinecdmadapter.dll` on Windows.
+  app.commandLine.appendSwitch('widevine-cdm-path', '/Users/george/Library/Application Support/CEF/User Data/WidevineCDM/1.4.8.866/_platform_specific/mac_x64//widevinecdmadapter.plugin')
+// The version of plugin can be got from `chrome://plugins` page in Chrome.
+  app.commandLine.appendSwitch('widevine-cdm-version', '1.4.8.866')
+
   const openHidden = (function () {
     if (settingStore.ui.openHidden) { return true }
     if (process.platform === 'darwin' && app.getLoginItemSettings().wasOpenedAsHidden) { return true }

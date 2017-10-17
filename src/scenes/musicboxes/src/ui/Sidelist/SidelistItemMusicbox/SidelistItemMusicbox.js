@@ -1,5 +1,5 @@
 const React = require('react')
-const { Badge, FontIcon } = require('material-ui')
+const {Badge} = require('material-ui')
 const { navigationDispatch } = require('../../../Dispatch')
 const { musicboxStore, musicboxActions } = require('../../../stores/musicbox')
 const shallowCompare = require('react-addons-shallow-compare')

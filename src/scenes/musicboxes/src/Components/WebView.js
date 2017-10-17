@@ -149,7 +149,7 @@ module.exports = React.createClass({
 
   blur () { this.getWebviewNode().blur() },
 
-  toggleDevTools () { 
+  toggleDevTools () {
     const webview = this.getWebviewNode()
     webview.isDevToolsOpened() ? webview.closeDevTools() : webview.openDevTools()
   },
@@ -233,6 +233,8 @@ module.exports = React.createClass({
         'style="position:absolute; top:0; bottom:0; right:0; left:0;"'
       ])
       .join(' ')
+
+    // console.log('WebView.render', {attrs})
 
     return (
       <div

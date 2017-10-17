@@ -2,7 +2,6 @@ const React = require('react')
 const { Popover, Menu, MenuItem, Divider, FontIcon } = require('material-ui')
 const { musicboxDispatch, navigationDispatch } = require('../../../Dispatch')
 const { musicboxActions } = require('../../../stores/musicbox')
-const { musicboxWizardActions } = require('../../../stores/musicboxWizard')
 const shallowCompare = require('react-addons-shallow-compare')
 
 module.exports = React.createClass({

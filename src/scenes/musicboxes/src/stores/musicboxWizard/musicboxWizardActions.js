@@ -1,5 +1,4 @@
 const alt = require('../alt')
-const { ipcRenderer } = window.nativeRequire('electron')
 const { Musicbox } = require('shared/Models/Musicbox')
 
 class MusicboxWizardActions {

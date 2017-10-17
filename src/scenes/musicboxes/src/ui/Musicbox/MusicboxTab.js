@@ -591,6 +591,7 @@ module.exports = React.createClass({
           partition={'persist:' + musicboxId}
           src={browserSrc}
           id={musicboxId}
+          plugins
 
           {...webviewEventProps}
           loadCommit={(evt) => {

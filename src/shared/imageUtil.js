@@ -5,13 +5,10 @@ class ImageUtil {
     this.__data__ = { url: url }
   }
 
-  get b64() {
+  get b64 () {
     return new Promise((resolve, reject) => {
       // Load the image
       if (this.__data__.b64) { return resolve(this.__data__.b64) }
-
-      // const reader = new window.FileReader()
-      // reader.addEventListener('load', () => {
 
       // Get the image size
       const image = new window.Image()
@@ -34,12 +31,10 @@ class ImageUtil {
         return resolve(this.__data__.b64)
       }
       image.src = this.url
-      // }, false)
-      // reader.readAsDataURL(this.url)
     })
   }
 
-  get url() {
+  get url () {
     return this.__data__.url
   }
 

@@ -18,6 +18,7 @@ class Musicbox extends Model {
   static get TYPE_DEEZER () { return TYPES.DEEZER }
   static get TYPE_MFP () { return TYPES.MFP }
   static get TYPE_OVERCAST () { return TYPES.OVERCAST }
+  static get TYPE_SPOTIFY () { return TYPES.SPOTIFY }
 
   /* **************************************************************************/
   // Lifecycle
@@ -47,6 +48,12 @@ class Musicbox extends Model {
           this.__data__.overcastConf
         )
         break
+      case Musicbox.TYPE_SPOTIFY:
+        this.__musicbox__ = new Streaming(
+          this.type,
+          this.__data__.spotifyConf
+        )
+        break
     }
   }
 
@@ -64,8 +71,9 @@ class Musicbox extends Model {
   get typeName () {
     switch (this.type) {
       case Musicbox.TYPE_DEEZER: return 'Deezer'
-      case Musicbox.TYPE_OVERCAST: return 'Overcast'
       case Musicbox.TYPE_MFP: return 'musicForProgramming'
+      case Musicbox.TYPE_OVERCAST: return 'Overcast'
+      case Musicbox.TYPE_SPOTIFY: return 'Spotify'
       default: return undefined
     }
   }
@@ -86,10 +94,9 @@ class Musicbox extends Model {
   get supportedServices () {
     switch (this.type) {
       case Musicbox.TYPE_DEEZER:
-        return Array.from(Streaming.SUPPORTED_SERVICES)
-      case Musicbox.TYPE_OVERCAST:
-        return Array.from(Streaming.SUPPORTED_SERVICES)
       case Musicbox.TYPE_MFP:
+      case Musicbox.TYPE_OVERCAST:
+      case Musicbox.TYPE_SPOTIFY:
         return Array.from(Streaming.SUPPORTED_SERVICES)
       default:
         return []
@@ -98,10 +105,9 @@ class Musicbox extends Model {
   get defaultServices () {
     switch (this.type) {
       case Musicbox.TYPE_DEEZER:
-        return Array.from(Streaming.DEFAULT_SERVICES)
-      case Musicbox.TYPE_OVERCAST:
-        return Array.from(Streaming.DEFAULT_SERVICES)
       case Musicbox.TYPE_MFP:
+      case Musicbox.TYPE_OVERCAST:
+      case Musicbox.TYPE_SPOTIFY:
         return Array.from(Streaming.DEFAULT_SERVICES)
       default:
         return []
@@ -125,6 +131,7 @@ class Musicbox extends Model {
         case Musicbox.TYPE_DEEZER:
         case Musicbox.TYPE_MFP:
         case Musicbox.TYPE_OVERCAST:
+        case Musicbox.TYPE_SPOTIFY:
           return Streaming.SERVICE_URLS[service]
         default:
           return undefined
@@ -145,6 +152,7 @@ class Musicbox extends Model {
         case Musicbox.TYPE_DEEZER:
         case Musicbox.TYPE_MFP:
         case Musicbox.TYPE_OVERCAST:
+        case Musicbox.TYPE_SPOTIFY:
           return Streaming.SERVICE_NAMES[service]
         default:
           return undefined

@@ -15,11 +15,12 @@ class ContentWindow extends WMailWindow {
   */
   defaultWindowPreferences (partition, extraPreferences = undefined) {
     return Object.assign(super.defaultWindowPreferences(extraPreferences), {
-      minWidth: 400,
-      minHeight: 400,
+      minWidth: 640,
+      minHeight: 480,
       webPreferences: {
         nodeIntegration: false,
-        partition: partition
+        partition: partition,
+        plugins: true
       }
     })
   }

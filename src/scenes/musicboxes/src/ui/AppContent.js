@@ -2,7 +2,6 @@ import './layout.less'
 import './appContent.less'
 
 const React = require('react')
-const MailboxWindows = require('./Mailbox/MailboxWindows')
 const MusicboxWindows = require('./Musicbox/MusicboxWindows')
 const MailboxComposePicker = require('./Mailbox/MailboxComposePicker')
 const Sidelist = require('./Sidelist')
@@ -12,7 +11,6 @@ const DictionaryInstallHandler = require('./DictionaryInstaller/DictionaryInstal
 const {navigationDispatch} = require('../Dispatch')
 const UpdateCheckDialog = require('./UpdateCheckDialog')
 const { settingsStore } = require('../stores/settings')
-const MailboxWizard = require('./MailboxWizard')
 const MusicboxWizard = require('./MusicboxWizard')
 const AppWizard = require('./AppWizard')
 const NewsDialog = require('./NewsDialog')

@@ -43,7 +43,8 @@ class MusicboxesWindow extends WMailWindow {
       backgroundColor: '#f2f2f2',
       selectedTextBackgroundColor: '#929292',
       webPreferences: {
-        nodeIntegration: true
+        nodeIntegration: true,
+        plugins: true
       }
     })
   }
@@ -106,28 +107,6 @@ class MusicboxesWindow extends WMailWindow {
   */
   musicboxZoomReset () {
     this.window.webContents.send('musicbox-zoom-reset', { })
-  }
-
-  /**
-  * Switches musicbox
-  * @param musicboxId: the id of the musicbox to switch to
-  */
-  switchMusicbox (musicboxId) {
-    this.window.webContents.send('switch-musicbox', { musicboxId: musicboxId })
-  }
-
-  /**
-  * Switches to the previous musicbox
-  */
-  switchPrevMusicbox () {
-    this.window.webContents.send('switch-musicbox', { prev: true })
-  }
-
-  /**
-  * Switches to the next musicbox
-  */
-  switchNextMusicbox () {
-    this.window.webContents.send('switch-musicbox', { next: true })
   }
 
   /**

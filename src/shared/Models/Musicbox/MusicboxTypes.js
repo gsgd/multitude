@@ -1,5 +1,6 @@
 module.exports = Object.freeze({
   DEEZER: 'deezer',
   MFP: 'mfp',
-  OVERCAST: 'overcast'
+  OVERCAST: 'overcast',
+  SPOTIFY: 'spotify'
 })

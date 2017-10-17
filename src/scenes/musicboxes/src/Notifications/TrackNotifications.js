@@ -24,17 +24,17 @@ class TrackNotifications {
    body: 'Test body is here are it is my body and it is about some stuff and stuff and stuff that just seems to go on and on'
  }) */
 
-    this.__utterance__ = new window.SpeechSynthesisUtterance('');
+    this.__utterance__ = new window.SpeechSynthesisUtterance('')
     this.__utterance__.lang = 'en'
-    this.__utterance__.onstart = function() {musicboxDispatch.fadeTo(0.3, 200)} 
-    this.__utterance__.onend = function() {musicboxDispatch.fadeTo(1)}
+    this.__utterance__.onstart = function () { musicboxDispatch.fadeTo(0.3, 200) }
+    this.__utterance__.onend = function () { musicboxDispatch.fadeTo(1) }
   }
 
-  get currentTrack() {
+  get currentTrack () {
     return this.__data__.currentTrack
   }
 
-  set currentTrack(newTrack) {
+  set currentTrack (newTrack) {
     this.__data__.currentTrack = JSON.stringify(newTrack)
   }
 
@@ -62,8 +62,8 @@ class TrackNotifications {
   musicboxesUpdated (store) {
     // console.log('musicboxesUpdated', store);
     clearTimeout(this.__data__.currentDisplayDelay)
-    this.__data__.currentDisplayDelay = setTimeout(()  => {
-      this.sendTrackNotification.call(this, store)
+    this.__data__.currentDisplayDelay = setTimeout(() => {
+      this.sendTrackNotification(store)
     }, 1000)
   }
 
@@ -82,49 +82,50 @@ class TrackNotifications {
 
     store.allMusicboxes().forEach((musicbox, k) => {
       // console.log('sendTrackNotification:store.allMusicboxes().forEach', firstRun, musicbox.currentTrack, musicbox.showNotifications);
-      if (!musicbox.showNotifications || typeof musicbox.currentTrack == 'undefined') { return }
+      if (!musicbox.showNotifications || typeof musicbox.currentTrack === 'undefined') { return }
 
       const { currentTrack, isPlaying } = musicbox
 
       // console.log('sendTrackNotification.this.currentTrack', this.currentTrack);
       // console.log('sendTrackNotification.stringify', JSON.stringify(currentTrack));
       // console.log('sendTrackNotification.other', currentTrack, isPlaying);
-      if(this.currentTrack == JSON.stringify(currentTrack) || !isPlaying) { return }
+      if (this.currentTrack === JSON.stringify(currentTrack) || !isPlaying) { return }
       this.currentTrack = currentTrack
 
       this.showNotification(musicbox, currentTrack)
+      let speech = [`Now Playing ${currentTrack.title}`]
       if (currentTrack.artist) {
-        this.speak(`Now Playing ${currentTrack.title}, by ${currentTrack.artist}, from ${currentTrack.album}`)
-      } else {
-        this.speak(`Now Playing ${currentTrack.title}, from ${currentTrack.album}`)
+        speech.push(`by ${currentTrack.artist}`)
+      } else if (currentTrack.album) {
+        speech.push(`from ${currentTrack.album}`)
       }
+      this.speak(speech.join(', '))
     })
   }
 
   /**
   * Shows a notification
   * @param musicbox: the musicbox to show it for
-  * @param message: the message notification to show
+  * @param track: the track notification to show
   * @return the notification
   */
   showNotification (musicbox, track) {
     const notification = new window.Notification(track.title, {
       body: [track.artist, track.album].join('\n'),
-      silent: true, //flux.settings.S.getState().os.notificationsSilent,
+      silent: true,
       icon: [track.imageUrl],
       image: [track.imageUrl],
       persitent: true,
       tag: 'track-notification',
       renotify: false,
-      data: { musicbox: musicbox.id },
+      data: { musicbox: musicbox.id }
     })
     notification.onclick = this.handleNotificationClicked
-    return notification
   }
 
-  speak(text) {
+  speak (text) {
     window.speechSynthesis.cancel()
-    this.__utterance__.text = text;
+    this.__utterance__.text = text
     // console.log(this.__utterance__)
     window.speechSynthesis.speak(this.__utterance__)
   }

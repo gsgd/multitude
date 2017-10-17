@@ -9,7 +9,7 @@ const {
   ipcRenderer, remote: {shell}
 } = window.nativeRequire('electron')
 const {
-  mailboxDispatch, musicboxDispatch, navigationDispatch
+  musicboxDispatch, navigationDispatch
 } = require('../Dispatch')
 const AppContent = require('./AppContent')
 const TimerMixin = require('react-timer-mixin')
@@ -43,12 +43,11 @@ module.exports = React.createClass({
     this.trackNotifications = new TrackNotifications()
     this.trackNotifications.start()
 
-    // flux.mailbox.S.listen(this.mailboxesChanged)
     flux.musicbox.S.listen(this.musicboxesChanged)
     flux.settings.S.listen(this.settingsChanged)
     flux.google.A.startPollingUpdates()
 
-    mailboxDispatch.on('blurred', this.mailboxBlurred)
+    musicboxDispatch.on('blurred', this.musicboxBlurred)
 
     ipcRenderer.on('download-completed', this.downloadCompleted)
   },
@@ -57,14 +56,13 @@ module.exports = React.createClass({
     this.unreadNotifications.stop()
     this.trackNotifications.stop()
 
-    // flux.mailbox.S.unlisten(this.mailboxesChanged)
     flux.musicbox.S.unlisten(this.musicboxesChanged)
     flux.settings.S.unlisten(this.settingsChanged)
     flux.google.A.stopPollingUpdates()
 
     ipcRenderer.removeListener('download-completed', this.downloadCompleted)
 
-    mailboxDispatch.off('blurred', this.mailboxBlurred)
+    musicboxDispatch.off('blurred', this.musicboxBlurred)
   },
 
   /* **************************************************************************/
@@ -73,7 +71,6 @@ module.exports = React.createClass({
 
   getInitialState () {
     const settingsStore = flux.settings.S.getState()
-    // const mailboxStore = flux.mailbox.S.getState()
     const musicboxStore = flux.musicbox.S.getState()
     return {
       activeMusicboxId: musicboxStore.activeMusicboxId(),
@@ -128,7 +125,7 @@ module.exports = React.createClass({
   * Handles a mailbox bluring by trying to refocus the mailbox
   * @param evt: the event that fired
   */
-  mailboxBlurred (evt) {
+  musicboxBlurred (evt) {
     // Requeue the event to run on the end of the render cycle
     this.setTimeout(() => {
       const active = document.activeElement
@@ -138,17 +135,17 @@ module.exports = React.createClass({
       } else if (active.tagName === 'BODY') {
         // Focused on body, just dip focus onto the webview
         this.clearInterval(this.forceFocusTO)
-        mailboxDispatch.refocus()
+        musicboxDispatch.refocus()
       } else {
         // focused on some element in the ui, poll until we move back to body
         this.forceFocusTO = this.setInterval(() => {
           if (document.activeElement.tagName === 'BODY') {
             this.clearInterval(this.forceFocusTO)
-            mailboxDispatch.refocus()
+            musicboxDispatch.refocus()
           }
-        }, constants.REFOCUS_MAILBOX_INTERVAL_MS)
+        }, constants.REFOCUS_MUSICBOX_INTERVAL_MS)
       }
-    }, constants.REFOCUS_MAILBOX_INTERVAL_MS)
+    }, constants.REFOCUS_MUSICBOX_INTERVAL_MS)
   },
 
   /* **************************************************************************/
