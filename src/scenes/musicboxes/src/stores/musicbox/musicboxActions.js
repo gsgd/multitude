@@ -327,6 +327,16 @@ class MusicboxActions {
   /* **************************************************************************/
 
   /**
+   * username
+   * @param id: the id of the musicbox
+   */
+  setUsername (id, evt) {
+    const {musicboxId, username} = evt
+    // console.log('mbA.setUsername', id, evt, musicboxId, username)
+    return {id, musicboxId, username}
+  }
+
+  /**
   * track changed
   * @param id: the id of the musicbox
   */

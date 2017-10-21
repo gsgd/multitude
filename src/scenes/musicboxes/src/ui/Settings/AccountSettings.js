@@ -127,7 +127,7 @@ module.exports = React.createClass({
                     <MenuItem
                       value={m.id}
                       key={m.id}
-                      primaryText={(m.name || m.id) + ' (' + m.typeName + ')'} />
+                      primaryText={(m.typeWithUsername)}/>
                   )
                 })
               }

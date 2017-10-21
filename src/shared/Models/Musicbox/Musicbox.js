@@ -61,6 +61,9 @@ class Musicbox extends Model {
   // Properties
   /* **************************************************************************/
 
+  get username () { return this._value_('username', false) }
+
+  get typeWithUsername () { return this.username ? `${this.typeName} (${this.username})` : this.typeName }
   get id () { return this.__id__ }
   get type () { return this._value_('type', Musicbox.TYPE_DEEZER) }
 

@@ -2,6 +2,7 @@ module.exports = Object.freeze({
   APP_ID: 'tombeverley.wmail',
 
   MUSICBOX_INDEX_KEY: '__mindex__',
+  MUSICBOX_ACTIVE_KEY: '__mactive__',
   MAILBOX_INDEX_KEY: '__index__',
   MAILBOX_SLEEP_WAIT: 1000 * 30, // 30 seconds
 
@@ -37,5 +38,6 @@ module.exports = Object.freeze({
   MUSICBOX_WINDOW_PLAYING: 'musicbox-window-playing',
   MUSICBOX_WINDOW_TRACK_CHANGED: 'musicbox-window-track-changed',
   MUSICBOX_WINDOW_TRACKLIST_CHANGED: 'musicbox-window-tracklist-changed',
-  MUSICBOX_WINDOW_PAGE_CHANGED: 'musicbox-window-page-changed'
+  MUSICBOX_WINDOW_PAGE_CHANGED: 'musicbox-window-page-changed',
+  MUSICBOX_WINDOW_USERNAME: 'musicbox-window-username'
 })

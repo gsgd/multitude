@@ -191,32 +191,37 @@ class MusicboxDispatch {
   }
 
   musicboxInitRequest (musicboxId) {
-    // console.log('musicboxInit', musicboxId);
+    // console.log('musicboxInit', musicboxId)
     this.emit('musicboxInitRequest', { musicboxId })
   }
 
+  musicboxUsername (musicboxId, username) {
+    // console.log('musicboxUsername', musicboxId, username)
+    this.emit('musicboxUsername', {musicboxId, username})
+  }
+
   trackChanged (musicboxId, trackDetail) {
-    // console.log('mbD.trackChanged', musicboxId, trackDetail);
+    // console.log('mbD.trackChanged', musicboxId, trackDetail)
     this.emit('trackChanged', { musicboxId, trackDetail })
   }
 
   tracklistChanged (musicboxId, tracklist) {
-    // console.log('trackChanged', trackDetail);
+    // console.log('trackChanged', trackDetail)
     this.emit('tracklistChanged', { musicboxId, tracklist })
   }
 
   playingChanged (musicboxId, playing) {
-    // console.log('playingChanged', musicboxId, playing);
+    // console.log('playingChanged', musicboxId, playing)
     this.emit('playingChanged', { musicboxId, playing })
   }
 
   stopOthers (musicboxId) {
-    // console.log('playingChanged', musicboxId, playing);
+    // console.log('playingChanged', musicboxId, playing)
     this.emit('stopOthers', { musicboxId })
   }
 
   pageChanged (musicboxId, pageUrl) {
-    // console.log('musicboxDispatch.pageChanged', pageUrl);
+    // console.log('musicboxDispatch.pageChanged', pageUrl)
     this.emit('pageChanged', { musicboxId, pageUrl })
   }
 }

@@ -1,7 +1,8 @@
 const ChangeEmitter = require('../ChangeEmitter/ChangeEmitter')
 
 const { MUSICBOX_WINDOW_PLAYING, MUSICBOX_WINDOW_PAGE_CHANGED,
-  MUSICBOX_WINDOW_TRACK_CHANGED } = require('shared/constants')
+  MUSICBOX_WINDOW_TRACK_CHANGED, MUSICBOX_WINDOW_USERNAME
+} = require('shared/constants')
 
 const config = {
   attributes: true,
@@ -27,10 +28,12 @@ class SpotifyChangeEmitter extends ChangeEmitter {
     const interval = setInterval(() => {
       // wait until it's all there before subscribing
       if (!document.querySelector('.now-playing') ||
+        !document.querySelector('.user-link') ||
         !document.querySelector('.track-info') ||
         !document.querySelector('.spoticon-play-16') ||
         !document.querySelector('.ads-container')) { return }
       document.querySelector('.ads-container').style.display = 'none'
+      this.transmitEvent(MUSICBOX_WINDOW_USERNAME, document.querySelector('.user-link').innerText)
       this.subscribeToEvents()
       clearInterval(interval)
     }, 500)

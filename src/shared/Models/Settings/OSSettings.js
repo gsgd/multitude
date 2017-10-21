@@ -5,6 +5,8 @@ class OSSettings extends Model {
   get defaultDownloadLocation () { return this._value_('defaultDownloadLocation', undefined) }
   get notificationsEnabled () { return this._value_('notificationsEnabled', true) }
   get notificationsSilent () { return this._value_('notificationsSilent', false) }
+
+  get notificationsVoice () { return this._value_('notificationsVoice', 0) }
   get openLinksInBackground () { return this._value_('openLinksInBackground', false) }
 }
 

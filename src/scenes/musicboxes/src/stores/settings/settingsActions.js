@@ -97,6 +97,13 @@ class SettingsActions {
   }
 
   /**
+   * @param silent: true to make notifications silent, false otherwise
+   */
+  setNotificationsVoice (voice) {
+    return this.update(SEGMENTS.OS, 'notificationsVoice', voice)
+  }
+
+  /**
   * @param background: true to open links in the background
   */
   setOpenLinksInBackground (background) {

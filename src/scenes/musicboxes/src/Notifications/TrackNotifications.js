@@ -3,6 +3,7 @@ const flux = {
   settings: require('../stores/settings')
 }
 const constants = require('shared/constants')
+const {getVoices, getIntro} = require('shared/voices')
 const {musicboxDispatch} = require('../Dispatch')
 const {ipcRenderer} = window.nativeRequire('electron')
 
@@ -25,7 +26,6 @@ class TrackNotifications {
  }) */
 
     this.__utterance__ = new window.SpeechSynthesisUtterance('')
-    this.__utterance__.lang = 'en'
     this.__utterance__.onstart = function () { musicboxDispatch.fadeTo(0.3, 200) }
     this.__utterance__.onend = function () { musicboxDispatch.fadeTo(1) }
   }
@@ -93,28 +93,30 @@ class TrackNotifications {
       this.currentTrack = currentTrack
 
       this.showNotification(musicbox, currentTrack)
-      let speech = [`Now Playing ${currentTrack.title}`]
-      if (currentTrack.artist) {
-        speech.push(`by ${currentTrack.artist}`)
-      } else if (currentTrack.album) {
-        speech.push(`from ${currentTrack.album}`)
+      if (flux.settings.S.getState().os.notificationsSilent) { return }
+      if (!getVoices().length && window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = () => {
+          this.speakNotification(musicbox, currentTrack)
+          window.speechSynthesis.onvoiceschanged = undefined
+        }
+      } else {
+        this.speakNotification(musicbox, currentTrack)
       }
-      this.speak(speech.join(', '))
     })
   }
 
   /**
   * Shows a notification
   * @param musicbox: the musicbox to show it for
-  * @param track: the track notification to show
+   * @param currentTrack: the track notification to show
   * @return the notification
   */
-  showNotification (musicbox, track) {
-    const notification = new window.Notification(track.title, {
-      body: [track.artist, track.album].join('\n'),
+  showNotification (musicbox, currentTrack) {
+    const notification = new window.Notification(currentTrack.title, {
+      body: [currentTrack.artist, currentTrack.album].join('\n'),
       silent: true,
-      icon: [track.imageUrl],
-      image: [track.imageUrl],
+      icon: [currentTrack.imageUrl],
+      image: [currentTrack.imageUrl],
       persitent: true,
       tag: 'track-notification',
       renotify: false,
@@ -123,10 +125,26 @@ class TrackNotifications {
     notification.onclick = this.handleNotificationClicked
   }
 
+  /**
+   * Speaks a notification
+   * @param musicbox: the musicbox to show it for
+   * @param currentTrack: the track notification to show
+   */
+  speakNotification (musicbox, currentTrack) {
+    let speech = [`${getIntro()}: ${currentTrack.title}`]
+    if (currentTrack.artist) {
+      speech.push(`by ${currentTrack.artist}`)
+    } else if (currentTrack.album) {
+      speech.push(`from ${currentTrack.album}`)
+    }
+    this.speak(speech.join(', '))
+  }
+
   speak (text) {
     window.speechSynthesis.cancel()
     this.__utterance__.text = text
-    // console.log(this.__utterance__)
+    this.__utterance__.voice = getVoices()[flux.settings.S.getState().os.notificationsVoice]
+    // console.log('speak', this.__utterance__)
     window.speechSynthesis.speak(this.__utterance__)
   }
   /**

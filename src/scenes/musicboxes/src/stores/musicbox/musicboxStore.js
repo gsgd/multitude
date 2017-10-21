@@ -6,9 +6,12 @@ const persistence = {
   musicbox: require('./musicboxPersistence'),
   avatar: require('./avatarPersistence')
 }
-const { MUSICBOX_INDEX_KEY } = require('shared/constants')
+
+const {MUSICBOX_INDEX_KEY, MUSICBOX_ACTIVE_KEY} = require('shared/constants')
 const { BLANK_PNG } = require('shared/b64Assets')
 const { ipcRenderer } = window.nativeRequire('electron')
+
+// persistence.musicbox.setJSONItemSync(MUSICBOX_ACTIVE_KEY, {MUSICBOX_ACTIVE_KEY: null})
 
 const ImageUtil = require('shared/imageUtil')
 
@@ -23,7 +26,7 @@ class MusicboxStore {
     this.index = []
     this.musicboxes = new Map()
     this.avatars = new Map()
-    this.active = null
+    this.__active = null
     this.activeService = Musicbox.SERVICES.DEFAULT
     this.search = new Map()
 
@@ -174,6 +177,7 @@ class MusicboxStore {
       handleToggleServiceSleepable: actions.TOGGLE_SERVICE_SLEEPABLE,
 
       // Update player info
+      handleSetUsername: actions.SET_USERNAME,
       handleTrackChanged: actions.TRACK_CHANGED,
       handleTracklistChanged: actions.TRACKLIST_CHANGED,
       handlePlayingChanged: actions.PLAYING_CHANGED,
@@ -198,6 +202,19 @@ class MusicboxStore {
       handleMoveUp: actions.MOVE_UP,
       handleMoveDown: actions.MOVE_DOWN
     })
+  }
+
+  /* **************************************************************************/
+  // Getters and Setters
+  /* **************************************************************************/
+
+  get active () {
+    return this.__active
+  }
+
+  set active (value) {
+    persistence.musicbox.setJSONItem(MUSICBOX_ACTIVE_KEY, value)
+    this.__active = value
   }
 
   /* **************************************************************************/
@@ -227,16 +244,20 @@ class MusicboxStore {
     const allMusicboxes = persistence.musicbox.allJSONItemsSync()
     this.index = []
 
+    // console.log('mbS.handleLoad', allMusicboxes)
     // Musicboxes
     Object.keys(allMusicboxes).forEach((id) => {
       if (id === MUSICBOX_INDEX_KEY) {
         this.index = allMusicboxes[MUSICBOX_INDEX_KEY]
+      } else if (id === MUSICBOX_ACTIVE_KEY) {
+        this.__active = allMusicboxes[MUSICBOX_ACTIVE_KEY]
       } else {
         this.musicboxes.set(id, new Musicbox(id, allMusicboxes[id]))
         ipcRenderer.send('prepare-webview-session', { partition: 'persist:' + id })
       }
     })
-    this.active = this.index[0] || null
+
+    if (this.__active === null) { this.__active = this.index[0] || null }
 
     // Avatars
     Object.keys(allAvatars).forEach((id) => {
@@ -472,6 +493,21 @@ class MusicboxStore {
     const data = this.musicboxes.get(id).cloneData()
 
     data.tracklist = tracklist
+    this.saveMusicbox(id, data)
+  }
+
+  /**
+   * Handles the deezer config updating
+   * @param id: the id of the musicbox
+   * @param updates: the updates to merge in
+   */
+  handleSetUsername ({id, musicboxId, username}) {
+    // console.log('musicboxStore.handleSetUsername', id, musicboxId, username)
+    if (id !== musicboxId) { return }
+    const data = this.musicboxes.get(id).cloneData()
+
+    if (data.username === username) { return }
+    data.username = username
     this.saveMusicbox(id, data)
   }
 

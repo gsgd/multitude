@@ -1,7 +1,7 @@
 const persistence = require('../storage/musicboxStorage')
 const Minivents = require('minivents')
 const Musicbox = require('shared/Models/Musicbox/Musicbox')
-const { MUSICBOX_INDEX_KEY } = require('shared/constants')
+const {MUSICBOX_INDEX_KEY, MUSICBOX_ACTIVE_KEY} = require('shared/constants')
 
 class MusicboxStore {
   /* ****************************************************************************/
@@ -13,12 +13,15 @@ class MusicboxStore {
 
     // Build the current data
     this.index = []
+    this.__active = null
     this.musicboxes = new Map()
 
     const allRawItems = persistence.allJSONItems()
     Object.keys(allRawItems).forEach((id) => {
       if (id === MUSICBOX_INDEX_KEY) {
         this.index = allRawItems[id]
+      } else if (id === MUSICBOX_ACTIVE_KEY) {
+        this.__active = allRawItems[MUSICBOX_ACTIVE_KEY]
       } else {
         this.musicboxes.set(id, new Musicbox(id, allRawItems[id]))
       }

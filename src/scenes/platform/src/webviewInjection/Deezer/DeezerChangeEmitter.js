@@ -1,7 +1,8 @@
 const ChangeEmitter = require('../ChangeEmitter/ChangeEmitter')
 const { MUSICBOX_WINDOW_PLAYING, MUSICBOX_WINDOW_TRACK_CHANGED,
   MUSICBOX_WINDOW_TRACKLIST_CHANGED,
-  MUSICBOX_WINDOW_PAGE_CHANGED } = require('shared/constants')
+  MUSICBOX_WINDOW_PAGE_CHANGED, MUSICBOX_WINDOW_USERNAME
+} = require('shared/constants')
 
 class DeezerChangeEmitter extends ChangeEmitter {
 
@@ -20,6 +21,7 @@ class DeezerChangeEmitter extends ChangeEmitter {
 
   subscribeToEvents (event, data) {
     // console.log('subscribe');
+    this.transmitEvent(MUSICBOX_WINDOW_USERNAME, window.USER.BLOG_NAME)
     window.Events.subscribe(window.Events.player.playing, this.handlePlaying.bind(this))
     window.Events.subscribe(window.Events.player.displayCurrentSong, this.handleDisplayCurrentSong.bind(this))
     window.Events.subscribe(window.Events.player.displayCurrentSong, this.handleTracklistChanged.bind(this))

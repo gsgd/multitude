@@ -13,7 +13,7 @@ const {
   MUSICBOX_WINDOW_PAUSE, MUSICBOX_WINDOW_PLAY_PAUSE,
   MUSICBOX_WINDOW_NEXT_TRACK, MUSICBOX_WINDOW_PREVIOUS_TRACK,
   MUSICBOX_WINDOW_TRACK_CHANGED, MUSICBOX_WINDOW_TRACKLIST_CHANGED,
-  MUSICBOX_WINDOW_PLAYING, MUSICBOX_WINDOW_PAGE_CHANGED
+  MUSICBOX_WINDOW_PLAYING, MUSICBOX_WINDOW_PAGE_CHANGED, MUSICBOX_WINDOW_USERNAME
 } = require('shared/constants')
 
 const BROWSER_REF = 'browser'
@@ -57,6 +57,7 @@ module.exports = React.createClass({
     musicboxDispatch.on('stopOthers', this.handleStopOthers)
     musicboxDispatch.on('pageChanged', this.handlePageChanged)
     musicboxDispatch.on('musicboxInitRequest', this.handleMusicboxInitRequest)
+    musicboxDispatch.on('musicboxUsername', this.handleMusicboxUsername)
     musicboxDispatch.respond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
     ipcRenderer.on('musicbox-toggle-dev-tools', this.handleIPCToggleDevTools)
     ipcRenderer.on('musicbox-window-find-start', this.handleIPCSearchStart)
@@ -258,6 +259,16 @@ module.exports = React.createClass({
   },
 
   /**
+   * Handles track changing
+   * @param evt: the event that fired
+   */
+  handleMusicboxUsername ({musicboxId, username}) {
+    // console.log('mbT.handleMusicboxUsername', this.props.musicboxId, { musicboxId, username });
+    if (this.props.musicboxId !== musicboxId) { return }
+    musicboxActions.setUsername(this.props.musicboxId, {musicboxId, username})
+  },
+
+  /**
   * Handles track changing
   * @param evt: the event that fired
   */
@@ -344,6 +355,9 @@ module.exports = React.createClass({
       case MUSICBOX_WINDOW_TRACKLIST_CHANGED: musicboxDispatch.tracklistChanged(musicboxId, evt.channel.data); break
       case MUSICBOX_WINDOW_PLAYING: musicboxDispatch.playingChanged(musicboxId, evt.channel.data); break
       case MUSICBOX_WINDOW_PAGE_CHANGED: musicboxDispatch.pageChanged(musicboxId, evt.channel.data); break
+      case MUSICBOX_WINDOW_USERNAME:
+        musicboxDispatch.musicboxUsername(musicboxId, evt.channel.data)
+        break
       default: break
     }
   },
