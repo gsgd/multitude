@@ -1,5 +1,6 @@
 const SpotifyChangeEmitter = require('./SpotifyChangeEmitter')
 const StreamingService = require('../Service/StreamingService')
+const {clickMove} = require('shared/mouseEvents')
 
 class SpotifyStreaming extends StreamingService {
 
@@ -23,6 +24,11 @@ class SpotifyStreaming extends StreamingService {
 
   set volume (level) {
     this.__volume__ = level
+    const nub = document.querySelector('.volume-bar .progress-bar__slider')
+    const bounds = document.querySelector('.volume-bar .progress-bar__bg').getBoundingClientRect()
+    const x = Number(bounds.left + (bounds.width * level)).toFixed()
+    console.log('set volume', {nub, bounds, x})
+    clickMove(nub, x, bounds.top)
   }
 
   /* **************************************************************************/
