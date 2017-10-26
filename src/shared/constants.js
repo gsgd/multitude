@@ -31,6 +31,7 @@ module.exports = Object.freeze({
   MUSICBOX_WINDOW_PLAY: 'musicbox-window-play',
   MUSICBOX_WINDOW_PAUSE: 'musicbox-window-pause',
   MUSICBOX_WINDOW_PLAY_PAUSE: 'musicbox-window-play-pause',
+  MUSICBOX_WINDOW_FADE_TO: 'musicbox-window-fade-to',
   MUSICBOX_WINDOW_NEXT_TRACK: 'musicbox-window-next-track',
   MUSICBOX_WINDOW_PREVIOUS_TRACK: 'musicbox-window-previous-track',
   // receive from musicbox
@@ -39,5 +40,6 @@ module.exports = Object.freeze({
   MUSICBOX_WINDOW_TRACK_CHANGED: 'musicbox-window-track-changed',
   MUSICBOX_WINDOW_TRACKLIST_CHANGED: 'musicbox-window-tracklist-changed',
   MUSICBOX_WINDOW_PAGE_CHANGED: 'musicbox-window-page-changed',
-  MUSICBOX_WINDOW_USERNAME: 'musicbox-window-username'
+  MUSICBOX_WINDOW_USERNAME: 'musicbox-window-username',
+  MUSICBOX_WINDOW_TIME_UPDATED: 'musicbox-window-time-updated'
 })

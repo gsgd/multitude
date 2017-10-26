@@ -1,8 +1,9 @@
 const elconsole = require('./elconsole')
 try {
-  const MFPStreaming = require('./MFP/MFPStreaming')
+  const MediaStrategy = require('./MediaPlayer/MFPStreaming')
+  const StreamingService = require('./Service/StreamingService')
   /*eslint-disable */
-  const mfpStreaming = new MFPStreaming()
+  const streamingService = new StreamingService(new MediaStrategy())
   /*eslint-enable */
 } catch (ex) {
   elconsole.error('Error', ex)

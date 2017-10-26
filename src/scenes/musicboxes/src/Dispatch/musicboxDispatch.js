@@ -191,7 +191,7 @@ class MusicboxDispatch {
   }
 
   musicboxInitRequest (musicboxId) {
-    // console.log('musicboxInit', musicboxId)
+    // console.log('musicboxInitRequest', musicboxId)
     this.emit('musicboxInitRequest', { musicboxId })
   }
 
@@ -223,6 +223,11 @@ class MusicboxDispatch {
   pageChanged (musicboxId, pageUrl) {
     // console.log('musicboxDispatch.pageChanged', pageUrl)
     this.emit('pageChanged', { musicboxId, pageUrl })
+  }
+
+  timeUpdated (musicboxId, trackTime) {
+    // console.log('musicboxDispatch.timeUpdated', trackTime)
+    this.emit('timeUpdated', {musicboxId, trackTime})
   }
 }
 

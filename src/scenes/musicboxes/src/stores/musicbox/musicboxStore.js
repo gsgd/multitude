@@ -182,6 +182,7 @@ class MusicboxStore {
       handleTracklistChanged: actions.TRACKLIST_CHANGED,
       handlePlayingChanged: actions.PLAYING_CHANGED,
       handlePageChanged: actions.PAGE_CHANGED,
+      handleSetTrackTime: actions.SET_TRACK_TIME,
 
       // Active Update
       handleIncreaseActiveZoom: actions.INCREASE_ACTIVE_ZOOM,
@@ -508,6 +509,21 @@ class MusicboxStore {
 
     if (data.username === username) { return }
     data.username = username
+    this.saveMusicbox(id, data)
+  }
+
+  /**
+   * Handles the deezer config updating
+   * @param id: the id of the musicbox
+   * @param updates: the updates to merge in
+   */
+  handleSetTrackTime ({id, musicboxId, trackTime}) {
+    // console.log('musicboxStore.handleSetUsername', id, musicboxId, username)
+    if (id !== musicboxId) { return }
+    const data = this.musicboxes.get(id).cloneData()
+
+    if (data.trackTime === trackTime) { return }
+    data.trackTime = trackTime
     this.saveMusicbox(id, data)
   }
 

@@ -1,8 +1,9 @@
 const elconsole = require('./elconsole')
 try {
-  const SpotifyStreaming = require('./Spotify/SpotifyStreaming')
+  const MediaStrategy = require('./MediaPlayer/SpotifyStreaming')
+  const StreamingService = require('./Service/StreamingService')
   /*eslint-disable */
-  const spotifyStreaming = new SpotifyStreaming()
+  const streamingService = new StreamingService(new MediaStrategy())
   /*eslint-enable */
 } catch (ex) {
   elconsole.error('Error', ex)

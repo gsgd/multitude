@@ -368,6 +368,12 @@ class MusicboxActions {
     return { id, musicboxId, pageUrl }
   }
 
+  setTrackTime (id, evt) {
+    const {musicboxId, trackTime} = evt
+    // console.log('MusicboxActions.pageChanged', id, pageUrl)
+    return {id, musicboxId, trackTime}
+  }
+
 }
 
 const actions = alt.createActions(MusicboxActions)

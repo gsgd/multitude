@@ -63,6 +63,8 @@ class Musicbox extends Model {
 
   get username () { return this._value_('username', false) }
 
+  get trackTime () { return this._value_('trackTime', 0) }
+
   get typeWithUsername () { return this.username ? `${this.typeName} (${this.username})` : this.typeName }
   get id () { return this.__id__ }
   get type () { return this._value_('type', Musicbox.TYPE_DEEZER) }
@@ -176,9 +178,12 @@ class Musicbox extends Model {
       track: {'data': []},
       index: 0
     })
-    data.type = 'player_default_playlist'
+    if (this.type === Musicbox.TYPE_DEEZER) {
+      data.type = 'player_default_playlist'
+      data.show_lyrics = false
+    }
     data.auto_play = this.isPlaying
-    data.show_lyrics = false
+    data.track_position = this.trackTime
     return data
   }
 

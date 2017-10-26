@@ -1,8 +1,7 @@
-const Browser = require('../Browser/Browser')
-const WMail = require('../WMail/WMail')
+const ChangeEmitter = require('../ChangeEmitter/ChangeEmitter')
 const {ipcRenderer} = require('electron')
 const { MUSICBOX_WINDOW_INIT, MUSICBOX_WINDOW_PLAY,
-  MUSICBOX_WINDOW_PAUSE, MUSICBOX_WINDOW_PLAY_PAUSE,
+  MUSICBOX_WINDOW_PAUSE, MUSICBOX_WINDOW_PLAY_PAUSE, MUSICBOX_WINDOW_FADE_TO,
   MUSICBOX_WINDOW_NEXT_TRACK, MUSICBOX_WINDOW_PREVIOUS_TRACK } = require('shared/constants')
 
 class StreamingService {
@@ -11,22 +10,34 @@ class StreamingService {
   // Lifecycle
   /* **************************************************************************/
 
-  constructor () {
+  /**
+   * @param strategy: the media strategy to use
+   */
+  constructor (strategy) {
+    this.strategy = strategy
     this.__data__ = {
       intervals: []
     }
 
-    this.browser = new Browser()
-    this.wmail = new WMail()
+    this.changeEmitter = new ChangeEmitter(this.strategy)
 
     // Bind our listeners
-    ipcRenderer.on('musicbox-fade-to', this.handleFadeTo.bind(this))
-    ipcRenderer.on(MUSICBOX_WINDOW_INIT, this.handleInit.bind(this))
-    ipcRenderer.on(MUSICBOX_WINDOW_PLAY, this.handlePlay.bind(this))
-    ipcRenderer.on(MUSICBOX_WINDOW_PAUSE, this.handlePause.bind(this))
-    ipcRenderer.on(MUSICBOX_WINDOW_PLAY_PAUSE, this.handlePlayPause.bind(this))
-    ipcRenderer.on(MUSICBOX_WINDOW_NEXT_TRACK, this.handleNextTrack.bind(this))
-    ipcRenderer.on(MUSICBOX_WINDOW_PREVIOUS_TRACK, this.handlePreviousTrack.bind(this))
+    ipcRenderer.on(MUSICBOX_WINDOW_FADE_TO, this.handleFadeTo.bind(this))
+    // Bind our strategies if they are there
+    if (this.strategy.handleInit !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_INIT, this.strategy.handleInit.bind(this.strategy)) }
+    if (this.strategy.handlePlay !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PLAY, this.strategy.handlePlay.bind(this.strategy)) }
+    if (this.strategy.handlePause !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PAUSE, this.strategy.handlePause.bind(this.strategy)) }
+    if (this.strategy.handlePlayPause !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PLAY_PAUSE, this.strategy.handlePlayPause.bind(this.strategy)) }
+    if (this.strategy.handleNextTrack !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_NEXT_TRACK, this.strategy.handleNextTrack.bind(this.strategy)) }
+    if (this.strategy.handlePreviousTrack !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PREVIOUS_TRACK, this.strategy.handlePreviousTrack.bind(this.strategy)) }
+  }
+
+  get strategy () {
+    return this.__strategy__
+  }
+
+  set strategy (strategy) {
+    this.__strategy__ = strategy
   }
 
   fadeTo (value, time, step) {
@@ -39,19 +50,19 @@ class StreamingService {
 
     let count = 0
 
-    const initial = this.volume
+    const initial = this.strategy.volume
     const direction = value < initial ? -1 : 1
     const distance = value - initial * direction
     const each = distance / (time / step) * direction
 
     const interval = setInterval(() => {
-      let newValue = Number((Number(this.volume) + each).toPrecision(4))
+      let newValue = Number((Number(this.strategy.volume) + each).toPrecision(4))
       if (newValue > 1) newValue = 1
       if (newValue < 0) newValue = 0
       if (value < initial && newValue <= value) newValue = value
       if (value > initial && newValue >= value) newValue = value
 
-      this.volume = newValue
+      this.strategy.volume = newValue
       // bust out for matching values or overtime
       if (newValue === value || ++count * step > time) return clearInterval(interval)
     }, step)
@@ -62,9 +73,6 @@ class StreamingService {
     while (this.__data__.intervals.length) {
       clearInterval(this.__data__.intervals.shift())
     }
-  }
-
-  handleInit (evt, data) {
   }
 
   handleFadeTo (evt, data) {

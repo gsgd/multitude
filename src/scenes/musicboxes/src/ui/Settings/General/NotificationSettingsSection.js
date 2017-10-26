@@ -15,7 +15,7 @@ module.exports = React.createClass({
    * Handles the notification voice changing
    */
   handleNotificationVoiceChanged (evt, index, voice) {
-    console.log(evt, index, voice)
+    // console.log(evt, index, voice)
     settingsActions.setNotificationsVoice(voice)
   },
 

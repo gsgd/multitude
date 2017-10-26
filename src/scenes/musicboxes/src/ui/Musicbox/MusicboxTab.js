@@ -10,10 +10,11 @@ const shallowCompare = require('react-addons-shallow-compare')
 
 const {
   MUSICBOX_WINDOW_INIT, MUSICBOX_WINDOW_INIT_REQUEST,
-  MUSICBOX_WINDOW_PAUSE, MUSICBOX_WINDOW_PLAY_PAUSE,
+  MUSICBOX_WINDOW_PAUSE, MUSICBOX_WINDOW_PLAY_PAUSE, MUSICBOX_WINDOW_FADE_TO,
   MUSICBOX_WINDOW_NEXT_TRACK, MUSICBOX_WINDOW_PREVIOUS_TRACK,
   MUSICBOX_WINDOW_TRACK_CHANGED, MUSICBOX_WINDOW_TRACKLIST_CHANGED,
-  MUSICBOX_WINDOW_PLAYING, MUSICBOX_WINDOW_PAGE_CHANGED, MUSICBOX_WINDOW_USERNAME
+  MUSICBOX_WINDOW_PLAYING, MUSICBOX_WINDOW_PAGE_CHANGED, MUSICBOX_WINDOW_USERNAME,
+  MUSICBOX_WINDOW_TIME_UPDATED
 } = require('shared/constants')
 
 const BROWSER_REF = 'browser'
@@ -58,6 +59,7 @@ module.exports = React.createClass({
     musicboxDispatch.on('pageChanged', this.handlePageChanged)
     musicboxDispatch.on('musicboxInitRequest', this.handleMusicboxInitRequest)
     musicboxDispatch.on('musicboxUsername', this.handleMusicboxUsername)
+    musicboxDispatch.on('timeUpdated', this.handleTimeUpdated)
     musicboxDispatch.respond('fetch-process-memory-info', this.handleFetchProcessMemoryInfo)
     ipcRenderer.on('musicbox-toggle-dev-tools', this.handleIPCToggleDevTools)
     ipcRenderer.on('musicbox-window-find-start', this.handleIPCSearchStart)
@@ -245,8 +247,9 @@ module.exports = React.createClass({
   * Handles request for init data
   * @param musicboxId: int the id of the musicbox
   */
-  handleMusicboxInitRequest (musicboxId) {
-    // console.log('handleMusicboxInit', this.state.musicbox, this.props.musicboxId, musicboxId);
+  handleMusicboxInitRequest ({musicboxId}) {
+    // console.log('handleMusicboxInit', this.props.musicboxId, musicboxId);
+    if (this.props.musicboxId !== musicboxId) { return }
     this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_INIT, this.state.musicbox.init)
   },
 
@@ -255,7 +258,7 @@ module.exports = React.createClass({
   * @param evt: the event that fired
   */
   handleFadeTo (evt) {
-    this.refs[BROWSER_REF].send('musicbox-fade-to', evt)
+    this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_FADE_TO, evt)
   },
 
   /**
@@ -266,6 +269,16 @@ module.exports = React.createClass({
     // console.log('mbT.handleMusicboxUsername', this.props.musicboxId, { musicboxId, username });
     if (this.props.musicboxId !== musicboxId) { return }
     musicboxActions.setUsername(this.props.musicboxId, {musicboxId, username})
+  },
+
+  /**
+   * Handles track changing
+   * @param evt: the event that fired
+   */
+  handleTimeUpdated ({musicboxId, trackTime}) {
+    // console.log('mbT.handleMusicboxUsername', this.props.musicboxId, { musicboxId, username });
+    if (this.props.musicboxId !== musicboxId) { return }
+    musicboxActions.setTrackTime(this.props.musicboxId, {musicboxId, trackTime})
   },
 
   /**
@@ -346,10 +359,11 @@ module.exports = React.createClass({
   * @param evt: the event that fired
   */
   dispatchFromBrowserIPCMessage (evt) {
-    // console.log('dispatchFromBrowserIPCMessage', evt);
+    // console.log('dispatchFromBrowserIPCMessage', evt.path[0].id, evt.channel.data, evt)
     const musicboxId = evt.path[0].id
     switch (evt.channel.type) {
       case 'open-settings': navigationDispatch.openSettings(); break
+      // case MUSICBOX_WINDOW_INIT_REQUEST: this.handleMusicboxInitRequest(evt.channel.data); break
       case MUSICBOX_WINDOW_INIT_REQUEST: musicboxDispatch.musicboxInitRequest(musicboxId, evt.channel.data); break
       case MUSICBOX_WINDOW_TRACK_CHANGED: musicboxDispatch.trackChanged(musicboxId, evt.channel.data); break
       case MUSICBOX_WINDOW_TRACKLIST_CHANGED: musicboxDispatch.tracklistChanged(musicboxId, evt.channel.data); break
@@ -357,6 +371,9 @@ module.exports = React.createClass({
       case MUSICBOX_WINDOW_PAGE_CHANGED: musicboxDispatch.pageChanged(musicboxId, evt.channel.data); break
       case MUSICBOX_WINDOW_USERNAME:
         musicboxDispatch.musicboxUsername(musicboxId, evt.channel.data)
+        break
+      case MUSICBOX_WINDOW_TIME_UPDATED:
+        musicboxDispatch.timeUpdated(musicboxId, evt.channel.data)
         break
       default: break
     }

@@ -1,8 +1,9 @@
 const elconsole = require('./elconsole')
 try {
-  const DeezerStreaming = require('./Deezer/DeezerStreaming')
+  const MediaStrategy = require('./MediaPlayer/DeezerStreaming')
+  const StreamingService = require('./Service/StreamingService')
   /*eslint-disable */
-  const deezerStreaming = new DeezerStreaming()
+  const streamingService = new StreamingService(new MediaStrategy())
   /*eslint-enable */
 } catch (ex) {
   elconsole.error('Error', ex)
