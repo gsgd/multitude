@@ -18,7 +18,7 @@ module.exports = React.createClass({
   /* **************************************************************************/
 
   render () {
-    const { style, ...passProps } = this.props
+    const {style, iconColor, ...passProps} = this.props
     return (
       <div
         {...passProps}
@@ -28,7 +28,7 @@ module.exports = React.createClass({
         <IconButton
           iconClassName='material-icons'
           onClick={() => musicboxWizardActions.openAddMusicbox()}
-          iconStyle={{ color: Colors.blueGrey400 }}>
+          iconStyle={{color: iconColor || Colors.blueGrey400}}>
           add_circle
         </IconButton>
         <ReactTooltip

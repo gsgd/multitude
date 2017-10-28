@@ -36,14 +36,19 @@ class AppPrimaryMenu {
           { type: 'separator' },
           process.platform === 'darwin' ? { label: 'Services', role: 'services', submenu: [] } : undefined,
           process.platform === 'darwin' ? { type: 'separator' } : undefined,
-          { label: 'Show Window', accelerator: 'CmdOrCtrl+N', click: this._selectors.showWindow },
-          { label: 'Hide Window', accelerator: 'CmdOrCtrl+W', click: this._selectors.closeWindow },
           { label: 'Hide', accelerator: 'CmdOrCtrl+H', role: 'hide' },
           { label: 'Hide Others', accelerator: process.platform === 'darwin' ? 'Command+Alt+H' : 'Ctrl+Shift+H', role: 'hideothers' },
           { label: 'Show All', role: 'unhide' },
           { type: 'separator' },
           { label: 'Quit', accelerator: 'CmdOrCtrl+Q', click: this._selectors.fullQuit }
         ].filter((item) => item !== undefined)
+      },
+      {
+        label: 'File',
+        submenu: [
+          {label: 'Show Window', accelerator: 'CmdOrCtrl+N', click: this._selectors.showWindow},
+          {label: 'Close Window', accelerator: 'CmdOrCtrl+W', click: this._selectors.closeWindow}
+        ]
       },
       {
         label: 'Edit',
@@ -78,25 +83,38 @@ class AppPrimaryMenu {
           { type: 'separator' },
           { label: 'Reload', accelerator: 'CmdOrCtrl+R', click: this._selectors.reload },
           { label: 'Toggle Dev Tools', accelerator: process.platform === 'darwin' ? 'Cmd+Alt+J' : 'Ctrl+Shift+J', click: this._selectors.devTools },
-          { label: 'Toggle Box Dev Tools', accelerator: process.platform === 'darwin' ? 'Cmd+Alt+I' : 'Ctrl+Shift+I', click: this._selectors.embeddedDevTools },
+          {
+            label: 'Toggle Box Dev Tools',
+            accelerator: process.platform === 'darwin' ? 'Cmd+Alt+I' : 'Ctrl+Shift+I',
+            click: this._selectors.embeddedDevTools
+          }
         ].filter((item) => item !== undefined)
       },
       {
         label: 'Window',
         role: 'window',
         submenu: [
-          { label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize' },
-          { label: 'Cycle Windows', accelerator: 'CmdOrCtrl+`', click: this._selectors.cycleWindows }
+          {label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize'}
         ]
+          .concat(process.platform === 'darwin' ? [] : [
+          { label: 'Cycle Windows', accelerator: 'CmdOrCtrl+`', click: this._selectors.cycleWindows }
+          ])
         .concat(musicboxes.length <= 1 ? [] : [
           { type: 'separator' },
           { label: 'Previous Musicbox', accelerator: 'CmdOrCtrl+<', click: this._selectors.prevMusicbox },
           { label: 'Next Musicbox', accelerator: 'CmdOrCtrl+>', click: this._selectors.nextMusicbox },
-          { type: 'separator' }
+          {type: 'separator'},
+          {
+            label: 'Musicboxes',
+            submenu: musicboxes.length <= 1 ? [] : musicboxes.map((musicbox, index) => {
+              return {
+                label: musicbox.typeWithUsername,
+                accelerator: 'CmdOrCtrl+' + (index + 1),
+                click: () => { this._selectors.changeMusicbox(musicbox.id) }
+              }
+            })
+          }
         ])
-        .concat(musicboxes.length <= 1 ? [] : musicboxes.map((musicbox, index) => {
-          return { label: musicbox.email || 'Untitled', accelerator: 'CmdOrCtrl+' + (index + 1), click: () => { this._selectors.changeMusicbox(musicbox.id) } }
-        }))
       },
       {
         label: 'Help',
@@ -139,18 +157,6 @@ class AppPrimaryMenu {
         this.updateApplicationMenu(nextMusicboxes)
       }
     }
-  }
-
-  /* ****************************************************************************/
-  // Click handlers
-  /* ****************************************************************************/
-
-  changeToPrevMusicbox () {
-
-  }
-
-  changeToNextMusicbox () {
-
   }
 }
 

@@ -1,5 +1,4 @@
 const WMailWindow = require('./WMailWindow')
-const AuthGoogle = require('../AuthGoogle')
 const path = require('path')
 const MusicboxesSessionManager = require('./MusicboxesSessionManager')
 const settingStore = require('../stores/settingStore')
@@ -24,12 +23,10 @@ class MusicboxesWindow extends WMailWindow {
       screenLocationNS: 'musicbox_window_state'
     })
     this.heartbeatInterval = null
-    this.authGoogle = new AuthGoogle()
     this.sessionManager = new MusicboxesSessionManager(this)
   }
 
   /**
-  * @param url: the url to load
   * @param hidden=false: true to start the window hidden
   */
   start (hidden = false) {
@@ -39,7 +36,7 @@ class MusicboxesWindow extends WMailWindow {
       minHeight: 300,
       fullscreenable: true,
       titleBarStyle: settingStore.ui.showTitlebar ? 'default' : 'hidden',
-      title: 'WMail',
+      title: 'Musicboxes',
       backgroundColor: '#f2f2f2',
       selectedTextBackgroundColor: '#929292',
       webPreferences: {

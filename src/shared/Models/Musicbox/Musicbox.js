@@ -4,6 +4,7 @@ const Streaming = require('./Streaming')
 const SERVICES = require('./MusicboxServices')
 const TYPES = require('./MusicboxTypes')
 const URLS = require('./MusicboxURLs')
+const COLORS = require('./MusicboxColors')
 
 class Musicbox extends Model {
 
@@ -15,10 +16,13 @@ class Musicbox extends Model {
   static get TYPES () { return Object.assign({}, TYPES) }
   static get SERVICES () { return Object.assign({}, SERVICES) }
 
-  static get TYPE_DEEZER () { return TYPES.DEEZER }
-  static get TYPE_MFP () { return TYPES.MFP }
-  static get TYPE_OVERCAST () { return TYPES.OVERCAST }
-  static get TYPE_SPOTIFY () { return TYPES.SPOTIFY }
+  static get TYPE_DEEZER () { return Musicbox.TYPES.DEEZER }
+
+  static get TYPE_MFP () { return Musicbox.TYPES.MFP }
+
+  static get TYPE_OVERCAST () { return Musicbox.TYPES.OVERCAST }
+
+  static get TYPE_SPOTIFY () { return Musicbox.TYPES.SPOTIFY }
 
   /* **************************************************************************/
   // Lifecycle
@@ -197,14 +201,19 @@ class Musicbox extends Model {
   get currentTrack () { return this._value_('currentTrack', false) }
 
   get color () {
-    if (this.__data__.color) {
-      return this.__data__.color
-    } else if (this.type === Musicbox.TYPE_DEEZER) {
-      return 'rgb(66, 133, 244)'
-    } else {
-      return 'rgb(0,0,0)'
-    }
+    return this.style.color
   }
+
+  get backgroundColor () {
+    return this.musicboxStyle.backgroundColor
+  }
+
+  get style () {
+    const customStyle = this.__data__.color ? {color: this.__data__.color} : {}
+    const musicBoxStyle = COLORS[this.type] || {}
+    return Object.assign({}, COLORS['default'], musicBoxStyle, customStyle)
+  }
+
   get name () { return this.__data__.name }
 
   /* **************************************************************************/

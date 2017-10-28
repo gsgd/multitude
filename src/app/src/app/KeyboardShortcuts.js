@@ -26,7 +26,7 @@ class KeyboardShortcuts {
   register () {
     let shortcuts = new Map([
       ['CmdOrCtrl+{', this._selectors.prevMusicbox],
-      ['CmdOrCtrl+}', this._selectors.nextMusicbox],
+      ['CmdOrCtrl+}', this._selectors.nextMusicbox]
     ])
     this.unregister()
     shortcuts.forEach((callback, accelerator) => {

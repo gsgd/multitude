@@ -57,7 +57,7 @@ module.exports = React.createClass({
   /* **************************************************************************/
 
   render () {
-    const { style, ...passProps } = this.props
+    const {style, iconColor, ...passProps} = this.props
     const { hasUnopenedNewsId, newsLevel } = this.state
     return (
       <div
@@ -68,7 +68,7 @@ module.exports = React.createClass({
         <IconButton
           iconClassName='fa fa-fw fa-newspaper-o'
           onClick={this.handleClick}
-          iconStyle={{ color: Colors.blueGrey400 }} />
+          iconStyle={{color: iconColor || Colors.blueGrey400}} />
         {hasUnopenedNewsId && newsLevel === 'notify' ? (
           <Badge
             onClick={this.handleClick}

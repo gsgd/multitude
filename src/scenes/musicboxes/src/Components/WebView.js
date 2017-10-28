@@ -230,7 +230,8 @@ module.exports = React.createClass({
       .filter((k) => this.props[k] !== undefined)
       .map((k) => `${k}="${this.props[k]}"`)
       .concat([
-        'style="position:absolute; top:0; bottom:0; right:0; left:0;"'
+        'style="position:absolute; top:0; bottom:0; right:0; left:0;"',
+        'experimentalFeatures'
       ])
       .join(' ')
 

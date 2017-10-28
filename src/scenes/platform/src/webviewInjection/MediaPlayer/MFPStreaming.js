@@ -35,7 +35,7 @@ class MFPStreaming {
     this.player.audio.onchange = ChangeEmitter.handleDisplayCurrentSong.bind(ChangeEmitter)
     this.player.audio.onplay = ChangeEmitter.handlePlaying.bind(ChangeEmitter)
     this.player.audio.onpause = ChangeEmitter.handlePlaying.bind(ChangeEmitter)
-    this.player.audio.ontimeupdate = ChangeEmitter.handleTimeUpdated.bind(ChangeEmitter)
+    this.player.audio.ontimeupdate = ChangeEmitter.throttleTimeUpdated().bind(ChangeEmitter)
   }
 
   /* **************************************************************************/

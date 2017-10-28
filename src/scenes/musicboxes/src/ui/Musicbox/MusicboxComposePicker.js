@@ -125,7 +125,7 @@ module.exports = React.createClass({
             return (
               <ListItem
                 leftAvatar={<Avatar src={avatarSrc} backgroundColor='white' />}
-                primaryText={(musicbox.email || musicbox.name || musicbox.id)}
+                primaryText={(musicbox.typeWithUsername)}
                 onClick={(evt) => this.handleSelectMusicbox(evt, musicbox.id)}
                 key={musicbox.id} />)
           })}

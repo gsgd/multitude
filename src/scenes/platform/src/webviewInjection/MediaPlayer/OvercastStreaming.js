@@ -1,3 +1,5 @@
+const injector = require('../injector')
+
 class OvercastStreaming {
 
   /* **************************************************************************/
@@ -6,6 +8,12 @@ class OvercastStreaming {
 
   constructor () {
     this.__data__ = {}
+    // Inject some styles
+    injector.injectStyle(`
+      body {
+        background: #f2f2f2;
+      }
+    `)
   }
 
   /* **************************************************************************/
@@ -14,6 +22,10 @@ class OvercastStreaming {
 
   get player () {
     return this.__data__.player
+  }
+
+  set player (player) {
+    this.__data__.player = player
   }
 
   get volume () {
@@ -33,11 +45,12 @@ class OvercastStreaming {
   }
 
   get currentTrack () {
+    const img = window.$('img.art.fullart').attr('src')
     return {
       title: window.$('div.titlestack .title').text(),
       artist: '',
       album: window.$('div.titlestack .caption2').text(),
-      imageUrl: window.$('meta[name="og:image"]').attr('content')
+      imageUrl: img.startsWith('http') ? img : `${window.location.protocol}//${window.location.hostname}${img}`
     }
   }
 
@@ -54,13 +67,13 @@ class OvercastStreaming {
   /* **************************************************************************/
 
   onLoaded (ChangeEmitter) {
-    // console.log('OvercastStreaming.onLoaded')
+    console.log('OvercastStreaming.onLoaded')
     let interval = setInterval(() => {
       if (!document.getElementById('audioplayer')) { return }
-      this.__data__.player = document.getElementById('audioplayer')
-      // console.log('OvercastStreaming.onLoaded', this.player)
+      this.player = document.getElementById('audioplayer')
+      console.log('OvercastStreaming.onLoaded', this.player)
       this.player.setAttribute('data-autoplay', 0)
-      this.player.onloadstart = ChangeEmitter.subscribeToEvents.bind(ChangeEmitter)
+      this.subscribeToEvents(ChangeEmitter)
       clearInterval(interval)
     }, 100)
   }
@@ -78,8 +91,6 @@ class OvercastStreaming {
 
   /**
    * Handles media events
-   * @param evt: the event that fired
-   * @param data: the data sent with the event
    */
   handlePlayPause () {
     this.player.paused ? this.handlePlay() : this.handlePause()
@@ -87,8 +98,6 @@ class OvercastStreaming {
 
   /**
    * Handles media events
-   * @param evt: the event that fired
-   * @param data: the data sent with the event
    */
   handlePlay () {
     this.player.play()
@@ -96,8 +105,6 @@ class OvercastStreaming {
 
   /**
    * Handles media events
-   * @param evt: the event that fired
-   * @param data: the data sent with the event
    */
   handlePause () {
     this.player.pause()

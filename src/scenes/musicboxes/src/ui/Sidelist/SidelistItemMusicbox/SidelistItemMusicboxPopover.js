@@ -106,30 +106,17 @@ module.exports = React.createClass({
   * Renders the menu items
   * @param musicbox: the musicbox to render for
   * @param isFirst: true if this is the first item
-  * @Param isLast: true if this is the last item
+   * @param isLast: true if this is the last item
   * @return array of jsx elements
   */
   renderMenuItems (musicbox, isFirst, isLast) {
-    const menuItems = [
+    return [
       // Musicbox Info
-      musicbox.email ? (
+      musicbox.typeWithUsername ? (
         <MenuItem
           key='info'
           primaryText={musicbox.email}
           disabled />) : undefined,
-
-      // musicbox.google.authHasGrantError ? (
-      //   <MenuItem
-      //     key='autherr'
-      //     primaryText='Reauthenticate Account'
-      //     style={{ color: 'red' }}
-      //     onClick={() => {
-      //       musicboxWizardActions.reauthenticateGoogleMusicbox(musicbox.id)
-      //       this.handleClosePopover()
-      //     }}
-      //     leftIcon={<FontIcon className='material-icons' style={{ color: 'red' }}>error_outline</FontIcon>} />
-      // ) : undefined,
-      // musicbox.google.authHasGrantError ? (<Divider key='div-err' />) : undefined,
 
       // Ordering controls
       isFirst ? undefined : (
@@ -177,8 +164,6 @@ module.exports = React.createClass({
         onClick={this.handleInspect}
         leftIcon={<FontIcon className='material-icons'>bug_report</FontIcon>} />)
     ].filter((item) => !!item)
-
-    return menuItems
   },
 
   render () {

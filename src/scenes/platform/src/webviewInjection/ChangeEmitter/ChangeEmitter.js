@@ -1,4 +1,5 @@
 const {ipcRenderer} = require('electron')
+const throttle = require('lodash.throttle')
 const {
   MUSICBOX_WINDOW_INIT_REQUEST,
   MUSICBOX_WINDOW_PLAYING,
@@ -23,7 +24,7 @@ class ChangeEmitter {
     this.__data__ = {intervals: []}
     // load
     document.addEventListener('DOMContentLoaded', this.onLoaded.bind(this))
-    document.addEventListener('loaded', this.onFullyLoaded.bind(this))
+    window.addEventListener('load', this.onFullyLoaded.bind(this))
     // unload
     if (this.strategy.handleUnload !== undefined) { window.addEventListener('beforeunload', this.onUnload.bind(this)) }
     this.transmitEvent(MUSICBOX_WINDOW_INIT_REQUEST, true)
@@ -89,8 +90,15 @@ class ChangeEmitter {
     this.transmitEvent(MUSICBOX_WINDOW_PAGE_CHANGED, this.strategy.currentPage)
   }
 
+  throttleTimeUpdated () {
+    return throttle(() => {
+      console.log('handleTimeUpdated.throttle')
+      this.handleTimeUpdated()
+    }, 1500)
+  }
+
   handleTimeUpdated () {
-    // console.log('handlePageChanged', event, data)
+    console.log('handleTimeUpdated', this.strategy.currentTime)
     this.transmitEvent(MUSICBOX_WINDOW_TIME_UPDATED, this.strategy.currentTime)
   }
 
@@ -103,7 +111,7 @@ class ChangeEmitter {
   */
   transmitEvent (type, data) {
     if (data === undefined) { return }
-    // console.log('transmitEvent', type, data)
+    console.log('transmitEvent', type, data)
     ipcRenderer.sendToHost({
       type: type,
       data: data

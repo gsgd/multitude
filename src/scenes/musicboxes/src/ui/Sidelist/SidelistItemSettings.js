@@ -21,7 +21,7 @@ module.exports = React.createClass({
   * Renders the app
   */
   render () {
-    const { style, ...passProps } = this.props
+    const {style, iconColor, ...passProps} = this.props
     return (
       <div
         {...passProps}
@@ -31,7 +31,7 @@ module.exports = React.createClass({
         <IconButton
           iconClassName='material-icons'
           onClick={() => navigationDispatch.openSettings()}
-          iconStyle={{ color: Colors.blueGrey400 }}>
+          iconStyle={{color: iconColor || Colors.blueGrey400}}>
           settings
         </IconButton>
         <ReactTooltip
