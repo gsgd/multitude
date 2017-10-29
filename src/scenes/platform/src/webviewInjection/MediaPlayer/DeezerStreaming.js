@@ -1,18 +1,18 @@
 const injector = require('../injector')
+const MediaPlayer = require('./MediaPlayer')
 
-class DeezerStreaming {
+class DeezerStreaming extends MediaPlayer {
 
   /* **************************************************************************/
   // Lifecycle
   /* **************************************************************************/
 
   constructor () {
-    this.sidebarStylesheet = document.createElement('style')
-
+    super()
     // Inject some styles
     injector.injectStyle(`
       button[data-type="log_out"] {
-        visibility: hidden !important;
+        display: none !important;
       }
     `)
   }
@@ -69,6 +69,9 @@ class DeezerStreaming {
   // Loaders
   /* **************************************************************************/
 
+  /**
+   * @param {ChangeEmitter} ChangeEmitter
+   */
   onLoaded (ChangeEmitter) {
     setTimeout(function () {
       window.dzPlayer.isAdvertisingAllowed = function () { return false }
@@ -78,10 +81,13 @@ class DeezerStreaming {
     window.Events.ready(window.Events.user.loaded, ChangeEmitter.subscribeToEvents.bind(ChangeEmitter))
   }
 
+  /**
+   * @param {ChangeEmitter} ChangeEmitter
+   */
   subscribeToEvents (ChangeEmitter) {
     // console.log('subscribe');
     window.Events.subscribe(window.Events.player.playing, ChangeEmitter.handlePlaying.bind(ChangeEmitter))
-    window.Events.subscribe(window.Events.player.displayCurrentSong, ChangeEmitter.handleDisplayCurrentSong.bind(ChangeEmitter))
+    window.Events.subscribe(window.Events.player.displayCurrentSong, ChangeEmitter.throttleDisplayCurrentSong().bind(ChangeEmitter))
     window.Events.subscribe(window.Events.player.displayCurrentSong, ChangeEmitter.handleTracklistChanged.bind(ChangeEmitter))
     window.Events.subscribe(window.Events.player.tracklist_changed, ChangeEmitter.handleTracklistChanged.bind(ChangeEmitter))
     window.Events.subscribe(window.Events.navigation.page_changed, ChangeEmitter.handlePageChanged.bind(ChangeEmitter))

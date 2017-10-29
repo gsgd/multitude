@@ -11,33 +11,49 @@ class StreamingService {
   /* **************************************************************************/
 
   /**
-   * @param strategy: the media strategy to use
+   * @param {MediaPlayer} player: the media player to use
    */
-  constructor (strategy) {
-    this.strategy = strategy
+  constructor (player) {
+    this.player = player
     this.__data__ = {
       intervals: []
     }
 
-    this.changeEmitter = new ChangeEmitter(this.strategy)
+    this.changeEmitter = new ChangeEmitter(this.player)
+    document.addEventListener('DOMContentLoaded', this.addBindings.bind(this))
+    window.addEventListener('beforeunload', this.removeBindings.bind(this))
+  }
 
+  get player () {
+    return this.__player__
+  }
+
+  set player (player) {
+    this.__player__ = player
+  }
+
+  addBindings () {
     // Bind our listeners
     ipcRenderer.on(MUSICBOX_WINDOW_FADE_TO, this.handleFadeTo.bind(this))
     // Bind our strategies if they are there
-    if (this.strategy.handleInit !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_INIT, this.strategy.handleInit.bind(this.strategy)) }
-    if (this.strategy.handlePlay !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PLAY, this.strategy.handlePlay.bind(this.strategy)) }
-    if (this.strategy.handlePause !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PAUSE, this.strategy.handlePause.bind(this.strategy)) }
-    if (this.strategy.handlePlayPause !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PLAY_PAUSE, this.strategy.handlePlayPause.bind(this.strategy)) }
-    if (this.strategy.handleNextTrack !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_NEXT_TRACK, this.strategy.handleNextTrack.bind(this.strategy)) }
-    if (this.strategy.handlePreviousTrack !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PREVIOUS_TRACK, this.strategy.handlePreviousTrack.bind(this.strategy)) }
+    if (this.player.handleInit !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_INIT, this.player.handleInit.bind(this.player)) }
+    if (this.player.handlePlay !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PLAY, this.player.handlePlay.bind(this.player)) }
+    if (this.player.handlePause !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PAUSE, this.player.handlePause.bind(this.player)) }
+    if (this.player.handlePlayPause !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PLAY_PAUSE, this.player.handlePlayPause.bind(this.player)) }
+    if (this.player.handleNextTrack !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_NEXT_TRACK, this.player.handleNextTrack.bind(this.player)) }
+    if (this.player.handlePreviousTrack !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PREVIOUS_TRACK, this.player.handlePreviousTrack.bind(this.player)) }
   }
 
-  get strategy () {
-    return this.__strategy__
-  }
-
-  set strategy (strategy) {
-    this.__strategy__ = strategy
+  removeBindings () {
+    // Bind our listeners
+    ipcRenderer.removeListener(MUSICBOX_WINDOW_FADE_TO, this.handleFadeTo.bind(this))
+    // Bind our strategies if they are there
+    if (this.player.handleInit !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_INIT, this.player.handleInit.bind(this.player)) }
+    if (this.player.handlePlay !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_PLAY, this.player.handlePlay.bind(this.player)) }
+    if (this.player.handlePause !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_PAUSE, this.player.handlePause.bind(this.player)) }
+    if (this.player.handlePlayPause !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_PLAY_PAUSE, this.player.handlePlayPause.bind(this.player)) }
+    if (this.player.handleNextTrack !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_NEXT_TRACK, this.player.handleNextTrack.bind(this.player)) }
+    if (this.player.handlePreviousTrack !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_PREVIOUS_TRACK, this.player.handlePreviousTrack.bind(this.player)) }
   }
 
   fadeTo (value, time, step) {
@@ -50,19 +66,19 @@ class StreamingService {
 
     let count = 0
 
-    const initial = this.strategy.volume
+    const initial = this.player.volume
     const direction = value < initial ? -1 : 1
     const distance = value - initial * direction
     const each = distance / (time / step) * direction
 
     const interval = setInterval(() => {
-      let newValue = Number((Number(this.strategy.volume) + each).toPrecision(4))
+      let newValue = Number((Number(this.player.volume) + each).toPrecision(4))
       if (newValue > 1) newValue = 1
       if (newValue < 0) newValue = 0
       if (value < initial && newValue <= value) newValue = value
       if (value > initial && newValue >= value) newValue = value
 
-      this.strategy.volume = newValue
+      this.player.volume = newValue
       // bust out for matching values or overtime
       if (newValue === value || ++count * step > time) return clearInterval(interval)
     }, step)

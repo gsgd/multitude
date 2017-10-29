@@ -17,33 +17,32 @@ class ChangeEmitter {
   /* **************************************************************************/
 
   /**
-   * @param strategy: the media strategy to use
+   * @param {MediaPlayer} player: the media player to use
   */
-  constructor (strategy) {
-    this.strategy = strategy
-    this.__data__ = {intervals: []}
+  constructor (player) {
+    this.player = player
     // load
     document.addEventListener('DOMContentLoaded', this.onLoaded.bind(this))
     window.addEventListener('load', this.onFullyLoaded.bind(this))
     // unload
-    if (this.strategy.handleUnload !== undefined) { window.addEventListener('beforeunload', this.onUnload.bind(this)) }
+    if (this.player.handleUnload !== undefined) { window.addEventListener('beforeunload', this.onUnload.bind(this)) }
     this.transmitEvent(MUSICBOX_WINDOW_INIT_REQUEST, true)
   }
 
-  get strategy () {
-    return this.__strategy__
+  get player () {
+    return this.__player__
   }
 
-  set strategy (strategy) {
-    this.__strategy__ = strategy
+  set player (player) {
+    this.__player__ = player
   }
 
   onLoaded () {
-    this.strategy.onLoaded(this)
+    this.player.onLoaded(this)
   }
 
   onUnload () {
-    this.strategy.onUnload(this)
+    this.player.onUnload(this)
   }
 
   onFullyLoaded () {
@@ -55,7 +54,7 @@ class ChangeEmitter {
 
   subscribeToEvents () {
     // console.log('ChangeEmitter.subscribeToEvents', this)
-    this.strategy.subscribeToEvents(this)
+    this.player.subscribeToEvents(this)
   }
 
   /* **************************************************************************/
@@ -63,43 +62,46 @@ class ChangeEmitter {
   /* **************************************************************************/
 
   handlePlaying () {
-    // console.log('handlePlaying', this.strategy.playing)
-    this.transmitEvent(MUSICBOX_WINDOW_PLAYING, this.strategy.playing)
+    // console.log('handlePlaying', this.player.playing)
+    this.transmitEvent(MUSICBOX_WINDOW_PLAYING, this.player.playing)
+  }
+
+  throttleDisplayCurrentSong () {
+    return throttle(() => {
+      this.handleDisplayCurrentSong()
+    }, 1000, { trailing: true, leading: false })
   }
 
   handleDisplayCurrentSong () {
     // console.log('handleDisplayCurrentSong', event, data)
-    clearTimeout(this.__data__.currentDisplayDelay)
-    this.__data__.currentDisplayDelay = setTimeout(() => {
-      this.transmitEvent(MUSICBOX_WINDOW_TRACK_CHANGED, this.strategy.currentTrack)
-    }, 1000)
+    this.transmitEvent(MUSICBOX_WINDOW_TRACK_CHANGED, this.player.currentTrack)
   }
 
   handleUsername () {
     // console.log('handleUsername', data)
-    this.transmitEvent(MUSICBOX_WINDOW_USERNAME, this.strategy.username)
+    this.transmitEvent(MUSICBOX_WINDOW_USERNAME, this.player.username)
   }
 
   handleTracklistChanged () {
     // console.log('handleTracklistChanged', data)
-    this.transmitEvent(MUSICBOX_WINDOW_TRACKLIST_CHANGED, this.strategy.tracklist)
+    this.transmitEvent(MUSICBOX_WINDOW_TRACKLIST_CHANGED, this.player.tracklist)
   }
 
   handlePageChanged () {
     // console.log('handlePageChanged', event, data)
-    this.transmitEvent(MUSICBOX_WINDOW_PAGE_CHANGED, this.strategy.currentPage)
+    this.transmitEvent(MUSICBOX_WINDOW_PAGE_CHANGED, this.player.currentPage)
   }
 
   throttleTimeUpdated () {
     return throttle(() => {
-      console.log('handleTimeUpdated.throttle')
+      // console.log('handleTimeUpdated.throttle')
       this.handleTimeUpdated()
-    }, 1500)
+    }, 1100)
   }
 
   handleTimeUpdated () {
-    console.log('handleTimeUpdated', this.strategy.currentTime)
-    this.transmitEvent(MUSICBOX_WINDOW_TIME_UPDATED, this.strategy.currentTime)
+    // console.log('handleTimeUpdated', this.player.currentTime)
+    this.transmitEvent(MUSICBOX_WINDOW_TIME_UPDATED, this.player.currentTime)
   }
 
   /* **************************************************************************/

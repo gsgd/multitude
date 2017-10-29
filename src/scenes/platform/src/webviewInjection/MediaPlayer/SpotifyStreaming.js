@@ -1,4 +1,6 @@
+const injector = require('../injector')
 const {clickMove} = require('shared/mouseEvents')
+const MediaPlayer = require('./MediaPlayer')
 
 const config = {
   attributes: true,
@@ -7,16 +9,21 @@ const config = {
   subtree: true
 }
 
-class SpotifyStreaming {
+class SpotifyStreaming extends MediaPlayer {
+
+  constructor () {
+    super()
+    // Inject some styles
+    injector.injectStyle(`
+      .navBar-item.download-item {
+        display: none !important;
+      }
+    `)
+  }
 
   /* **************************************************************************/
   // Lifecycle
   /* **************************************************************************/
-
-  constructor () {
-    this.__data__ = {}
-    this.__volume__ = 1
-  }
 
   /* **************************************************************************/
   // Properties
@@ -79,8 +86,11 @@ class SpotifyStreaming {
   // Loaders
   /* **************************************************************************/
 
+  /**
+   * @param {ChangeEmitter} ChangeEmitter
+   */
   onLoaded (ChangeEmitter) {
-    this.__data__.trackObserver = new window.MutationObserver(ChangeEmitter.handleDisplayCurrentSong.bind(ChangeEmitter))
+    this.__data__.trackObserver = new window.MutationObserver(ChangeEmitter.throttleDisplayCurrentSong().bind(ChangeEmitter))
     this.__data__.playingObserver = new window.MutationObserver(ChangeEmitter.handlePlaying.bind(ChangeEmitter))
     this.__data__.pageObserver = new window.MutationObserver(ChangeEmitter.handlePageChanged.bind(ChangeEmitter))
 

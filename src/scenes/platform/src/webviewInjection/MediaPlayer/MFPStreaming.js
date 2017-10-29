@@ -1,13 +1,14 @@
-class MFPStreaming {
+const MediaPlayer = require('./MediaPlayer')
+
+class MFPStreaming extends MediaPlayer {
 
   /* **************************************************************************/
   // Lifecycle
   /* **************************************************************************/
 
-  constructor () {
-    this.__data__ = {}
-  }
-
+  /**
+   * @param {ChangeEmitter} ChangeEmitter
+   */
   onLoaded (ChangeEmitter) {
     // console.log('onLoaded', ChangeEmitter, this)
     let interval = setInterval(() => {
@@ -21,6 +22,9 @@ class MFPStreaming {
     }, 100)
   }
 
+  /**
+   * @param {ChangeEmitter} ChangeEmitter
+   */
   onUnload (ChangeEmitter) {
     // console.log('onUnload', ChangeEmitter, this)
     this.handlePause()
@@ -28,11 +32,11 @@ class MFPStreaming {
   }
 
   /**
-   * @param ChangeEmitter
+   * @param {ChangeEmitter} ChangeEmitter
    */
   subscribeToEvents (ChangeEmitter) {
     // console.log('subscribeToEvents', ChangeEmitter, this)
-    this.player.audio.onchange = ChangeEmitter.handleDisplayCurrentSong.bind(ChangeEmitter)
+    this.player.audio.onchange = ChangeEmitter.throttleDisplayCurrentSong().bind(ChangeEmitter)
     this.player.audio.onplay = ChangeEmitter.handlePlaying.bind(ChangeEmitter)
     this.player.audio.onpause = ChangeEmitter.handlePlaying.bind(ChangeEmitter)
     this.player.audio.ontimeupdate = ChangeEmitter.throttleTimeUpdated().bind(ChangeEmitter)
