@@ -70,7 +70,7 @@ module.exports = React.createClass({
             primary
             onClick={() => musicboxWizardActions.openAddMusicbox()} />
           <p style={styles.setupItemExtended}>
-            Get started by adding your first Gmail or Google Inbox accout
+            Get started by adding your first musicbox
           </p>
         </div>
       </div>

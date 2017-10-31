@@ -49,7 +49,7 @@ class OvercastStreaming extends MediaPlayer {
   get currentTrack () {
     const title = document.querySelector('div.titlestack .title')
     const img = document.querySelector('img.art.fullart')
-    const album = document.querySelector('div.titlestack .caption2').innerText
+    const album = document.querySelector('div.titlestack .caption2')
     if (!title || !album || !img) { return undefined }
     return {
       title: title.innerText,
