@@ -58,7 +58,8 @@ module.exports = React.createClass({
   },
 
   musicboxUpdated (musicboxState) {
-    console.log(musicboxState)
+    if (this.state.activeMusicbox.id === musicboxState.activeMusicboxId()) { return }
+    // console.log(musicboxState)
     this.setState({
       activeMusicbox: musicboxState.activeMusicbox()
     })

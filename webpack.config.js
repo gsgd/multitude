@@ -24,8 +24,8 @@ const task = getArg('--task=', '--task=all').substr(7)
 if (task === 'app') {
   console.log('[TASK=app]')
   module.exports = [ require('./src/app/webpack.config.js') ]
-} else if (task === 'mailboxes') {
-  console.log('[TASK=mailboxes]')
+} else if (task === 'musicboxes') {
+  console.log('[TASK=musicboxes]')
   module.exports = [ require('./src/scenes/musicboxes/webpack.config.js') ]
 } else if (task === 'platform') {
   console.log('[TASK=platform]')

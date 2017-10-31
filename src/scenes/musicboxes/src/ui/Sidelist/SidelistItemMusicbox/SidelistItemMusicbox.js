@@ -1,5 +1,4 @@
 const React = require('react')
-const {Badge} = require('material-ui')
 const { navigationDispatch } = require('../../../Dispatch')
 const { musicboxStore, musicboxActions } = require('../../../stores/musicbox')
 const shallowCompare = require('react-addons-shallow-compare')
@@ -7,8 +6,7 @@ const ReactTooltip = require('react-tooltip')
 const styles = require('../SidelistStyles')
 const SidelistItemMusicboxPopover = require('./SidelistItemMusicboxPopover')
 const SidelistItemMusicboxAvatar = require('./SidelistItemMusicboxAvatar')
-const SidelistItemMusicboxServices = require('./SidelistItemMusicboxServices')
-const pkg = window.appPackage()
+const SidelistItemMusicboxActions = require('./SidelistItemMusicboxActions')
 
 module.exports = React.createClass({
   /* **************************************************************************/
@@ -108,20 +106,6 @@ module.exports = React.createClass({
   },
 
   /**
-  * Renders the badge element
-  * @param musicbox: the musicbox to render for
-  * @return jsx
-  */
-  renderBadge (musicbox) {
-    <Badge
-      onContextMenu={this.handleOpenPopover}
-      onClick={this.handleClick}
-      badgeContent={''}
-      badgeStyle={styles.musicboxBadge}
-      style={styles.musicboxBadgeContainer} />
-  },
-
-  /**
   * Renders the active indicator
   * @param musicbox: the musicbox to render for
   * @param isActive: true if the musicbox is active
@@ -186,15 +170,12 @@ module.exports = React.createClass({
           musicbox={musicbox}
           index={index}
           onClick={this.handleClick} />
-        {pkg.prerelease ? (
-          <SidelistItemMusicboxServices
-            onContextMenu={this.handleOpenPopover}
-            musicbox={musicbox}
-            isActiveMusicbox={isActive}
-            activeService={activeService}
-            onOpenService={this.handleOpenService} />
-        ) : undefined}
-        {this.renderBadge(musicbox)}
+        <SidelistItemMusicboxActions
+          musicbox={musicbox}
+          isHovering={hovering}
+          isActiveMusicbox={isActive}
+          activeService={activeService}
+          onOpenService={this.handleOpenService} />
         {this.renderActiveIndicator(musicbox, isActive)}
         <SidelistItemMusicboxPopover
           musicbox={musicbox}

@@ -205,7 +205,7 @@ class Musicbox extends Model {
   }
 
   get backgroundColor () {
-    return this.musicboxStyle.backgroundColor
+    return this.style.backgroundColor
   }
 
   get style () {

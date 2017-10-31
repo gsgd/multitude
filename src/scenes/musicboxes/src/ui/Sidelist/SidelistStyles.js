@@ -143,25 +143,22 @@ module.exports = {
     borderWidth: 4,
     borderStyle: 'solid',
     cursor: 'pointer',
-    background: '#000'
+    background: '#FFF'
   },
-  musicboxBadge: {
-    backgroundColor: 'rgba(238, 54, 55, 0.95)',
-    color: Colors.red50,
-    fontWeight: '100',
-    width: 'auto',
-    minWidth: 24,
-    paddingLeft: 4,
-    paddingRight: 4,
-    borderRadius: 12,
-    WebkitUserSelect: 'none',
-    cursor: 'pointer'
-  },
-  musicboxBadgeContainer: {
+  musicboxActionsContainer: {
     position: 'absolute',
-    top: -3,
-    right: 3,
+    top: 12,
+    right: 0,
     cursor: 'pointer'
+  },
+  musicboxActionIconStyle: {
+    fontSize: 18
+  },
+  musicboxActionStyle: {
+    width: 26,
+    height: 26,
+    padding: 4,
+    borderRadius: '50%'
   },
   musicboxActiveIndicator: {
     position: 'absolute',

@@ -9,6 +9,7 @@
     "alt": "0.18.6",
     "bootstrap-grid": "2.0.1",
     "camelcase": "4.0.0",
+    "colorutilities": "0.0.2",
     "compare-version": "0.1.2",
     "fbjs": "0.8.9",
     "https-proxy-agent": "1.0.0",

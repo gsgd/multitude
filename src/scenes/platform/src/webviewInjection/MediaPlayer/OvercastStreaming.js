@@ -75,11 +75,11 @@ class OvercastStreaming extends MediaPlayer {
    * @param {ChangeEmitter} ChangeEmitter
    */
   onLoaded (ChangeEmitter) {
-    console.log('OvercastStreaming.onLoaded')
+    // console.log('OvercastStreaming.onLoaded')
     let interval = setInterval(() => {
       if (!document.getElementById('audioplayer')) { return }
       this.player = document.getElementById('audioplayer')
-      console.log('OvercastStreaming.onLoaded', this.player)
+      // console.log('OvercastStreaming.onLoaded', this.player)
       this.player.setAttribute('data-autoplay', 0)
       this.subscribeToEvents(ChangeEmitter)
       clearInterval(interval)

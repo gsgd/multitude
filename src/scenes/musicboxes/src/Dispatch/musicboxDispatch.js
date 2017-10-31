@@ -190,6 +190,11 @@ class MusicboxDispatch {
     })
   }
 
+  musicboxPlayPause (musicboxId) {
+    // console.log('musicboxPlayPause')
+    this.emit('playPause', { musicboxId })
+  }
+
   musicboxInitRequest (musicboxId) {
     // console.log('musicboxInitRequest', musicboxId)
     this.emit('musicboxInitRequest', { musicboxId })

@@ -52,6 +52,7 @@ module.exports = React.createClass({
     musicboxDispatch.on('load', this.handleReload)
     musicboxDispatch.on('reload', this.handleReload)
     musicboxDispatch.on('fadeTo', this.handleFadeTo)
+    musicboxDispatch.on('playPause', this.handlePlayPause)
     musicboxDispatch.on('trackChanged', this.handleTrackChanged)
     musicboxDispatch.on('tracklistChanged', this.handleTracklistChanged)
     musicboxDispatch.on('playingChanged', this.handlePlayingChanged)
@@ -88,6 +89,7 @@ module.exports = React.createClass({
     musicboxDispatch.off('load', this.handleReload)
     musicboxDispatch.off('reload', this.handleReload)
     musicboxDispatch.off('fadeTo', this.handleFadeTo)
+    musicboxDispatch.off('playPause', this.handlePlayPause)
     musicboxDispatch.off('trackChanged', this.handleTrackChanged)
     musicboxDispatch.off('tracklistChanged', this.handleTracklistChanged)
     musicboxDispatch.off('playingChanged', this.handlePlayingChanged)
@@ -259,6 +261,16 @@ module.exports = React.createClass({
   */
   handleFadeTo (evt) {
     this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_FADE_TO, evt)
+  },
+
+  /**
+  * Handles volume fading
+  * @param evt: the event that fired
+  */
+  handlePlayPause ({musicboxId}) {
+    // console.log('mbT.handlePlayPause', this.props.musicboxId, { musicboxId });
+    if (this.props.musicboxId !== musicboxId) { return }
+    this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_PLAY_PAUSE, {})
   },
 
   /**
@@ -543,7 +555,8 @@ module.exports = React.createClass({
   /**
   * Handle playPause event
   */
-  handleIPCPlayPause () {
+  handleIPCPlayPause ({ musicboxId }) {
+    // console.log('handleIPCPlayPause', musicboxId)
     if (this.state.isActive) {
       this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_PLAY_PAUSE, { })
     }
