@@ -17,8 +17,8 @@ title: Multitude
 email: multitude@gsgd.co.uk
 description: >- # this means to ignore newlines until "baseurl:"
   Multitude – adding missing features to your favourite web streaming services
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/multitude" # the subpath of your site, e.g. /blog
+url: "https://gsgd.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
 github_username:  gsgd
 
