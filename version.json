@@ -1,0 +1,10 @@
+{
+  "prerelease": {
+    "version": "0.0.1",
+    "news": {
+      "id": 1,
+      "level": "dialog",
+      "feed": "http://localhost:4000/prerelease"
+    }
+  }
+}
