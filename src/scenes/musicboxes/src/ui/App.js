@@ -166,12 +166,12 @@ module.exports = React.createClass({
     // Update the app title
     if (uiSettings.showTitlebarCount) {
       if (messagesUnreadCount === 0) {
-        document.title = 'WMail'
+        document.title = 'Multitude'
       } else {
-        document.title = `WMail (${messagesUnreadCount})`
+        document.title = `Multitude (${messagesUnreadCount})`
       }
     } else {
-      document.title = 'WMail'
+      document.title = 'Multitude'
     }
 
     return (

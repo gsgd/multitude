@@ -54,12 +54,12 @@ module.exports = React.createClass({
             backgroundColor={Colors.blueGrey900}
             icon={(<FontIcon className='fa fa-fw fa-magic' />)}
             size={80} />
-          <h3>WMail Setup</h3>
+          <h3>Multitude Setup</h3>
           <p>
-            Customise WMail to work best for you by configuring a few common settings
+            Customise Multitude to work best for you by configuring a few common settings
           </p>
           <p>
-            Would you like to start WMail setup now?
+            Would you like to start Multitude setup now?
           </p>
         </div>
       </Dialog>

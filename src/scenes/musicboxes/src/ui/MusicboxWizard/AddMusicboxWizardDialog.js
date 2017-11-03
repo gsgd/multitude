@@ -3,11 +3,12 @@ const { Dialog, RaisedButton, GridList, GridTile, IconButton, Subheader } = requ
 const { musicboxWizardStore, musicboxWizardActions } = require('../../stores/musicboxWizard')
 const shallowCompare = require('react-addons-shallow-compare')
 const { Musicbox } = require('shared/Models/Musicbox')
+const Colors = require('material-ui/styles/colors')
 
 const styles = {
   gridList: {},
   gridTile: {
-    background: '#3D3F24',
+    background: Colors.lightBlue100,
     cursor: 'pointer'
   },
   // gridTitleBackground: 'rgba(0, 0, 0, 0.8)',
@@ -111,6 +112,7 @@ module.exports = React.createClass({
         onRequestClose={() => musicboxWizardActions.cancelAddMusicbox()}>
         <GridList
           cellHeight={100}
+          cols={4}
           style={styles.gridList}>
           <Subheader>Add your service</Subheader>
           {tilesData.map((tile) => (

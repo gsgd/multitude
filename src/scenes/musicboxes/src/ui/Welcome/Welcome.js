@@ -1,26 +1,27 @@
 const React = require('react')
 const { musicboxWizardActions } = require('../../stores/musicboxWizard')
-const { RaisedButton, FontIcon } = require('material-ui')
+const { RaisedButton } = require('material-ui')
 const Colors = require('material-ui/styles/colors')
+const MultitudeIcon = require('shared/MultitudeIcon')
 
 const styles = {
   icon: {
     height: 80,
-    width: 80,
+    width: '80%',
     display: 'inline-block',
     marginLeft: 10,
     marginRight: 10,
     backgroundSize: 'contain',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    backgroundImage: 'url("../../images/deezer_icon_512.png")'
+    backgroundImage: 'url("../../images/multitude.svg")'
   },
   container: {
     textAlign: 'center',
     overflow: 'auto'
   },
   heading: {
-    backgroundColor: Colors.red400,
+    backgroundColor: Colors.lightBlue500,
     color: 'white',
     paddingTop: 40,
     paddingBottom: 20
@@ -60,13 +61,13 @@ module.exports = React.createClass({
       <div style={styles.container}>
         <div style={styles.heading}>
           <div style={styles.icon} />
-          <h1 style={styles.headingTitle}>Welcome to Musically</h1>
-          <h2 style={styles.headingSubtitle}>...the open-source desktop client for Deezer and such</h2>
+          <h1 style={styles.headingTitle}>Welcome to Multitude</h1>
+          <h2 style={styles.headingSubtitle}>The open-source desktop client for music streaming</h2>
         </div>
         <div style={styles.setupItem}>
           <RaisedButton
             label='Add your first musicbox'
-            icon={(<FontIcon className='material-icons'>mail_outline</FontIcon>)}
+            icon={<MultitudeIcon />}
             primary
             onClick={() => musicboxWizardActions.openAddMusicbox()} />
           <p style={styles.setupItemExtended}>

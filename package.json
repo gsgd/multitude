@@ -1,7 +1,7 @@
 {
   "name": "musicbox",
   "productName": "MusicBox",
-  "version": "2.3.1",
+  "version": "0.0.1",
   "prerelease": true,
   "description": "The missing desktop client for streaming music sites",
   "scripts": {
@@ -9,8 +9,8 @@
     "start": "electron bin/app/index.js",
     "test": "standard",
     "lint": "eslint src --ignore-path .gitignore -c .eslint",
-    "install-all": "echo ':wmail' && npm install && cd src/app && echo ':wmail-app' && npm install && cd ../../src/scenes/musicboxes && echo ':wmail-scenes-musicboxes' && npm install",
-    "outdated-all": "echo ':wmail' && npm outdated || true && cd src/app && echo ':wmail-app' && npm outdated || true && cd ../../src/scenes/musicboxes && echo ':wmail-scenes-musicboxes' && npm outdated || true",
+    "install-all": "echo ':multitude' && npm install && cd src/app && echo ':multitude-app' && npm install && cd ../../src/scenes/musicboxes && echo ':multitude-scenes-musicboxes' && npm install",
+    "outdated-all": "echo ':multitude' && npm outdated || true && cd src/app && echo ':multitude-app' && npm outdated || true && cd ../../src/scenes/musicboxes && echo ':multitude-scenes-musicboxes' && npm outdated || true",
     "dev:platform": "webpack --task=platform && electron bin/app/index.js",
     "dev:app": "webpack --task=app && electron bin/app/index.js",
     "dev:musicboxes": "webpack --task=musicboxes && electron bin/app/index.js",
@@ -20,12 +20,15 @@
   "keywords": [],
   "author": {
     "name": "George McGinley Smith",
-    "email": "george@gsdg.co.uk",
+    "email": "george@gsgd.co.uk",
     "url": "http://gsgd.co.uk"
   },
-  "homepage": "https://thomas101.github.io/wmail/",
+  "contributors": [
+    "Thomas Beverley"
+  ],
+  "homepage": "https://gsgd.github.io/multitude/",
   "license": "MPL-2.0",
-  "repository": "https://github.com/Thomas101/wmail",
+  "repository": "https://github.com/gsgd/multitude",
   "main": "bin/app/index.js",
   "dependencies": {
     "babel": "6.23.0",

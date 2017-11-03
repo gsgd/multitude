@@ -1,4 +1,4 @@
-# WMail
+# ![Multitude](https://raw.githubusercontent.com/gsgd/multitude/master/assets/images/multitude.svg?sanitize=true)
 
 [![Join the chat at https://gitter.im/wmail-desktop/Lobby](https://badges.gitter.im/wmail-desktop/Lobby.svg)](https://gitter.im/wmail-desktop/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![](https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg)
@@ -7,7 +7,7 @@
 [![Download](https://img.shields.io/github/downloads/Thomas101/wmail/total.svg)](https://github.com/Thomas101/wmail/releases)
 
 
-The missing desktop client for Gmail & Google Inbox. Bringing the online Gmail & Google Inbox experience to your desktop in a neatly packaged app. WMail was created to make your webmail feel right at home on your laptop or computer. It keeps the best of Gmail and Google Inbox whilst adding all those extra bits that you miss when using them in a web browser. Visit the [Official Homepage](http://thomas101.github.io/wmail/) for more information
+The missing desktop client for music streaming services. Bringing the online music experience to your desktop in a neatly packaged app. Multitude was created to make your music feel right at home on your laptop or computer. It keeps the best of web streaming whilst adding all those extra bits that you miss when using them in a web browser. Visit the [Official Homepage](http://gsgd.github.io/multitude/) for more information
 
 [Download the latest release](http://thomas101.github.io/wmail/download) | [All releases](https://github.com/Thomas101/wmail/releases)
 
@@ -17,4 +17,5 @@ The missing desktop client for Gmail & Google Inbox. Bringing the online Gmail &
 
 ![Screenshot](https://raw.githubusercontent.com/Thomas101/wmail/master/.github/screenshot.png "Screenshot")
 
-Made with ♥ by Thomas Beverley
+Hacked with ▶︎ by GSGD  
+Built on work by Thomas Beverley.

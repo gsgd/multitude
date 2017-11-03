@@ -1,17 +1,20 @@
+const BASE_URL = 'http://localhost:4000'
+const GITHUB_URL = 'https://github.com/gsgd/multitude/'
+
 module.exports = Object.freeze({
-  APP_ID: 'tombeverley.wmail',
+  APP_ID: 'gsgd.multitude',
 
   MUSICBOX_INDEX_KEY: '__mindex__',
   MUSICBOX_ACTIVE_KEY: '__mactive__',
   MAILBOX_INDEX_KEY: '__index__',
   MAILBOX_SLEEP_WAIT: 1000 * 30, // 30 seconds
 
-  WEB_URL: 'https://thomas101.github.io/wmail/',
-  GITHUB_URL: 'https://github.com/Thomas101/wmail/',
-  GITHUB_ISSUE_URL: 'https://github.com/Thomas101/wmail/issues',
-  UPDATE_DOWNLOAD_URL: 'http://thomas101.github.io/wmail/download',
-  UPDATE_CHECK_URL: 'https://thomas101.github.io/wmail/version.json',
-  PRIVACY_URL: 'https://thomas101.github.io/wmail/privacy',
+  WEB_URL: BASE_URL,
+  GITHUB_URL: GITHUB_URL,
+  GITHUB_ISSUE_URL: `${GITHUB_URL}/issues`,
+  UPDATE_DOWNLOAD_URL: `${BASE_URL}/download`,
+  UPDATE_CHECK_URL: `${BASE_URL}/version.json`,
+  PRIVACY_URL: `${BASE_URL}/privacy`,
   USER_SCRIPTS_WEB_URL: 'https://github.com/Thomas101/wmail-user-scripts',
   UPDATE_CHECK_INTERVAL: 1000 * 60 * 60 * 24, // 24 hours
 

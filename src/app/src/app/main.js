@@ -144,7 +144,7 @@
         message: pkg.name,
         detail: [
           'Version: ' + pkg.version + (pkg.prerelease ? ' prerelease' : ''),
-          'Made with ♥ by GSGD.',
+          'Hacked with ▶︎ by GSGD',
           'Built on work by Thomas Beverley.'
         ].join('\n'),
         buttons: [ 'Done', 'Website' ]
