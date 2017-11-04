@@ -1,0 +1,24 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+$text-color: #111;
+$background-color: #fdfdfd;
+$brand-background-color: #B3E5FC;
+$brand-color: #03A9F4 !default;
+
+@import "minima";
+
+header.site-header {
+  background-color: $brand-background-color;
+  border-top: 5px solid $brand-color;
+}
+.site-title, .site-title:visited {
+  margin-top: 5px;
+  background-image: url('/multitude/multitude.svg');
+  background-size: cover;
+  width: 200px;
+  height: 40px;
+  text-indent: -2000px;
+  text-indent: -150vw;
+}

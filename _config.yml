@@ -27,6 +27,10 @@ markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
+show_downloads: true
+github:
+  - zip_url: https://gsgd.github.io
+  - tar_url: https://gsgd.github.io
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
