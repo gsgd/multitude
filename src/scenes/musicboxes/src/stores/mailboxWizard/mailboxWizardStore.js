@@ -1,12 +1,12 @@
 const alt = require('../alt')
 const actions = require('./mailboxWizardActions')
 const { Mailbox, Google } = require('shared/Models/Mailbox')
-const { ipcRenderer } = window.nativeRequire('electron')
+const { ipcRenderer } = require('electron')
 const reporter = require('../../reporter')
 const mailboxActions = require('../mailbox/mailboxActions')
 const googleActions = require('../google/googleActions')
 const googleHTTP = require('../google/googleHTTP')
-const pkg = window.appPackage()
+const pkg = require('shared/appPackage')
 
 class MailboxWizardStore {
   /* **************************************************************************/

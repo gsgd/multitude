@@ -1,7 +1,7 @@
 const React = require('react')
 const { musicboxStore, musicboxActions } = require('../../stores/musicbox')
 const { settingsStore } = require('../../stores/settings')
-const { ipcRenderer } = window.nativeRequire('electron')
+const { ipcRenderer } = require('electron')
 const {musicboxDispatch, navigationDispatch} = require('../../Dispatch')
 const { WebView } = require('../../Components')
 const MusicboxSearch = require('./MusicboxSearch')

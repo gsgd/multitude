@@ -3,7 +3,7 @@ const actions = require('./musicboxWizardActions')
 const { Musicbox, Deezer } = require('shared/Models/Musicbox')
 const musicboxActions = require('../musicbox/musicboxActions')
 
-const pkg = window.appPackage()
+const pkg = require('shared/appPackage')
 
 // console.log(actions);
 

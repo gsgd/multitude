@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <title>Multitude</title>
-    <link rel="stylesheet" type="text/css" href="../../fonts/roboto/roboto-fontface.css">
-    <link rel="stylesheet" type="text/css" href="../../fonts/materialdesign/material-icons.css">
-    <link rel="stylesheet" type="text/css" href="../../fonts/fontawesome/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../../node_modules/bootstrap-grid/dist/grid.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../../node_modules/typeface-roboto/index.css">
+    <link rel="stylesheet" type="text/css" href="../../../../node_modules/material-design-icons/iconfont/material-icons.css">
+    <link rel="stylesheet" type="text/css" href="../../../../node_modules/font-awesome/css/font-awesome.min.css">
     <style>
       /**
       * Core styles
@@ -53,7 +54,11 @@
     </div>
     <div id="app"></div>
 
-    <script type="text/javascript" src="../platform/nativeRequire.js"></script>
-    <script type="text/javascript" src="musicboxes.js"></script>
+    <!--<script type="text/javascript" src="nativeRequire.js"></script>-->
+    <script type="text/jsx">
+      require('./musicboxes')
+//      require('../../platform/src/nativeRequire')
+    </script>
+    <!--<script type="text/javascript" src="musicboxes.js"></script>-->
   </body>
 </html>

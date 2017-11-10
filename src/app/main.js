@@ -31,7 +31,7 @@
   const AppAnalytics = require('./AppAnalytics')
   const MusicboxesWindow = require('./windows/MusicboxesWindow')
   const ContentWindow = require('./windows/ContentWindow')
-  const pkg = require('../package.json')
+  const pkg = require('../../package.json')
   const AppPrimaryMenu = require('./AppPrimaryMenu')
   const KeyboardShortcuts = require('./KeyboardShortcuts')
   const WindowManager = require('./windows/WindowManager')

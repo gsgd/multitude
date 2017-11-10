@@ -1,4 +1,5 @@
-import './mailboxWindow.less'
+const addLink = require('shared/addLink')
+addLink(__dirname, './mailboxWindow.less')
 
 const React = require('react')
 const { mailboxStore } = require('../../stores/mailbox')

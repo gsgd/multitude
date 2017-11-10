@@ -15,8 +15,8 @@ const {
   }
 } = require('shared/Models')
 const migration = require('./migration')
-const homeDir = window.appNodeModulesRequire('home-dir') // pull this from main thread
-const {systemPreferences} = window.nativeRequire('electron').remote
+const homeDir = require('home-dir') // pull this from main thread
+const {systemPreferences} = require('electron').remote
 const fs = require('fs')
 
 class SettingsStore {
@@ -83,7 +83,7 @@ class SettingsStore {
     this.proxy = null
     this.tray = null
     this.ui = null
-
+    console.log('actions', actions)
     this.bindListeners({
       handleLoad: actions.LOAD,
       handleUpdate: actions.UPDATE,
@@ -99,6 +99,7 @@ class SettingsStore {
   /* **************************************************************************/
 
   handleLoad () {
+    console.log('handleLoad')
     // Migrate
     migration.from_1_3_1()
     this.trayDefaults = SettingsStore.generateTrayThemedDefaults()
@@ -111,6 +112,7 @@ class SettingsStore {
     this.proxy = new ProxySettings(persistence.getJSONItemSync('proxy', {}))
     this.tray = new TraySettings(persistence.getJSONItemSync('tray', {}), this.trayDefaults)
     this.ui = new UISettings(persistence.getJSONItemSync('ui', {}))
+    console.log('handleLoad', this)
   }
 
   /* **************************************************************************/

@@ -1,7 +1,7 @@
 const React = require('react')
 const { mailboxStore, mailboxActions } = require('../../stores/mailbox')
 const { settingsStore } = require('../../stores/settings')
-const { ipcRenderer } = window.nativeRequire('electron')
+const { ipcRenderer } = require('electron')
 const {mailboxDispatch, navigationDispatch} = require('../../Dispatch')
 const { WebView } = require('../../Components')
 const MailboxSearch = require('./MailboxSearch')

@@ -1,5 +1,6 @@
 const Minivents = require('minivents')
-const {ipcRenderer} = window.nativeRequire('electron')
+// const {ipcRenderer} = require('electron')
+const {ipcRenderer} = require('electron')
 
 class NavigationDispatch {
 

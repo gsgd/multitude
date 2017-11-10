@@ -1,5 +1,3 @@
-import 'bootstrap-grid'
-
 const React = require('react')
 
 module.exports = React.createClass({

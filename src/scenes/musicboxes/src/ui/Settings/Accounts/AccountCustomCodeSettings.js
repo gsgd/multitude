@@ -9,7 +9,7 @@ const { USER_SCRIPTS_WEB_URL } = require('shared/constants')
 const Colors = require('material-ui/styles/colors')
 const {
   remote: {shell}
-} = window.nativeRequire('electron')
+} = require('electron')
 
 module.exports = React.createClass({
   /* **************************************************************************/

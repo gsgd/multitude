@@ -12,7 +12,7 @@ const AccountCustomCodeSettings = require('./Accounts/AccountCustomCodeSettings'
 const AccountAdvancedSettings = require('./Accounts/AccountAdvancedSettings')
 const AccountManagementSettings = require('./Accounts/AccountManagementSettings')
 const AccountServiceSettings = require('./Accounts/AccountServiceSettings')
-const pkg = window.appPackage()
+const pkg = require('shared/appPackage')
 
 module.exports = React.createClass({
   displayName: 'AccountSettings',

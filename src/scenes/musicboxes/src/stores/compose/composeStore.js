@@ -1,7 +1,7 @@
 const alt = require('../alt')
 const actions = require('./composeActions')
 const uuid = require('uuid')
-const { ipcRenderer } = window.nativeRequire('electron')
+const { ipcRenderer } = require('electron')
 
 class ComposeStore {
   /* **************************************************************************/

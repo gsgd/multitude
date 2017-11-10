@@ -1,5 +1,5 @@
 const alt = require('../alt')
-const { ipcRenderer } = window.nativeRequire('electron')
+const { ipcRenderer } = require('electron')
 const { Mailbox } = require('shared/Models/Mailbox')
 
 class MailboxWizardActions {

@@ -1,4 +1,5 @@
-import './NewsDialog.less'
+const addLink = require('shared/addLink')
+addLink(__dirname, './NewsDialog.less')
 
 const React = require('react')
 const shallowCompare = require('react-addons-shallow-compare')
@@ -8,7 +9,7 @@ const navigationDispatch = require('../Dispatch/navigationDispatch')
 const WebView = require('../Components/WebView')
 const {
   remote: {shell}
-} = window.nativeRequire('electron')
+} = require('electron')
 
 module.exports = React.createClass({
   /* **************************************************************************/

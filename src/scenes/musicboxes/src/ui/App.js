@@ -1,13 +1,14 @@
 const React = require('react')
 const flux = {
-  mailbox: require('../stores/mailbox'),
+  // mailbox: require('../stores/mailbox'),
   musicbox: require('../stores/musicbox'),
-  google: require('../stores/google'),
+  // google: require('../stores/google'),
   settings: require('../stores/settings')
 }
+console.log(flux)
 const {
   ipcRenderer, remote: {shell}
-} = window.nativeRequire('electron')
+} = require('electron')
 const {
   musicboxDispatch, navigationDispatch
 } = require('../Dispatch')
@@ -45,7 +46,7 @@ module.exports = React.createClass({
 
     flux.musicbox.S.listen(this.musicboxesChanged)
     flux.settings.S.listen(this.settingsChanged)
-    flux.google.A.startPollingUpdates()
+    // flux.google.A.startPollingUpdates()
 
     musicboxDispatch.on('blurred', this.musicboxBlurred)
 
@@ -58,7 +59,7 @@ module.exports = React.createClass({
 
     flux.musicbox.S.unlisten(this.musicboxesChanged)
     flux.settings.S.unlisten(this.settingsChanged)
-    flux.google.A.stopPollingUpdates()
+    // flux.google.A.stopPollingUpdates()
 
     ipcRenderer.removeListener('download-completed', this.downloadCompleted)
 
@@ -70,6 +71,7 @@ module.exports = React.createClass({
   /* **************************************************************************/
 
   getInitialState () {
+    console.log('getInitialState', flux.settings.S.getState(), flux.musicbox.S.getState())
     const settingsStore = flux.settings.S.getState()
     const musicboxStore = flux.musicbox.S.getState()
     return {
@@ -157,6 +159,7 @@ module.exports = React.createClass({
   },
 
   render () {
+    console.log('render', this.state)
     const {
       traySettings,
       uiSettings,

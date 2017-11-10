@@ -2,9 +2,10 @@ const React = require('react')
 const MailboxTabSleepable = require('../MailboxTabSleepable')
 const Mailbox = require('shared/Models/Mailbox/Mailbox')
 const { settingsStore } = require('../../../stores/settings')
-const {
-  remote: {shell}
-} = window.nativeRequire('electron')
+// const {
+//   remote: {shell}
+// } = require('electron')
+const { remote: {shell} } = require('electron')
 
 const REF = 'mailbox_tab'
 

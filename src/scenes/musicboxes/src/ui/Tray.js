@@ -1,4 +1,4 @@
-const electron = window.nativeRequire('electron')
+const electron = require('electron')
 const { ipcRenderer, remote } = electron
 const { Tray, Menu, nativeImage } = remote
 const React = require('react')
@@ -127,11 +127,11 @@ module.exports = React.createClass({
   // Rendering
   /* **************************************************************************/
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate: function (nextProps, nextState) {
     if (this.props.unreadCount !== nextProps.unreadCount) { return true }
     if (this.state.menuUnreadMessagesSig !== nextState.menuUnreadMessagesSig) { return true }
 
-    const trayDiff = [
+    return [
       'unreadColor',
       'unreadBackgroundColor',
       'readColor',
@@ -141,9 +141,6 @@ module.exports = React.createClass({
     ].findIndex((k) => {
       return this.props.traySettings[k] !== nextProps.traySettings[k]
     }) !== -1
-    if (trayDiff) { return true }
-
-    return false
   },
 
   /**
@@ -238,7 +235,7 @@ module.exports = React.createClass({
 
     const trayConfig = {
       pixelRatio: this.trayIconPixelRatio(),
-      size: this.trayIconSize(),
+      size: this.trayIconSize()
     }
 
     TrayRenderer.renderNativeImage(Object.assign({}, trayConfig, {

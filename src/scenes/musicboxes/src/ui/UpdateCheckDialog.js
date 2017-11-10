@@ -6,10 +6,10 @@ const { UPDATE_CHECK_URL, UPDATE_CHECK_INTERVAL, UPDATE_DOWNLOAD_URL } = require
 const { FlatButton, RaisedButton, Dialog } = require('material-ui')
 const settingsStore = require('../stores/settings/settingsStore')
 const settingsActions = require('../stores/settings/settingsActions')
-const pkg = window.appPackage()
+const pkg = require('shared/appPackage')
 const {
   remote: {shell}
-} = window.nativeRequire('electron')
+} = require('electron')
 
 module.exports = React.createClass({
   /* **************************************************************************/

@@ -1,4 +1,4 @@
-const {nativeImage} = window.nativeRequire('electron').remote
+const {nativeImage} = require('electron').remote
 const B64_SVG_PREFIX = 'data:image/svg+xml;base64,'
 const MULTI_SVG = window.atob(require('shared/b64Assets').MULTI_SVG.replace(B64_SVG_PREFIX, ''))
 

@@ -4,6 +4,7 @@ const { musicboxWizardStore, musicboxWizardActions } = require('../../stores/mus
 const shallowCompare = require('react-addons-shallow-compare')
 const { Musicbox } = require('shared/Models/Musicbox')
 const Colors = require('material-ui/styles/colors')
+const AssetsDir = '../../../../assets'
 
 const styles = {
   gridList: {},
@@ -32,22 +33,22 @@ const styles = {
 
 const tilesData = [
   {
-    img: '../../images/deezer_icon_512.svg',
+    img: `${AssetsDir}/images/deezer_icon_512.svg`,
     title: 'Deezer',
     type: Musicbox.TYPE_DEEZER
   },
   {
-    img: '../../images/mfp_icon_512.jpg',
+    img: `${AssetsDir}/images/mfp_icon_512.jpg`,
     title: 'Music For Programmers',
     type: Musicbox.TYPE_MFP
   },
   {
-    img: '../../images/overcast_icon_512.svg',
+    img: `${AssetsDir}/images/overcast_icon_512.svg`,
     title: 'Overcast',
     type: Musicbox.TYPE_OVERCAST
   },
   {
-    img: '../../images/spotify_icon_512.svg',
+    img: `${AssetsDir}/images/spotify_icon_512.svg`,
     title: 'Spotify',
     type: Musicbox.TYPE_SPOTIFY
   }

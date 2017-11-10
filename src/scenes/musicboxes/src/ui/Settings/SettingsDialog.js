@@ -8,7 +8,7 @@ const AccountSettings = require('./AccountSettings')
 const AdvancedSettings = require('./AdvancedSettings')
 const Colors = require('material-ui/styles/colors')
 const styles = require('./settingStyles')
-const { ipcRenderer } = window.nativeRequire('electron')
+const { ipcRenderer } = require('electron')
 
 module.exports = React.createClass({
   /* **************************************************************************/

@@ -1,4 +1,7 @@
-const { BrowserWindow } = window.nativeRequire('electron').remote
+const { enableLiveReload } = require('electron-compile')
+enableLiveReload()
+
+const { BrowserWindow } = require('electron').remote
 const path = require('path')
 
 class Notification {

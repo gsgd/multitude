@@ -3,12 +3,12 @@ const {Paper} = require('material-ui')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const Colors = require('material-ui/styles/colors')
-const { remote } = window.nativeRequire('electron')
+const { remote } = require('electron')
 const { shell } = remote
 const { WEB_URL, GITHUB_URL, GITHUB_ISSUE_URL } = require('shared/constants')
 const {mailboxDispatch} = require('../../../Dispatch')
 const mailboxStore = require('../../../stores/mailbox/mailboxStore')
-const pkg = window.appPackage()
+const pkg = require('shared/appPackage')
 
 module.exports = React.createClass({
   /* **************************************************************************/

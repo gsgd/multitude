@@ -5,9 +5,9 @@ const LanguageSettings = require('shared/Models/Settings/LanguageSettings')
 
 const fs = require('fs')
 const path = require('path')
-const pkg = window.appPackage()
-const AppDirectory = window.appNodeModulesRequire('appdirectory')
-const mkdirp = window.appNodeModulesRequire('mkdirp')
+const pkg = require('shared/appPackage')
+const AppDirectory = require('appdirectory')
+const mkdirp = require('mkdirp')
 const appDirectory = new AppDirectory(pkg.name).userData()
 const userDictionariesPath = LanguageSettings.userDictionariesPath(appDirectory)
 

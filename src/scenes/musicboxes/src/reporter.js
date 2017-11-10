@@ -1,4 +1,4 @@
-const ipc = window.nativeRequire('electron').ipcRenderer
+const ipc = require('electron').ipcRenderer
 
 class Reporter {
   reportError (errorStr) {

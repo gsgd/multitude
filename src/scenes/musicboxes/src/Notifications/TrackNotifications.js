@@ -5,7 +5,7 @@ const flux = {
 const constants = require('shared/constants')
 const {getVoices, getIntro} = require('shared/voices')
 const {musicboxDispatch} = require('../Dispatch')
-const {ipcRenderer} = window.nativeRequire('electron')
+const {ipcRenderer} = require('electron')
 
 class TrackNotifications {
 

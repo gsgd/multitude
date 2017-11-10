@@ -3,10 +3,10 @@ const path = require('path')
 const MusicboxesSessionManager = require('./MusicboxesSessionManager')
 const settingStore = require('../stores/settingStore')
 
-const MAILBOXES_DIR = path.resolve(path.join(__dirname, '/../../../scenes/musicboxes'))
+const MUSICBOXES_DIR = path.resolve(path.join(__dirname, '/../../scenes/musicboxes/src'))
 const ALLOWED_URLS = new Set([
-  'file://' + path.join(MAILBOXES_DIR, 'musicboxes.html'),
-  'file://' + path.join(MAILBOXES_DIR, 'offline.html')
+  'file://' + path.join(MUSICBOXES_DIR, 'musicboxes.html'),
+  'file://' + path.join(MUSICBOXES_DIR, 'offline.html')
 ])
 
 class MusicboxesWindow extends WMailWindow {
@@ -30,7 +30,7 @@ class MusicboxesWindow extends WMailWindow {
   * @param hidden=false: true to start the window hidden
   */
   start (hidden = false) {
-    super.start('file://' + path.join(MAILBOXES_DIR, 'musicboxes.html'), {
+    super.start('file://' + path.join(MUSICBOXES_DIR, 'musicboxes.html'), {
       show: !hidden,
       minWidth: 770,
       minHeight: 300,

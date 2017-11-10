@@ -1,5 +1,6 @@
 const alt = require('../alt')
-const { ipcRenderer, remote } = window.nativeRequire('electron')
+// const { ipcRenderer, remote } = require('electron')
+const {ipcRenderer, remote} = require('electron')
 const { session } = remote
 const mailboxDispatch = require('../../Dispatch/mailboxDispatch')
 const Mailbox = require('shared/Models/Mailbox/Mailbox')

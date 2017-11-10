@@ -8,7 +8,7 @@ const styles = require('../SidelistStyles')
 const SidelistItemMailboxPopover = require('./SidelistItemMailboxPopover')
 const SidelistItemMailboxAvatar = require('./SidelistItemMailboxAvatar')
 const SidelistItemMailboxServices = require('./SidelistItemMailboxServices')
-const pkg = window.appPackage()
+const pkg = require('shared/appPackage')
 
 module.exports = React.createClass({
   /* **************************************************************************/

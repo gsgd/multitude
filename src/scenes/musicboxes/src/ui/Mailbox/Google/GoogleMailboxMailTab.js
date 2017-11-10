@@ -6,10 +6,10 @@ const { mailboxStore } = require('../../../stores/mailbox')
 const { settingsStore } = require('../../../stores/settings')
 const { googleActions } = require('../../../stores/google')
 const { mailboxDispatch } = require('../../../Dispatch')
-const URL = window.nativeRequire('url')
+const URL = require('url')
 const {
   remote: {shell}, ipcRenderer
-} = window.nativeRequire('electron')
+} = require('electron')
 
 const REF = 'mailbox_tab'
 

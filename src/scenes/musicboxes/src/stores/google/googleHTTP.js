@@ -1,4 +1,4 @@
-const google = window.appNodeModulesRequire('googleapis')
+const google = require('googleapis')
 const gPlus = google.plus('v1')
 const gmail = google.gmail('v1')
 const OAuth2 = google.auth.OAuth2

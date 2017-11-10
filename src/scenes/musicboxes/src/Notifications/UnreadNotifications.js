@@ -4,7 +4,7 @@ const flux = {
 }
 const constants = require('shared/constants')
 const {mailboxDispatch} = require('../Dispatch')
-const {ipcRenderer} = window.nativeRequire('electron')
+const {ipcRenderer} = require('electron')
 
 class UnreadNotifications {
 

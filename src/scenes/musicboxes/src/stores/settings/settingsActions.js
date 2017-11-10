@@ -2,7 +2,7 @@ const alt = require('../alt')
 const {
   Settings: {SettingsIdent: {SEGMENTS}}
 } = require('shared/Models')
-const {ipcRenderer} = window.nativeRequire('electron')
+const {ipcRenderer} = require('electron')
 
 class SettingsActions {
   /* **************************************************************************/
@@ -12,7 +12,10 @@ class SettingsActions {
   /**
   * Indicates the store to drop all data and load from disk
   */
-  load () { return {} }
+  load () {
+    console.log('load')
+    return {}
+  }
 
   /* **************************************************************************/
   // Updates

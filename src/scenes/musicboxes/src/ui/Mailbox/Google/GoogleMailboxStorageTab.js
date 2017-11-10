@@ -2,10 +2,10 @@ const React = require('react')
 const MailboxTabSleepable = require('../MailboxTabSleepable')
 const Mailbox = require('shared/Models/Mailbox/Mailbox')
 const { settingsStore } = require('../../../stores/settings')
-const URL = window.nativeRequire('url')
+const URL = require('url')
 const {
   remote: {shell}, ipcRenderer
-} = window.nativeRequire('electron')
+} = require('electron')
 
 const REF = 'mailbox_tab'
 

@@ -4,10 +4,10 @@ const MusicboxTab = require('../MusicboxTab')
 const { musicboxStore } = require('../../../stores/musicbox')
 const { settingsStore } = require('../../../stores/settings')
 // const { musicboxDispatch } = require('../../../Dispatch')
-const URL = window.nativeRequire('url')
+const URL = require('url')
 const {
   remote: {shell}, ipcRenderer
-} = window.nativeRequire('electron')
+} = require('electron')
 
 const REF = 'musicbox_tab'
 

@@ -1,8 +1,8 @@
 credentials.js
 node_modules
-bin
-dist
+out
 *.log
 actual*.js
 icons
-out/
+.eslintcache
+__*

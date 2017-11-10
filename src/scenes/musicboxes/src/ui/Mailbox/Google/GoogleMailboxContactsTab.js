@@ -4,7 +4,7 @@ const Mailbox = require('shared/Models/Mailbox/Mailbox')
 const { settingsStore } = require('../../../stores/settings')
 const {
   remote: {shell}
-} = window.nativeRequire('electron')
+} = require('electron')
 
 const REF = 'mailbox_tab'
 

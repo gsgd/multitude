@@ -1,5 +1,6 @@
 const alt = require('../alt')
-const { ipcRenderer, remote } = window.nativeRequire('electron')
+// const { ipcRenderer, remote } = require('electron')
+const {ipcRenderer, remote} = require('electron')
 const { session } = remote
 const musicboxDispatch = require('../../Dispatch/musicboxDispatch')
 const Musicbox = require('shared/Models/Musicbox/Musicbox')

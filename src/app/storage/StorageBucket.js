@@ -1,6 +1,6 @@
 const {ipcMain} = require('electron')
 const AppDirectory = require('appdirectory')
-const pkg = require('../../package.json')
+const pkg = require('../../../package.json')
 const mkdirp = require('mkdirp')
 const path = require('path')
 const Minivents = require('minivents')

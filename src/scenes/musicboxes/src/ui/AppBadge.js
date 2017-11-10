@@ -1,6 +1,6 @@
 const React = require('react')
 const shallowCompare = require('react-addons-shallow-compare')
-const { remote } = window.nativeRequire('electron')
+const { remote } = require('electron')
 const {nativeImage, app} = remote
 
 const AppBadge = React.createClass({

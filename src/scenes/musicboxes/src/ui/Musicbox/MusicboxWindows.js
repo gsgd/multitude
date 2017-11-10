@@ -1,4 +1,5 @@
-import './musicboxWindow.less'
+const addLink = require('shared/addLink')
+addLink(__dirname, './musicboxWindow.less')
 
 const React = require('react')
 const { musicboxStore } = require('../../stores/musicbox')
@@ -88,7 +89,7 @@ module.exports = React.createClass({
       musicboxId={musicboxId}
       key={key}
       service={service}
-      preload={`../platform/webviewInjection/${musicboxType}Streaming`}
+      preload={`../../platform/src/webviewInjection/${musicboxType}Streaming`}
     />)
   },
 

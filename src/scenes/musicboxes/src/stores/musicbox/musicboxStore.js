@@ -9,7 +9,7 @@ const persistence = {
 
 const {MUSICBOX_INDEX_KEY, MUSICBOX_ACTIVE_KEY} = require('shared/constants')
 const { BLANK_PNG } = require('shared/b64Assets')
-const { ipcRenderer } = window.nativeRequire('electron')
+const { ipcRenderer } = require('electron')
 
 // persistence.musicbox.setJSONItemSync(MUSICBOX_ACTIVE_KEY, {MUSICBOX_ACTIVE_KEY: null})
 

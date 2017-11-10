@@ -78,7 +78,7 @@ module.exports = React.createClass({
     const {showTitlebar, showWizard, showNewsInSidebar, hasUnopenedNewsId, hasUpdateInfo, activeMusicbox} = this.state
     const isDarwin = process.platform === 'darwin'
     const { style, ...passProps } = this.props
-    const currentStyle = !!activeMusicbox ? activeMusicbox.style : {}
+    const currentStyle = activeMusicbox ? activeMusicbox.style : {}
 
     let extraItems = 0
     extraItems += showWizard ? 1 : 0
@@ -96,7 +96,7 @@ module.exports = React.createClass({
       extraItems === 2 ? styles.footer4Icons : undefined
     )
 
-    const color = !!activeMusicbox ? activeMusicbox.color : Colors.lightBlue100
+    const color = activeMusicbox ? activeMusicbox.color : Colors.lightBlue100
 
     return (
       <div

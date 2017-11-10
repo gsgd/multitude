@@ -1,5 +1,5 @@
 const alt = require('../alt')
-const { ipcRenderer } = window.nativeRequire('electron')
+const { ipcRenderer } = require('electron')
 const URI = require('urijs')
 const addressparser = require('addressparser')
 

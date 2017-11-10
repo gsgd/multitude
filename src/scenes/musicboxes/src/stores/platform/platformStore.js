@@ -1,9 +1,9 @@
 const alt = require('../alt')
 const actions = require('./platformActions')
-const { remote } = window.nativeRequire('electron')
+const { remote } = require('electron')
 const path = require('path')
 const fs = require('fs')
-const windowsShortcuts = process.platform === 'win32' ? window.appNodeModulesRequire('windows-shortcuts') : null
+const windowsShortcuts = process.platform === 'win32' ? require('windows-shortcuts') : null
 
 const WIN32_LOGIN_PREF_MAX_AGE = 1000 * 30 // 30 secs
 const WIN32_SHORTCUT_PATH = (() => {

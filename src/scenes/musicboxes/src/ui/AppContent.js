@@ -1,6 +1,3 @@
-import './layout.less'
-import './appContent.less'
-
 const React = require('react')
 const MusicboxWindows = require('./Musicbox/MusicboxWindows')
 const MailboxComposePicker = require('./Mailbox/MailboxComposePicker')
@@ -14,6 +11,10 @@ const { settingsStore } = require('../stores/settings')
 const MusicboxWizard = require('./MusicboxWizard')
 const AppWizard = require('./AppWizard')
 const NewsDialog = require('./NewsDialog')
+
+const addLink = require('shared/addLink')
+addLink(__dirname, '/layout.less')
+addLink(__dirname, '/appContent.less')
 
 module.exports = React.createClass({
   displayName: 'AppContent',

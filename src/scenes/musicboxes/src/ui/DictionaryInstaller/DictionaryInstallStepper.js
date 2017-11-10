@@ -8,7 +8,7 @@ const dictionariesStore = require('../../stores/dictionaries/dictionariesStore')
 const dictionariesActions = require('../../stores/dictionaries/dictionariesActions')
 const {
   remote: {shell}
-} = window.nativeRequire('electron')
+} = require('electron')
 
 const STEPS = {
   PICK: 0,

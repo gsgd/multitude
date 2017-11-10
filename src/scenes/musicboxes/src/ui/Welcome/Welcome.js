@@ -3,6 +3,7 @@ const { musicboxWizardActions } = require('../../stores/musicboxWizard')
 const { RaisedButton } = require('material-ui')
 const Colors = require('material-ui/styles/colors')
 const MultitudeIcon = require('shared/MultitudeIcon')
+const AssetsDir = '../../../../assets'
 
 const styles = {
   icon: {
@@ -14,7 +15,7 @@ const styles = {
     backgroundSize: 'contain',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    backgroundImage: 'url("../../images/multitude.svg")'
+    backgroundImage: `url("${AssetsDir}/images/multitude.svg")`
   },
   container: {
     textAlign: 'center',

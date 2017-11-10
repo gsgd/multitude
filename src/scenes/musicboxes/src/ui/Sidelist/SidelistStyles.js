@@ -1,6 +1,7 @@
-import './SidelistStyles.less'
 const Colors = require('material-ui/styles/colors')
 const FOOTER_ITEM_HEIGHT = 50
+const addLink = require('shared/addLink')
+addLink(__dirname, './SidelistStyles.less')
 
 module.exports = {
   /**
