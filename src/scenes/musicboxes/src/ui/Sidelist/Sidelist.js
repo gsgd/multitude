@@ -8,6 +8,7 @@ const { settingsStore } = require('../../stores/settings')
 const {musicboxStore} = require('../../stores/musicbox')
 const styles = require('./SidelistStyles')
 const shallowCompare = require('react-addons-shallow-compare')
+const Colors = require('material-ui/styles/colors')
 
 module.exports = React.createClass({
 
@@ -40,7 +41,7 @@ module.exports = React.createClass({
     const musicboxState = musicboxStore.getState()
     return {
       showTitlebar: settingsState.ui.showTitlebar, // purposely don't update this, because effects are only seen after restart
-      showWizard: !settingsState.app.hasSeenAppWizard,
+      showWizard: true || !settingsState.app.hasSeenAppWizard,
       showNewsInSidebar: settingsState.news.showNewsInSidebar,
       hasUnopenedNewsId: settingsState.news.hasUnopenedNewsId,
       hasUpdateInfo: settingsState.news.hasUpdateInfo,
@@ -58,7 +59,7 @@ module.exports = React.createClass({
   },
 
   musicboxUpdated (musicboxState) {
-    if (this.state.activeMusicbox.id === musicboxState.activeMusicboxId()) { return }
+    if (this.state.activeMusicbox && this.state.activeMusicbox.id === musicboxState.activeMusicboxId()) { return }
     // console.log(musicboxState)
     this.setState({
       activeMusicbox: musicboxState.activeMusicbox()
@@ -77,7 +78,7 @@ module.exports = React.createClass({
     const {showTitlebar, showWizard, showNewsInSidebar, hasUnopenedNewsId, hasUpdateInfo, activeMusicbox} = this.state
     const isDarwin = process.platform === 'darwin'
     const { style, ...passProps } = this.props
-    const currentStyle = activeMusicbox.style
+    const currentStyle = !!activeMusicbox ? activeMusicbox.style : {}
 
     let extraItems = 0
     extraItems += showWizard ? 1 : 0
@@ -94,6 +95,9 @@ module.exports = React.createClass({
       extraItems === 1 ? styles.footer3Icons : undefined,
       extraItems === 2 ? styles.footer4Icons : undefined
     )
+
+    const color = !!activeMusicbox ? activeMusicbox.color : Colors.lightBlue100
+
     return (
       <div
         {...passProps}
@@ -104,11 +108,11 @@ module.exports = React.createClass({
           <SidelistMusicboxes />
         </div>
         <div style={footerStyle}>
-          {showWizard ? (<SidelistItemWizard iconColor={activeMusicbox.color} />) : undefined}
+          {showWizard ? (<SidelistItemWizard />) : undefined}
           {hasUpdateInfo && (showNewsInSidebar || hasUnopenedNewsId) ? (
-            <SidelistItemNews iconColor={activeMusicbox.color} />) : undefined}
-          <SidelistItemAddMusicbox iconColor={activeMusicbox.color} />
-          <SidelistItemSettings iconColor={activeMusicbox.color} />
+            <SidelistItemNews iconColor={color} />) : undefined}
+          <SidelistItemAddMusicbox iconColor={color} />
+          <SidelistItemSettings iconColor={color} />
         </div>
       </div>
     )

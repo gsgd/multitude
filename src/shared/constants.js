@@ -1,5 +1,5 @@
-const BASE_URL = 'http://localhost:4000'
-const GITHUB_URL = 'https://github.com/gsgd/multitude/'
+const BASE_URL = 'http://gsgd.github.io/multitude'
+const GITHUB_URL = 'https://github.com/gsgd/multitude'
 
 module.exports = Object.freeze({
   APP_ID: 'gsgd.multitude',

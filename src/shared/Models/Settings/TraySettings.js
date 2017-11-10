@@ -21,10 +21,10 @@ class TraySettings extends Model {
 
   get show () { return this._value_('show', true) }
   get showUnreadCount () { return this._value_('showUnreadCount', true) }
-  get readColor () { return this._value_('readColor', this.__themedDefaults__.readColor) }
-  get readBackgroundColor () { return this._value_('readBackgroundColor', this.__themedDefaults__.readBackgroundColor) }
-  get unreadColor () { return this._value_('unreadColor', this.__themedDefaults__.unreadColor) }
-  get unreadBackgroundColor () { return this._value_('unreadBackgroundColor', this.__themedDefaults__.unreadBackgroundColor) }
+  get color () { return this._value_('color', this.__themedDefaults__.color) }
+  get backgroundColor () { return this._value_('backgroundColor', this.__themedDefaults__.backgroundColor) }
+  get pressedColor () { return this._value_('pressedColor', this.__themedDefaults__.pressedColor) }
+  get pressedBackgroundColor () { return this._value_('pressedBackgroundColor', this.__themedDefaults__.pressedBackgroundColor) }
 
   get dpiMultiplier () {
     let defaultValue = 1

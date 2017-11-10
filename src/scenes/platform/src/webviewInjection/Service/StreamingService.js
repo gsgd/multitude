@@ -1,8 +1,15 @@
 const ChangeEmitter = require('../ChangeEmitter/ChangeEmitter')
 const {ipcRenderer} = require('electron')
-const { MUSICBOX_WINDOW_INIT, MUSICBOX_WINDOW_PLAY,
-  MUSICBOX_WINDOW_PAUSE, MUSICBOX_WINDOW_PLAY_PAUSE, MUSICBOX_WINDOW_FADE_TO,
-  MUSICBOX_WINDOW_NEXT_TRACK, MUSICBOX_WINDOW_PREVIOUS_TRACK } = require('shared/constants')
+const {
+  MUSICBOX_WINDOW_INIT_REQUEST,
+  MUSICBOX_WINDOW_INIT,
+  MUSICBOX_WINDOW_PLAY,
+  MUSICBOX_WINDOW_PAUSE,
+  MUSICBOX_WINDOW_PLAY_PAUSE,
+  MUSICBOX_WINDOW_FADE_TO,
+  MUSICBOX_WINDOW_NEXT_TRACK,
+  MUSICBOX_WINDOW_PREVIOUS_TRACK
+} = require('shared/constants')
 
 class StreamingService {
 
@@ -20,8 +27,12 @@ class StreamingService {
     }
 
     this.changeEmitter = new ChangeEmitter(this.player)
+    // before anythign else we request init
+    ipcRenderer.on(MUSICBOX_WINDOW_INIT, this.handleInit.bind(this))
+    this.changeEmitter.transmitEvent(MUSICBOX_WINDOW_INIT_REQUEST, true)
+
     document.addEventListener('DOMContentLoaded', this.addBindings.bind(this))
-    window.addEventListener('beforeunload', this.removeBindings.bind(this))
+    // window.addEventListener('beforeunload', this.removeBindings.bind(this))
   }
 
   get player () {
@@ -33,27 +44,26 @@ class StreamingService {
   }
 
   addBindings () {
+    console.log('addBindings')
     // Bind our listeners
     ipcRenderer.on(MUSICBOX_WINDOW_FADE_TO, this.handleFadeTo.bind(this))
-    // Bind our strategies if they are there
-    if (this.player.handleInit !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_INIT, this.player.handleInit.bind(this.player)) }
-    if (this.player.handlePlay !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PLAY, this.player.handlePlay.bind(this.player)) }
-    if (this.player.handlePause !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PAUSE, this.player.handlePause.bind(this.player)) }
-    if (this.player.handlePlayPause !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PLAY_PAUSE, this.player.handlePlayPause.bind(this.player)) }
-    if (this.player.handleNextTrack !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_NEXT_TRACK, this.player.handleNextTrack.bind(this.player)) }
-    if (this.player.handlePreviousTrack !== undefined) { ipcRenderer.on(MUSICBOX_WINDOW_PREVIOUS_TRACK, this.player.handlePreviousTrack.bind(this.player)) }
+    ipcRenderer.on(MUSICBOX_WINDOW_PLAY, this.handlePlay.bind(this))
+    ipcRenderer.on(MUSICBOX_WINDOW_PAUSE, this.handlePause.bind(this))
+    ipcRenderer.on(MUSICBOX_WINDOW_PLAY_PAUSE, this.handlePlayPause.bind(this))
+    ipcRenderer.on(MUSICBOX_WINDOW_NEXT_TRACK, this.handleNextTrack.bind(this))
+    ipcRenderer.on(MUSICBOX_WINDOW_PREVIOUS_TRACK, this.handlePreviousTrack.bind(this))
   }
 
   removeBindings () {
-    // Bind our listeners
+    console.log('removeBindings')
+    // unbind our listeners
     ipcRenderer.removeListener(MUSICBOX_WINDOW_FADE_TO, this.handleFadeTo.bind(this))
-    // Bind our strategies if they are there
-    if (this.player.handleInit !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_INIT, this.player.handleInit.bind(this.player)) }
-    if (this.player.handlePlay !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_PLAY, this.player.handlePlay.bind(this.player)) }
-    if (this.player.handlePause !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_PAUSE, this.player.handlePause.bind(this.player)) }
-    if (this.player.handlePlayPause !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_PLAY_PAUSE, this.player.handlePlayPause.bind(this.player)) }
-    if (this.player.handleNextTrack !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_NEXT_TRACK, this.player.handleNextTrack.bind(this.player)) }
-    if (this.player.handlePreviousTrack !== undefined) { ipcRenderer.removeListener(MUSICBOX_WINDOW_PREVIOUS_TRACK, this.player.handlePreviousTrack.bind(this.player)) }
+    ipcRenderer.removeListener(MUSICBOX_WINDOW_INIT, this.handleInit.bind(this))
+    ipcRenderer.removeListener(MUSICBOX_WINDOW_PLAY, this.handlePlay.bind(this))
+    ipcRenderer.removeListener(MUSICBOX_WINDOW_PAUSE, this.handlePause.bind(this))
+    ipcRenderer.removeListener(MUSICBOX_WINDOW_PLAY_PAUSE, this.handlePlayPause.bind(this))
+    ipcRenderer.removeListener(MUSICBOX_WINDOW_NEXT_TRACK, this.handleNextTrack.bind(this))
+    ipcRenderer.removeListener(MUSICBOX_WINDOW_PREVIOUS_TRACK, this.handlePreviousTrack.bind(this))
   }
 
   fadeTo (value, time, step) {
@@ -96,6 +106,27 @@ class StreamingService {
     const { volume, duration } = data
     this.fadeTo(volume, duration)
   }
+
+  handleInit (evt, data) {
+    console.log('handleInit', evt, data)
+    if (this.player.handleInit !== undefined) { this.player.handleInit(evt, data) }
+  }
+  handlePlay (evt, data) {
+    if (this.player.handlePlay !== undefined) { this.player.handlePlay(evt, data) }
+  }
+  handlePause (evt, data) {
+    if (this.player.handlePause !== undefined) { this.player.handlePause(evt, data) }
+  }
+  handlePlayPause (evt, data) {
+    if (this.player.handlePlayPause !== undefined) { this.player.handlePlayPause(evt, data) }
+  }
+  handleNextTrack (evt, data) {
+    if (this.player.handleNextTrack !== undefined) { this.player.handleNextTrack(evt, data) }
+  }
+  handlePreviousTrack (evt, data) {
+    if (this.player.handlePreviousTrack !== undefined) { this.player.handlePreviousTrack(evt, data) }
+  }
+
 }
 
 module.exports = StreamingService

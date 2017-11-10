@@ -31,18 +31,18 @@ class SettingsStore {
   static generateTrayThemedDefaults () {
     if (process.platform === 'darwin') {
       return {
-        readColor: systemPreferences.isDarkMode() ? '#FFFFFF' : '#000000',
-        readBackgroundColor: 'transparent',
-        unreadColor: '#C82018',
-        unreadBackgroundColor: 'transparent'
+        color: systemPreferences.isDarkMode() ? '#FFFFFF' : '#474747',
+        backgroundColor: 'transparent',
+        pressedColor: '#FFF',
+        pressedBackgroundColor: 'transparent'
       }
     } else if (process.platform === 'win32') {
       // Windows is predominantely dark themed, but with no way to check assume it is
       return {
-        readColor: '#FFFFFF',
-        readBackgroundColor: 'transparent',
-        unreadColor: '#C82018',
-        unreadBackgroundColor: 'transparent'
+        color: '#FFFFFF',
+        backgroundColor: 'transparent',
+        pressedColor: '#C82018',
+        pressedBackgroundColor: 'transparent'
       }
     } else if (process.platform === 'linux') {
       let isDark = false
@@ -55,19 +55,19 @@ class SettingsStore {
       } catch (ex) { }
 
       return {
-        readColor: isDark ? '#FFFFFF' : '#000000',
-        readBackgroundColor: 'transparent',
-        unreadColor: '#C82018',
-        unreadBackgroundColor: 'transparent'
+        color: isDark ? '#FFFFFF' : '#000000',
+        backgroundColor: 'transparent',
+        pressedColor: '#C82018',
+        pressedBackgroundColor: 'transparent'
       }
     }
 
     // Catch all
     return {
-      readColor: '#000000',
-      readBackgroundColor: 'transparent',
-      unreadColor: '#C82018',
-      unreadBackgroundColor: 'transparent'
+      color: '#000000',
+      backgroundColor: 'transparent',
+      pressedColor: '#C82018',
+      pressedBackgroundColor: 'transparent'
     }
   }
 

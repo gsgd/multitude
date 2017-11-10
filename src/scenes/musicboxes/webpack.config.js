@@ -49,7 +49,7 @@ const options = {
     }),
 
     // Minify in production
-    isProduction ? new webpack.optimize.UglifyJsPlugin({
+    (false && isProduction) ? new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: false }
     }) : undefined
   ].filter((p) => !!p),

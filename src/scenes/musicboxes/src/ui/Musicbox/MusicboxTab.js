@@ -250,8 +250,9 @@ module.exports = React.createClass({
   * @param musicboxId: int the id of the musicbox
   */
   handleMusicboxInitRequest ({musicboxId}) {
-    // console.log('handleMusicboxInit', this.props.musicboxId, musicboxId);
+    console.log('handleMusicboxInit.1', this.props.musicboxId, musicboxId, this.state.musicbox.init)
     if (this.props.musicboxId !== musicboxId) { return }
+    console.log('handleMusicboxInit.2', this.props.musicboxId, musicboxId, this.state.musicbox.init)
     this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_INIT, this.state.musicbox.init)
   },
 
@@ -371,12 +372,12 @@ module.exports = React.createClass({
   * @param evt: the event that fired
   */
   dispatchFromBrowserIPCMessage (evt) {
-    // console.log('dispatchFromBrowserIPCMessage', evt.path[0].id, evt.channel.data, evt)
+    console.log('dispatchFromBrowserIPCMessage', evt.path[0].id, evt.channel.type, evt.channel.data)
     const musicboxId = evt.path[0].id
     switch (evt.channel.type) {
       case 'open-settings': navigationDispatch.openSettings(); break
-      // case MUSICBOX_WINDOW_INIT_REQUEST: this.handleMusicboxInitRequest(evt.channel.data); break
-      case MUSICBOX_WINDOW_INIT_REQUEST: musicboxDispatch.musicboxInitRequest(musicboxId, evt.channel.data); break
+      case MUSICBOX_WINDOW_INIT_REQUEST: this.handleMusicboxInitRequest({musicboxId}); break
+      // case MUSICBOX_WINDOW_INIT_REQUEST: musicboxDispatch.musicboxInitRequest(musicboxId, evt.channel.data); break
       case MUSICBOX_WINDOW_TRACK_CHANGED: musicboxDispatch.trackChanged(musicboxId, evt.channel.data); break
       case MUSICBOX_WINDOW_TRACKLIST_CHANGED: musicboxDispatch.tracklistChanged(musicboxId, evt.channel.data); break
       case MUSICBOX_WINDOW_PLAYING: musicboxDispatch.playingChanged(musicboxId, evt.channel.data); break

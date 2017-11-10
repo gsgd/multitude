@@ -1,7 +1,6 @@
 const {ipcRenderer} = require('electron')
 const throttle = require('lodash.throttle')
 const {
-  MUSICBOX_WINDOW_INIT_REQUEST,
   MUSICBOX_WINDOW_PLAYING,
   MUSICBOX_WINDOW_TRACK_CHANGED,
   MUSICBOX_WINDOW_TRACKLIST_CHANGED,
@@ -26,7 +25,6 @@ class ChangeEmitter {
     window.addEventListener('load', this.onFullyLoaded.bind(this))
     // unload
     if (this.player.handleUnload !== undefined) { window.addEventListener('beforeunload', this.onUnload.bind(this)) }
-    this.transmitEvent(MUSICBOX_WINDOW_INIT_REQUEST, true)
   }
 
   get player () {
@@ -113,7 +111,7 @@ class ChangeEmitter {
   */
   transmitEvent (type, data) {
     if (data === undefined) { return }
-    // console.log('transmitEvent', type, data)
+    console.log('transmitEvent', type, data)
     ipcRenderer.sendToHost({
       type: type,
       data: data

@@ -53,19 +53,21 @@ module.exports = React.createClass({
       .then((res) => res.json())
       .then((res) => {
         let update
+        const release = res.release || {version: 0}
+        const prerelease = res.prerelease || {version: 0}
         if (pkg.prerelease) {
-          if (compareVersion(res.prerelease.version, res.release.version) >= 1) { // prerelease is newest
-            if (compareVersion(res.prerelease.version, pkg.version) >= 1) {
-              update = res.prerelease.version
+          if (compareVersion(prerelease.version, release.version) >= 1) { // prerelease is newest
+            if (compareVersion(prerelease.version, pkg.version) >= 1) {
+              update = prerelease.version
             }
           } else { // release is newest
-            if (compareVersion(res.release.version, pkg.version) >= 1) {
-              update = res.release.version
+            if (compareVersion(release.version, pkg.version) >= 1) {
+              update = release.version
             }
           }
         } else {
-          if (compareVersion(res.release.version, pkg.version) >= 1) {
-            update = res.release.version
+          if (compareVersion(release.version, pkg.version) >= 1) {
+            update = release.version
           }
         }
 

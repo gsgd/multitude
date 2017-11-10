@@ -178,17 +178,15 @@ class Musicbox extends Model {
   get isPlaying () { return this._value_('isPlaying', undefined) }
   get artificiallyPersistCookies () { return this._value_('artificiallyPersistCookies', false) }
   get init () {
-    let data = this._value_('tracklist', {
+    const tracklist = this._value_('tracklist', {
       track: {'data': []},
       index: 0
     })
-    if (this.type === Musicbox.TYPE_DEEZER) {
-      data.type = 'player_default_playlist'
-      data.show_lyrics = false
+    const playInfo = {
+      auto_play: this.isPlaying,
+      track_position: this.trackTime
     }
-    data.auto_play = this.isPlaying
-    data.track_position = this.trackTime
-    return data
+    return Object.assign({}, tracklist, playInfo)
   }
 
   /* **************************************************************************/

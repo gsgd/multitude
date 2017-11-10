@@ -98,8 +98,15 @@ class DeezerStreaming extends MediaPlayer {
   /* **************************************************************************/
 
   handleInit (evt, data) {
+    // console.log('handleInit', data)
     if (!data || !data.track) { return }
-    document.addEventListener('DOMContentLoaded', () => { window.PLAYER_INIT = data })
+    const deezerInfo = {
+      type: 'player_default_playlist',
+      show_lyrics: false
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      window.PLAYER_INIT = Object.assign({}, deezerInfo, data)
+    })
   }
   /**
   * Handles media events

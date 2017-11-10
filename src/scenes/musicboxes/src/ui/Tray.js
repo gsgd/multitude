@@ -231,26 +231,33 @@ module.exports = React.createClass({
   },
 
   render () {
-    const { unreadCount, traySettings } = this.props
+    const { traySettings } = this.props
 
     const renderId = uuid.v4()
     this.renderId = renderId
-    TrayRenderer.renderNativeImage({
-      unreadCount: unreadCount,
-      showUnreadCount: traySettings.showUnreadCount,
-      unreadColor: traySettings.unreadColor,
-      readColor: traySettings.readColor,
-      unreadBackgroundColor: traySettings.unreadBackgroundColor,
-      readBackgroundColor: traySettings.readBackgroundColor,
+
+    const trayConfig = {
+      pixelRatio: this.trayIconPixelRatio(),
       size: this.trayIconSize(),
-      pixelRatio: this.trayIconPixelRatio()
-    }).then((image) => {
+    }
+
+    TrayRenderer.renderNativeImage(Object.assign({}, trayConfig, {
+      color: traySettings.color,
+      backgroundColor: traySettings.backgroundColor
+    })).then((image) => {
       if (renderId !== this.renderId) { return }
       this.appTray.setImage(image)
       this.appTray.setToolTip(this.renderTooltip())
       this.appTray.setContextMenu(this.renderContextMenu())
     })
+    TrayRenderer.renderNativeImage(Object.assign({}, trayConfig, {
+      color: traySettings.pressedColor,
+      backgroundColor: traySettings.pressedBackgroundColor
+    })).then((image) => {
+      if (renderId !== this.renderId) { return }
+      this.appTray.setPressedImage(image)
+    })
 
-    return (<div />)
+    return null
   }
 })
