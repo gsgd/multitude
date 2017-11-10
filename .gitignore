@@ -4,5 +4,5 @@ bin
 dist
 *.log
 actual*.js
-
+icons
 out/
