@@ -2,8 +2,8 @@ const electron = require('electron')
 const { ipcRenderer, remote } = electron
 const { Tray, Menu, nativeImage } = remote
 const React = require('react')
-const { mailboxDispatch } = require('../Dispatch')
-const { mailboxActions, mailboxStore } = require('../stores/mailbox')
+const { musicboxDispatch } = require('../Dispatch')
+const { musicboxActions, musicboxStore } = require('../stores/musicbox')
 const { composeActions } = require('../stores/compose')
 const { BLANK_PNG } = require('shared/b64Assets')
 const { TrayRenderer } = require('../Components')
@@ -32,15 +32,15 @@ module.exports = React.createClass({
   /* **************************************************************************/
 
   componentDidMount () {
-    mailboxStore.listen(this.mailboxesChanged)
+    musicboxStore.listen(this.musicboxesChanged)
 
     this.appTray = new Tray(nativeImage.createFromDataURL(BLANK_PNG))
     if (process.platform === 'win32') {
       this.appTray.on('double-click', () => {
-        ipcRenderer.send('toggle-mailbox-visibility-from-tray')
+        ipcRenderer.send('toggle-musicbox-visibility-from-tray')
       })
       this.appTray.on('click', () => {
-        ipcRenderer.send('toggle-mailbox-visibility-from-tray')
+        ipcRenderer.send('toggle-musicbox-visibility-from-tray')
       })
     } else if (process.platform === 'linux') {
       // On platforms that have app indicator support - i.e. ubuntu clicking on the
@@ -48,13 +48,13 @@ module.exports = React.createClass({
       // menu is opened on right click. For app indicator platforms click event
       // is ignored
       this.appTray.on('click', () => {
-        ipcRenderer.send('toggle-mailbox-visibility-from-tray')
+        ipcRenderer.send('toggle-musicbox-visibility-from-tray')
       })
     }
   },
 
   componentWillUnmount () {
-    mailboxStore.unlisten(this.mailboxesChanged)
+    musicboxStore.unlisten(this.mailboxesChanged)
 
     if (this.appTray) {
       this.appTray.destroy()
@@ -67,60 +67,56 @@ module.exports = React.createClass({
   /* **************************************************************************/
 
   getInitialState () {
-    return Object.assign({}, this.generateMenuUnreadMessages())
+    return Object.assign({}, this.generateMenuTrackDetails())
   },
 
-  mailboxesChanged (store) {
-    this.setState(this.generateMenuUnreadMessages(store))
+  musicboxesChanged (store) {
+    this.setState(this.generateMenuTrackDetails(store))
   },
 
   /**
-  * Generates the unread messages from the mailboxes store
-  * @param store=autogen: the mailbox store
-  * @return { menuUnreadMessages, menuUnreadMessagesSig } with menuUnreadMessages
-  * being an array of mailboxes with menu items prepped to display and menuUnreadMessagesSig
+  * Generates the current tracks from the musicboxes store
+  * @param store=autogen: the musicbox store
+  * @return { menuTrackMessages, menuTrackMessagesSig } with menuTrackMessages
+  * being an array of musicboxes with menu items prepped to display and menuTrackMessagesSig
   * being a string hash of these to compare
   */
-  generateMenuUnreadMessages (store = mailboxStore.getState()) {
-    const menuItems = store.mailboxIds().map((mailboxId) => {
-      const mailbox = store.getMailbox(mailboxId)
-      const menuItems = mailbox.google.latestUnreadMessages.map((message) => {
-        const headers = message.payload.headers
-        const subject = (headers.find((h) => h.name === 'Subject') || {}).value || 'No Subject'
-        const fromEmail = (headers.find((h) => h.name === 'From') || {}).value || ''
-        const fromEmailMatch = fromEmail.match('(.+)<(.+)@(.+)>$')
-        const sender = fromEmailMatch ? fromEmailMatch[1].trim() : fromEmail
+  generateMenuTrackDetails (store = musicboxStore.getState()) {
+    const menuItems = store.musicboxIds().map((musicboxId) => {
+      const musicbox = store.getMusicbox(musicboxId)
+      const track = musicbox.currentTrack
 
+      if (!track) {
         return {
-          id: `${mailboxId}:${message.threadId}:${message.id}`, // used for update tracking
-          label: `${sender} : ${subject}`,
-          date: parseInt(message.internalDate),
+          label: `${musicbox.displayName || musicbox.title}`,
           click: (e) => {
             ipcRenderer.send('focus-app', { })
-            mailboxActions.changeActive(mailboxId)
-            mailboxDispatch.openMessage(mailboxId, message.threadId, message.id)
+            musicboxActions.changeActive(musicboxId)
           }
         }
-      })
-      .filter((info) => info !== undefined)
-      .sort((a, b) => b.date - a.date)
-      .slice(0, 10)
-
-      const unreadString = isNaN(mailbox.unread) || mailbox.unread === 0 ? '' : `(${mailbox.unread})`
-
+      }
+      const playPause = musicbox.isPlaying ? 'Pause' : 'Play'
       return {
-        label: `${unreadString} ${mailbox.email || 'Untitled'}`,
-        submenu: menuItems.length !== 0 ? menuItems : [
-          { label: 'No messages', enabled: false }
+        label: musicbox.typeWithUsername,
+        submenu: [
+          {
+            id: `${musicboxId}:${track.title}:${playPause}`, // used for update tracking
+            label: `${playPause}: ${track.title} – ${track.artist || track.album}`,
+            click: (e) => {
+              ipcRenderer.send('focus-app', { })
+              musicboxActions.changeActive(musicboxId)
+              musicboxDispatch.musicboxPlayPause(musicboxId)
+            }
+          }
         ]
       }
     })
 
     const sig = menuItems
-      .map((mailboxItem) => mailboxItem.submenu.map((item) => item.id).join('|'))
+      .map((musicboxItem) => musicboxItem.submenu.map((item) => item.id).join('|'))
       .join('|')
 
-    return { menuUnreadMessages: menuItems, menuUnreadMessagesSig: sig }
+    return { menuTrackMessages: menuItems, menuTrackMessagesSig: sig }
   },
 
   /* **************************************************************************/
@@ -129,7 +125,7 @@ module.exports = React.createClass({
 
   shouldComponentUpdate: function (nextProps, nextState) {
     if (this.props.unreadCount !== nextProps.unreadCount) { return true }
-    if (this.state.menuUnreadMessagesSig !== nextState.menuUnreadMessagesSig) { return true }
+    if (this.state.menuTrackMessagesSig !== nextState.menuTrackMessagesSig) { return true }
 
     return [
       'unreadColor',
@@ -154,28 +150,39 @@ module.exports = React.createClass({
   * @return the context menu for the tray icon
   */
   renderContextMenu () {
-    let unreadItems = []
-    if (this.state.menuUnreadMessages.length === 1) { // Only one account
-      unreadItems = this.state.menuUnreadMessages[0].submenu
-    } else if (this.state.menuUnreadMessages.length > 1) { // Multiple accounts
-      unreadItems = this.state.menuUnreadMessages
+    let trackDetails = []
+    if (this.state.menuTrackMessages.length === 1) { // Only one account
+      trackDetails = this.state.menuTrackMessages[0].submenu
+    } else if (this.state.menuTrackMessages.length > 1) { // Multiple accounts
+      trackDetails = this.state.menuTrackMessages
     }
 
     // Build the template
     let template = [
       {
-        label: 'Compose New Message',
+        label: 'Play / Pause',
         click: (e) => {
-          ipcRenderer.send('focus-app')
-          composeActions.composeNewMessage()
+          ipcRenderer.send('musicbox-play-pause')
+        }
+      },
+      {
+        label: 'Previous',
+        click: (e) => {
+          ipcRenderer.send('musicbox-previous-track')
+        }
+      },
+      {
+        label: 'Next',
+        click: (e) => {
+          ipcRenderer.send('musicbox-next-track')
         }
       },
       { label: this.renderTooltip(), enabled: false },
       { type: 'separator' }
     ]
 
-    if (unreadItems.length) {
-      template = template.concat(unreadItems)
+    if (trackDetails.length) {
+      template = template.concat(trackDetails)
       template.push({ type: 'separator' })
     }
 
@@ -183,7 +190,7 @@ module.exports = React.createClass({
       {
         label: 'Show / Hide',
         click: (e) => {
-          ipcRenderer.send('toggle-mailbox-visibility-from-tray')
+          ipcRenderer.send('toggle-musicbox-visibility-from-tray')
         }
       },
       {
