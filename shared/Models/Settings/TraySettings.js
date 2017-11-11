@@ -20,7 +20,7 @@ class TraySettings extends Model {
   /* **************************************************************************/
 
   get show () { return this._value_('show', true) }
-  get showUnreadCount () { return this._value_('showUnreadCount', true) }
+  get showActiveTrack () { return this._value_('showActiveTrack', true) }
   get color () { return this._value_('color', this.__themedDefaults__.color) }
   get backgroundColor () { return this._value_('backgroundColor', this.__themedDefaults__.backgroundColor) }
   get pressedColor () { return this._value_('pressedColor', this.__themedDefaults__.pressedColor) }

@@ -70,7 +70,7 @@ module.exports = React.createClass({
             <TrayPreview size={100} style={trayPreviewStyles} config={{
               pixelRatio: 1,
               unreadCount: 0,
-              showUnreadCount: tray.showUnreadCount,
+              showActiveTrack: tray.showActiveTrack,
               unreadColor: tray.unreadColor,
               readColor: tray.readColor,
               unreadBackgroundColor: tray.readBackgroundColor,
@@ -103,7 +103,7 @@ module.exports = React.createClass({
             <TrayPreview size={100} style={trayPreviewStyles} config={{
               pixelRatio: 1,
               unreadCount: 1,
-              showUnreadCount: tray.showUnreadCount,
+              showActiveTrack: tray.showActiveTrack,
               unreadColor: tray.unreadColor,
               readColor: tray.readColor,
               unreadBackgroundColor: tray.unreadBackgroundColor,

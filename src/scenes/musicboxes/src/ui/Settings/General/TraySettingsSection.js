@@ -37,8 +37,8 @@ module.exports = React.createClass({
             labelPosition='right'
             onToggle={(evt, toggled) => settingsActions.setShowTrayIcon(toggled)} />
           <Toggle
-            toggled={tray.showUnreadCount}
-            label='Show unread count'
+            toggled={tray.showActiveTrack}
+            label='Show active track'
             labelPosition='right'
             disabled={!tray.show}
             onToggle={(evt, toggled) => settingsActions.setShowTrayUnreadCount(toggled)} />

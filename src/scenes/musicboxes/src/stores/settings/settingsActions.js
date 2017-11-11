@@ -169,8 +169,8 @@ class SettingsActions {
   /**
   * @param show: true to show the unread count in the titlebar
   */
-  setShowTitlebarUnreadCount (show) {
-    return this.update(SEGMENTS.UI, 'showTitlebarCount', show)
+  setShowTitlebarTrack (show) {
+    return this.update(SEGMENTS.UI, 'showTitlebarTrack', show)
   }
 
   /**
@@ -262,7 +262,7 @@ class SettingsActions {
   * @param show: true to show the unread count in the tray
   */
   setShowTrayUnreadCount (show) {
-    return this.update(SEGMENTS.TRAY, 'showUnreadCount', show)
+    return this.update(SEGMENTS.TRAY, 'showActiveTrack', show)
   }
 
   /**

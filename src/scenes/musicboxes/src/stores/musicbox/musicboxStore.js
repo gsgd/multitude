@@ -45,7 +45,7 @@ class MusicboxStore {
     this.musicboxIds = () => { return Array.from(this.index) }
 
     /**
-    * @return the musicbox
+    * @return Musicbox
     */
     this.getMusicbox = (id) => { return this.musicboxes.get(id) || null }
 
@@ -128,13 +128,9 @@ class MusicboxStore {
     /**
     * @return the total amount of unread items taking musicbox settings into account
     */
-    this.totalUnreadCountForAppBadge = () => {
-      return this.allMusicboxes().reduce((acc, musicbox) => {
-        if (musicbox && !isNaN(musicbox.unread) && musicbox.unreadCountsTowardsAppUnread) {
-          acc += musicbox.unread
-        }
-        return acc
-      }, 0)
+    this.activeTrackForAppBadge = () => {
+      const activeMusicbox = this.activeMusicbox()
+      return activeMusicbox.isPlaying ? activeMusicbox.currentTrack : {}
     }
 
     /**

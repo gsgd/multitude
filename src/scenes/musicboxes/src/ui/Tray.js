@@ -18,7 +18,8 @@ module.exports = React.createClass({
 
   // Pretty strict on updating. If you're changing these, change shouldComponentUpdate :)
   propTypes: {
-    unreadCount: React.PropTypes.number.isRequired,
+    activeTrack: React.PropTypes.object.isRequired,
+    activeMusicboxId: React.PropTypes.string.isRequired,
     traySettings: React.PropTypes.object.isRequired
   },
   statics: {
@@ -54,7 +55,7 @@ module.exports = React.createClass({
   },
 
   componentWillUnmount () {
-    musicboxStore.unlisten(this.mailboxesChanged)
+    musicboxStore.unlisten(this.musicboxesChanged)
 
     if (this.appTray) {
       this.appTray.destroy()
@@ -124,7 +125,8 @@ module.exports = React.createClass({
   /* **************************************************************************/
 
   shouldComponentUpdate: function (nextProps, nextState) {
-    if (this.props.unreadCount !== nextProps.unreadCount) { return true }
+    if (this.props.activeTrack.title !== nextProps.activeTrack.title) { return true }
+    if (this.props.activeMusicboxId !== nextProps.activeMusicboxId) { return true }
     if (this.state.menuTrackMessagesSig !== nextState.menuTrackMessagesSig) { return true }
 
     return [
@@ -132,7 +134,7 @@ module.exports = React.createClass({
       'unreadBackgroundColor',
       'readColor',
       'readBackgroundColor',
-      'showUnreadCount',
+      'showActiveTrack',
       'dpiMultiplier'
     ].findIndex((k) => {
       return this.props.traySettings[k] !== nextProps.traySettings[k]
@@ -143,7 +145,8 @@ module.exports = React.createClass({
   * @return the tooltip string for the tray icon
   */
   renderTooltip () {
-    return this.props.unreadCount ? this.props.unreadCount + ' unread mail' : 'No unread mail'
+    const {activeTrack} = this.props
+    return activeTrack.title ? `${activeTrack.title} – ${activeTrack.artist || activeTrack.album}` : 'No track currently playing'
   },
 
   /**
@@ -157,24 +160,14 @@ module.exports = React.createClass({
       trackDetails = this.state.menuTrackMessages
     }
 
+    const {activeMusicboxId} = this.props
+
     // Build the template
     let template = [
       {
-        label: 'Play / Pause',
+        label: 'Toggle Play / Pause',
         click: (e) => {
-          ipcRenderer.send('musicbox-play-pause')
-        }
-      },
-      {
-        label: 'Previous',
-        click: (e) => {
-          ipcRenderer.send('musicbox-previous-track')
-        }
-      },
-      {
-        label: 'Next',
-        click: (e) => {
-          ipcRenderer.send('musicbox-next-track')
+          musicboxDispatch.musicboxPlayPause(activeMusicboxId)
         }
       },
       { label: this.renderTooltip(), enabled: false },

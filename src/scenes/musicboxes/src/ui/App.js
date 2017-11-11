@@ -1,8 +1,6 @@
 const React = require('react')
 const flux = {
-  // mailbox: require('../stores/mailbox'),
   musicbox: require('../stores/musicbox'),
-  // google: require('../stores/google'),
   settings: require('../stores/settings')
 }
 console.log(flux)
@@ -76,7 +74,7 @@ module.exports = React.createClass({
     const musicboxStore = flux.musicbox.S.getState()
     return {
       activeMusicboxId: musicboxStore.activeMusicboxId(),
-      messagesUnreadCount: musicboxStore.totalUnreadCountForAppBadge(),
+      activeTrack: musicboxStore.activeTrackForAppBadge(),
       uiSettings: settingsStore.ui,
       traySettings: settingsStore.tray
     }
@@ -85,7 +83,7 @@ module.exports = React.createClass({
   musicboxesChanged (store) {
     this.setState({
       activeMusicboxId: store.activeMusicboxId(),
-      messagesUnreadCount: store.totalUnreadCountForAppBadge()
+      activeTrack: store.activeTrackForAppBadge()
     })
     ipcRenderer.send('musicboxes-changed', {
       musicboxes: store.allMusicboxes().map((musicbox) => {
@@ -163,15 +161,16 @@ module.exports = React.createClass({
     const {
       traySettings,
       uiSettings,
-      messagesUnreadCount
+      activeTrack,
+      activeMusicboxId
     } = this.state
 
     // Update the app title
-    if (uiSettings.showTitlebarCount) {
-      if (messagesUnreadCount === 0) {
+    if (uiSettings.showTitlebarTrack) {
+      if (!activeTrack.title) {
         document.title = 'Multitude'
       } else {
-        document.title = `Multitude (${messagesUnreadCount})`
+        document.title = `Multitude (${activeTrack.title} – ${activeTrack.artist || activeTrack.album})`
       }
     } else {
       document.title = 'Multitude'
@@ -184,11 +183,12 @@ module.exports = React.createClass({
         </MuiThemeProvider>
         {!traySettings.show ? undefined : (
           <Tray
-            unreadCount={messagesUnreadCount}
+            activeTrack={activeTrack}
+            activeMusicboxId={activeMusicboxId}
             traySettings={traySettings} />
         )}
         {!uiSettings.showAppBadge ? undefined : (
-          <AppBadge unreadCount={messagesUnreadCount} />
+          <AppBadge unreadCount={0} />
         )}
       </div>
     )
