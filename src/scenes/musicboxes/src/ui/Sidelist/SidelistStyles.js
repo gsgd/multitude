@@ -148,8 +148,8 @@ module.exports = {
   },
   musicboxActionsContainer: {
     position: 'absolute',
-    top: 12,
-    right: 0,
+    top: 0,
+    right: 6,
     cursor: 'pointer'
   },
   musicboxActionIconStyle: {
