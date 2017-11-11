@@ -13,7 +13,6 @@ const {
 const AppContent = require('./AppContent')
 const TimerMixin = require('react-timer-mixin')
 const constants = require('shared/constants')
-const UnreadNotifications = require('../Notifications/UnreadNotifications')
 const TrackNotifications = require('../Notifications/TrackNotifications')
 const shallowCompare = require('react-addons-shallow-compare')
 const Tray = require('./Tray')
@@ -37,8 +36,6 @@ module.exports = React.createClass({
   componentDidMount () {
     this.forceFocusTO = null
 
-    this.unreadNotifications = new UnreadNotifications()
-    this.unreadNotifications.start()
     this.trackNotifications = new TrackNotifications()
     this.trackNotifications.start()
 
@@ -52,7 +49,6 @@ module.exports = React.createClass({
   },
 
   componentWillUnmount () {
-    this.unreadNotifications.stop()
     this.trackNotifications.stop()
 
     flux.musicbox.S.unlisten(this.musicboxesChanged)
