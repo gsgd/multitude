@@ -6,7 +6,7 @@ const { Musicbox } = require('shared/Models/Musicbox')
 
 const ConfigureDeezerMusicboxWizard = require('./ConfigureDeezerMusicboxWizard')
 
-module.exports = React.createClass({
+const ConfigureMusicboxWizardDialog = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -118,3 +118,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = ConfigureMusicboxWizardDialog

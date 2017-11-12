@@ -4,7 +4,7 @@ const SidelistItemMusicbox = require('./SidelistItemMusicbox')
 
 // console.log('SidelistMusicboxes', musicboxStore)
 
-module.exports = React.createClass({
+const SidelistMusicboxes = React.createClass({
 
   /* **************************************************************************/
   // Class
@@ -67,3 +67,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = SidelistMusicboxes

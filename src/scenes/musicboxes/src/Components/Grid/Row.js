@@ -1,6 +1,6 @@
 const React = require('react')
 
-module.exports = React.createClass({
+const GridRow = React.createClass({
   displayName: 'GridRow',
 
   propTypes: {
@@ -18,3 +18,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = GridRow

@@ -4,7 +4,7 @@ const { composeStore, composeActions } = require('../../stores/compose')
 const { mailboxStore, mailboxActions } = require('../../stores/mailbox')
 const shallowCompare = require('react-addons-shallow-compare')
 
-module.exports = React.createClass({
+const MailboxComposePicker = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -134,3 +134,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = MailboxComposePicker

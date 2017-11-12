@@ -4,7 +4,7 @@ const { musicboxStore } = require('../../../stores/musicbox')
 const shallowCompare = require('react-addons-shallow-compare')
 const styles = require('../SidelistStyles')
 
-module.exports = React.createClass({
+const SidelistItemMusicboxAvatar = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -58,3 +58,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = SidelistItemMusicboxAvatar

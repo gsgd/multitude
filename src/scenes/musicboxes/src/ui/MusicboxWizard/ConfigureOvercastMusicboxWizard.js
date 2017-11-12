@@ -45,7 +45,7 @@ const styles = {
   }
 }
 
-module.exports = React.createClass({
+const ConfigureOvercastMusicboxWizard = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -136,3 +136,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = ConfigureOvercastMusicboxWizard

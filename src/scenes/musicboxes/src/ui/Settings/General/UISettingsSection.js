@@ -4,7 +4,7 @@ const settingsActions = require('../../../stores/settings/settingsActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 
-module.exports = React.createClass({
+const UISettingsSection = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -92,3 +92,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = UISettingsSection

@@ -48,7 +48,7 @@ const WEBVIEW_PROPS = {
 }
 const WEBVIEW_ATTRS = Object.keys(WEBVIEW_PROPS)
 
-module.exports = React.createClass({
+const BrowserView = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -244,3 +244,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = BrowserView

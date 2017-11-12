@@ -10,7 +10,7 @@ const LOGIN_OPEN_MODES = {
   ON_BACKGROUND: 'true|true'
 }
 
-module.exports = React.createClass({
+const PlatformSettingsSection = React.createClass({
   /* **************************************************************************/
   // Rendering
   /* **************************************************************************/
@@ -90,3 +90,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = PlatformSettingsSection

@@ -3,7 +3,7 @@ const shallowCompare = require('react-addons-shallow-compare')
 const styles = require('../SidelistStyles')
 const SidelistItemMusicboxService = require('./SidelistItemMusicboxService')
 
-module.exports = React.createClass({
+const SidelistItemMusicboxServices = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -46,3 +46,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = SidelistItemMusicboxServices

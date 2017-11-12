@@ -20,7 +20,7 @@ const styles = {
   }
 }
 
-module.exports = React.createClass({
+const TrayIconEditor = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -116,3 +116,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = TrayIconEditor

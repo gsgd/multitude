@@ -45,7 +45,7 @@ const styles = {
   }
 }
 
-module.exports = React.createClass({
+const Welcome = React.createClass({
 
   /* **************************************************************************/
   // Class
@@ -79,3 +79,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = Welcome

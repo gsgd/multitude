@@ -5,7 +5,7 @@ const styles = require('./SidelistStyles')
 const ReactTooltip = require('react-tooltip')
 const { musicboxWizardActions } = require('../../stores/musicboxWizard')
 
-module.exports = React.createClass({
+const SidelistItemAddMusicbox = React.createClass({
 
   /* **************************************************************************/
   // Class
@@ -40,3 +40,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = SidelistItemAddMusicbox

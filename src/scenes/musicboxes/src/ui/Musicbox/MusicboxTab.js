@@ -20,7 +20,7 @@ const {
 const BROWSER_REF = 'browser'
 const SEARCH_REF = 'search'
 
-module.exports = React.createClass({
+const MusicboxTab = React.createClass({
 
   /* **************************************************************************/
   // Class
@@ -680,3 +680,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = MusicboxTab

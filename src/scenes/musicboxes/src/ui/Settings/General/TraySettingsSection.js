@@ -6,7 +6,7 @@ const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const Tray = require('../../Tray')
 
-module.exports = React.createClass({
+const TraySettingsSection = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -61,3 +61,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = TraySettingsSection

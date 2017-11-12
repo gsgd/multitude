@@ -11,7 +11,7 @@ const {
   remote: {shell}
 } = require('electron')
 
-module.exports = React.createClass({
+const NewsDialog = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -144,3 +144,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = NewsDialog

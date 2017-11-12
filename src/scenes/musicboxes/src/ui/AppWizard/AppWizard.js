@@ -6,7 +6,7 @@ const AppWizardComplete = require('./AppWizardComplete')
 const AppWizardNotifactions = require('./AppWizardNotifications')
 const AppWizardTray = require('./AppWizardTray')
 
-module.exports = React.createClass({
+const AppWizard = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -93,3 +93,4 @@ module.exports = React.createClass({
     }
   }
 })
+module.exports = AppWizard

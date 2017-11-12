@@ -5,7 +5,7 @@ const shallowCompare = require('react-addons-shallow-compare')
 const { Dialog, RaisedButton } = require('material-ui')
 const { TrayIconEditor } = require('../../Components')
 
-module.exports = React.createClass({
+const AppWizardTray = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -87,3 +87,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = AppWizardTray

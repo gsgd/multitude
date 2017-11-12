@@ -10,7 +10,7 @@ const Colors = require('material-ui/styles/colors')
 const styles = require('./settingStyles')
 const { ipcRenderer } = require('electron')
 
-module.exports = React.createClass({
+const SettingsDialog = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -161,3 +161,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = SettingsDialog

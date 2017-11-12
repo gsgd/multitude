@@ -32,7 +32,7 @@ const serviceStyles = {
   }
 }
 
-module.exports = React.createClass({
+const AccountServiceSettings = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -246,3 +246,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = AccountServiceSettings

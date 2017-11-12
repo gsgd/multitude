@@ -10,7 +10,8 @@ const { TrayRenderer } = require('../Components')
 const navigationDispatch = require('../Dispatch/navigationDispatch')
 const uuid = require('uuid')
 
-module.exports = React.createClass({
+// because Tray is already in use
+const TrayClass = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -258,3 +259,4 @@ module.exports = React.createClass({
     return null
   }
 })
+module.exports = TrayClass

@@ -2,7 +2,7 @@ const React = require('react')
 const { Paper, TextField, IconButton } = require('material-ui')
 const Colors = require('material-ui/styles/colors')
 
-module.exports = React.createClass({
+const MusicboxSearch = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -130,3 +130,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = MusicboxSearch

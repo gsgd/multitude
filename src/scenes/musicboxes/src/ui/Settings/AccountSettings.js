@@ -14,7 +14,7 @@ const AccountManagementSettings = require('./Accounts/AccountManagementSettings'
 const AccountServiceSettings = require('./Accounts/AccountServiceSettings')
 const pkg = require('shared/appPackage')
 
-module.exports = React.createClass({
+const AccountSettings = React.createClass({
   displayName: 'AccountSettings',
   propTypes: {
     showRestart: React.PropTypes.func.isRequired,
@@ -162,3 +162,4 @@ module.exports = React.createClass({
     }
   }
 })
+module.exports = AccountSettings

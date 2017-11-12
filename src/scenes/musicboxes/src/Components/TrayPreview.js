@@ -2,7 +2,7 @@ const React = require('react')
 const TrayRenderer = require('./TrayRenderer')
 const shallowCompare = require('react-addons-shallow-compare')
 
-module.exports = React.createClass({
+const TrayPreview = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -64,3 +64,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = TrayPreview

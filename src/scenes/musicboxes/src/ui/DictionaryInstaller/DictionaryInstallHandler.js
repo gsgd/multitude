@@ -3,7 +3,7 @@ const { Dialog } = require('material-ui')
 const dictionariesStore = require('../../stores/dictionaries/dictionariesStore')
 const DictionaryInstallStepper = require('./DictionaryInstallStepper')
 
-module.exports = React.createClass({
+const DictionaryInstallHandler = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -58,3 +58,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = DictionaryInstallHandler

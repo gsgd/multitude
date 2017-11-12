@@ -5,7 +5,7 @@ const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const {getVoices} = require('shared/voices')
 
-module.exports = React.createClass({
+const NotificationSettingsSection = React.createClass({
 
   /* **************************************************************************/
   // UI Events
@@ -97,3 +97,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = NotificationSettingsSection

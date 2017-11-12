@@ -7,7 +7,7 @@ const { lighten, isLight } = require('colorutilities')
 
 // console.log(lighten)
 
-module.exports = React.createClass({
+const SidelistItemMusicboxActions = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -55,3 +55,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = SidelistItemMusicboxActions

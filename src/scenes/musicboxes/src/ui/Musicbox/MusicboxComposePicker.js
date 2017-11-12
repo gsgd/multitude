@@ -4,7 +4,7 @@ const { composeStore, composeActions } = require('../../stores/compose')
 const { musicboxStore, musicboxActions } = require('../../stores/musicbox')
 const shallowCompare = require('react-addons-shallow-compare')
 
-module.exports = React.createClass({
+const MusicboxComposePicker = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -134,3 +134,5 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = MusicboxComposePicker
+

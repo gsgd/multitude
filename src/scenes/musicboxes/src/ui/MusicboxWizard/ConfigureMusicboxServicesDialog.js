@@ -30,7 +30,7 @@ const styles = {
   }
 }
 
-module.exports = React.createClass({
+const ConfigureMusicboxServicesDialog = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -189,3 +189,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = ConfigureMusicboxServicesDialog

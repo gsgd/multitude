@@ -11,7 +11,7 @@ const {
 
 const REF = 'musicbox_tab'
 
-module.exports = React.createClass({
+const MusicboxStreamingTab = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -151,3 +151,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = MusicboxStreamingTab

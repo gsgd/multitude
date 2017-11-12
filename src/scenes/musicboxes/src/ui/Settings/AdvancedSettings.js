@@ -7,7 +7,7 @@ const flux = {
 const styles = require('./settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 
-module.exports = React.createClass({
+const AdvancedSettings = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -155,3 +155,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = AdvancedSettings

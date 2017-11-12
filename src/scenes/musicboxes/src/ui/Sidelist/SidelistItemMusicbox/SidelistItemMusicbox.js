@@ -8,7 +8,7 @@ const SidelistItemMusicboxPopover = require('./SidelistItemMusicboxPopover')
 const SidelistItemMusicboxAvatar = require('./SidelistItemMusicboxAvatar')
 const SidelistItemMusicboxActions = require('./SidelistItemMusicboxActions')
 
-module.exports = React.createClass({
+const SidelistItemMusicbox = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -188,3 +188,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = SidelistItemMusicbox

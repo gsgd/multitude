@@ -10,7 +10,7 @@ const {mailboxDispatch} = require('../../../Dispatch')
 const mailboxStore = require('../../../stores/mailbox/mailboxStore')
 const pkg = require('shared/appPackage')
 
-module.exports = React.createClass({
+const InfoSettingsSection = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -90,3 +90,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = InfoSettingsSection

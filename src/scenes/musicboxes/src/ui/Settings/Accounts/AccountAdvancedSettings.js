@@ -4,7 +4,7 @@ const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 
-module.exports = React.createClass({
+const AccountAdvancedSettings = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -41,3 +41,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = AccountAdvancedSettings

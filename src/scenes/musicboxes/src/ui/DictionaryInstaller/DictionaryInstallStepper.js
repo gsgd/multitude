@@ -17,7 +17,7 @@ const STEPS = {
   FINISH: 3
 }
 
-module.exports = React.createClass({
+const DictionaryInstallStepper = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -183,3 +183,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = DictionaryInstallStepper

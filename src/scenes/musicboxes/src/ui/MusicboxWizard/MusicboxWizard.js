@@ -6,7 +6,7 @@ const ConfigureMusicboxWizardDialog = require('./ConfigureMusicboxWizardDialog')
 const ConfigureMusicboxServicesDialog = require('./ConfigureMusicboxServicesDialog')
 const ConfigureCompleteWizardDialog = require('./ConfigureCompleteWizardDialog')
 
-module.exports = React.createClass({
+const MusicboxWizard = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -80,3 +80,4 @@ module.exports = React.createClass({
     }
   }
 })
+module.exports = MusicboxWizard

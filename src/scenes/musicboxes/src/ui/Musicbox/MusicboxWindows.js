@@ -8,7 +8,7 @@ const Musicbox = require('shared/Models/Musicbox/Musicbox')
 
 const MusicboxStreamingTab = require('./Streaming/MusicboxStreamingTab')
 
-module.exports = React.createClass({
+const MusicboxWindows = React.createClass({
   displayName: 'MusicboxWindows',
 
   /* **************************************************************************/
@@ -114,3 +114,4 @@ module.exports = React.createClass({
     }
   }
 })
+module.exports = MusicboxWindows

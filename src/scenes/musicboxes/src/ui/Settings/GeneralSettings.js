@@ -13,7 +13,7 @@ const UISettingsSection = require('./General/UISettingsSection')
 const InfoSettingsSection = require('./General/InfoSettingsSection')
 const PlatformSettingsSection = require('./General/PlatformSettingsSection')
 
-module.exports = React.createClass({
+const GeneralSettings = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -134,3 +134,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = GeneralSettings

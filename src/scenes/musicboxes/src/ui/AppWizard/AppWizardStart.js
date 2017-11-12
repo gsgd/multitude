@@ -4,7 +4,7 @@ const shallowCompare = require('react-addons-shallow-compare')
 const { Dialog, RaisedButton, FontIcon, Avatar } = require('material-ui')
 const Colors = require('material-ui/styles/colors')
 
-module.exports = React.createClass({
+const AppWizardStart = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -66,3 +66,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = AppWizardStart

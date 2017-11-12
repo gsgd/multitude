@@ -7,7 +7,7 @@ const NotificationSettingsSection = require('../Settings/General/NotificationSet
 
 console.log('setttingsStore', settingsStore)
 
-module.exports = React.createClass({
+const AppWizardNotifications = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -96,3 +96,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = AppWizardNotifications

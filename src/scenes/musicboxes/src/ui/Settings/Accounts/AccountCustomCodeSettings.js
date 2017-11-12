@@ -11,7 +11,7 @@ const {
   remote: {shell}
 } = require('electron')
 
-module.exports = React.createClass({
+const AccountCustomCodeSettings = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -98,3 +98,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = AccountCustomCodeSettings

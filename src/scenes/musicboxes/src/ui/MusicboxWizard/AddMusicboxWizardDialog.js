@@ -54,7 +54,7 @@ const tilesData = [
   }
 ]
 
-module.exports = React.createClass({
+const AddMusicboxWizardDialog = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -142,3 +142,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = AddMusicboxWizardDialog

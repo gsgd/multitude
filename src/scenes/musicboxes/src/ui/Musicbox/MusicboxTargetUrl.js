@@ -1,7 +1,7 @@
 const React = require('react')
 const { Paper } = require('material-ui')
 
-module.exports = React.createClass({
+const MusicboxTargetUrl = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -29,3 +29,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = MusicboxTargetUrl

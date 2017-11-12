@@ -10,7 +10,7 @@ const styles = require('./SidelistStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const Colors = require('material-ui/styles/colors')
 
-module.exports = React.createClass({
+const Sidelist = React.createClass({
 
   /* **************************************************************************/
   // Class
@@ -41,7 +41,7 @@ module.exports = React.createClass({
     const musicboxState = musicboxStore.getState()
     return {
       showTitlebar: settingsState.ui.showTitlebar, // purposely don't update this, because effects are only seen after restart
-      showWizard: true || !settingsState.app.hasSeenAppWizard,
+      showWizard: !settingsState.app.hasSeenAppWizard,
       showNewsInSidebar: settingsState.news.showNewsInSidebar,
       hasUnopenedNewsId: settingsState.news.hasUnopenedNewsId,
       hasUpdateInfo: settingsState.news.hasUpdateInfo,
@@ -118,3 +118,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = Sidelist

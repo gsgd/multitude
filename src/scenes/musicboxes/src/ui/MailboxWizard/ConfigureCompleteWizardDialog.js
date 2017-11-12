@@ -18,7 +18,7 @@ const styles = {
   }
 }
 
-module.exports = React.createClass({
+const ConfigureCompleteWizardDialog = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -96,3 +96,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = ConfigureCompleteWizardDialog

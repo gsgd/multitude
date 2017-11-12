@@ -6,7 +6,7 @@ const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const TimerMixin = require('react-timer-mixin')
 
-module.exports = React.createClass({
+const AccountManagementSettings = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -83,3 +83,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = AccountManagementSettings

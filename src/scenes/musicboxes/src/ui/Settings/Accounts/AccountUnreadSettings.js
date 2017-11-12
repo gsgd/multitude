@@ -7,7 +7,7 @@ const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const Colors = require('material-ui/styles/colors')
 
-module.exports = React.createClass({
+const AccountUnreadSettings = React.createClass({
   /* **************************************************************************/
   // Lifecycle
   /* **************************************************************************/
@@ -113,3 +113,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = AccountUnreadSettings

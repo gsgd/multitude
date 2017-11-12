@@ -16,7 +16,7 @@ const styles = {
   }
 }
 
-module.exports = React.createClass({
+const AppWizardComplete = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -106,3 +106,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = AppWizardComplete

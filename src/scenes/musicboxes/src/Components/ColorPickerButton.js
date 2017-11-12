@@ -2,7 +2,7 @@ const React = require('react')
 const { RaisedButton, Popover } = require('material-ui')
 const { ChromePicker } = require('react-color')
 
-module.exports = React.createClass({
+const ColorPickerButton = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -71,3 +71,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = ColorPickerButton

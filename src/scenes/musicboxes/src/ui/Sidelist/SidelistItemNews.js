@@ -6,7 +6,7 @@ const styles = require('./SidelistStyles')
 const ReactTooltip = require('react-tooltip')
 const { settingsStore } = require('../../stores/settings')
 
-module.exports = React.createClass({
+const SidelistItemNews = React.createClass({
 
   /* **************************************************************************/
   // Class
@@ -85,3 +85,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = SidelistItemNews

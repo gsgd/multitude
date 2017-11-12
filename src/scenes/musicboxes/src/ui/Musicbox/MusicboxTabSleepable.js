@@ -5,7 +5,7 @@ const { MAILBOX_SLEEP_WAIT } = require('shared/constants')
 
 const REF = 'musicboxTab'
 
-module.exports = React.createClass({
+const MusicboxTabSleepable = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -103,3 +103,4 @@ module.exports = React.createClass({
     }
   }
 })
+module.exports = MusicboxTabSleepable

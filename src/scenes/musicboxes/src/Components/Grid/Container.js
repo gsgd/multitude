@@ -1,6 +1,6 @@
 const React = require('react')
 
-module.exports = React.createClass({
+const GridContainer = React.createClass({
   displayName: 'GridContainer',
 
   propTypes: {
@@ -24,3 +24,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = GridContainer

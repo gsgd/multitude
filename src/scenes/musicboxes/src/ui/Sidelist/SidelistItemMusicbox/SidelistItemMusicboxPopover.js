@@ -4,7 +4,7 @@ const { musicboxDispatch, navigationDispatch } = require('../../../Dispatch')
 const { musicboxActions } = require('../../../stores/musicbox')
 const shallowCompare = require('react-addons-shallow-compare')
 
-module.exports = React.createClass({
+const SidelistItemMusicboxPopover = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -183,3 +183,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = SidelistItemMusicboxPopover

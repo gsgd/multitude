@@ -5,7 +5,7 @@ const {navigationDispatch} = require('../../Dispatch')
 const styles = require('./SidelistStyles')
 const ReactTooltip = require('react-tooltip')
 
-module.exports = React.createClass({
+const SidelistItemSettings = React.createClass({
 
   /* **************************************************************************/
   // Class
@@ -43,3 +43,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = SidelistItemSettings

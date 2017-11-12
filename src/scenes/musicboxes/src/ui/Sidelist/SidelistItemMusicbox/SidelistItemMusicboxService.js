@@ -4,7 +4,7 @@ const { Musicbox } = require('shared/Models/Musicbox')
 const { Avatar } = require('material-ui')
 const styles = require('../SidelistStyles')
 
-module.exports = React.createClass({
+const SidelistItemMusicboxServices = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -89,3 +89,4 @@ module.exports = React.createClass({
     }
   }
 })
+module.exports = SidelistItemMusicboxServices

@@ -5,7 +5,7 @@ const { appWizardActions } = require('../../stores/appWizard')
 const styles = require('./SidelistStyles')
 const ReactTooltip = require('react-tooltip')
 
-module.exports = React.createClass({
+const SidelistItemWizard = React.createClass({
 
   /* **************************************************************************/
   // Class
@@ -41,3 +41,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = SidelistItemWizard

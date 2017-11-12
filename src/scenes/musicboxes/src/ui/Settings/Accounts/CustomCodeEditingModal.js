@@ -3,7 +3,7 @@ const { RaisedButton, FlatButton, Dialog, TextField } = require('material-ui')
 const shallowCompare = require('react-addons-shallow-compare')
 const uuid = require('uuid')
 
-module.exports = React.createClass({
+const CustomCodeEditingModal = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -87,3 +87,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = CustomCodeEditingModal
