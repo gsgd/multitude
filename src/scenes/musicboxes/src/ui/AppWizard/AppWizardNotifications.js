@@ -1,17 +1,49 @@
 const React = require('react')
 const { appWizardActions } = require('../../stores/appWizard')
-const { platformActions } = require('../../stores/platform')
+const { settingsStore, settingsActions } = require('../../stores/settings')
 const shallowCompare = require('react-addons-shallow-compare')
 const { Dialog, RaisedButton } = require('material-ui')
+const NotificationSettingsSection = require('../Settings/General/NotificationSettingsSection')
+
+console.log('setttingsStore', settingsStore)
 
 module.exports = React.createClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
-  displayName: 'AppWizardMailto',
+  displayName: 'AppWizardNotifications',
   propTypes: {
     isOpen: React.PropTypes.bool.isRequired
+  },
+
+  /* **************************************************************************/
+  // Lifecycle
+  /* **************************************************************************/
+
+  componentDidMount () {
+    settingsStore.listen(this.settingsDidUpdate)
+  },
+
+  componentWillUnmount () {
+    settingsStore.unlisten(this.settingsDidUpdate)
+  },
+
+  /* **************************************************************************/
+  // Data Lifecycle
+  /* **************************************************************************/
+
+  getInitialState () {
+    const settingsState = settingsStore.getState()
+    return {
+      os: settingsState.os
+    }
+  },
+
+  settingsDidUpdate (settingsState) {
+    this.setState({
+      os: settingsState.os
+    })
   },
 
   /* **************************************************************************/
@@ -24,6 +56,7 @@ module.exports = React.createClass({
 
   render () {
     const { isOpen } = this.props
+    const { os } = this.state
     const actions = (
       <div>
         <RaisedButton
@@ -34,11 +67,10 @@ module.exports = React.createClass({
           label='Later'
           onClick={() => appWizardActions.progressNextStep()} />
         <RaisedButton
-          label='Make default mail client'
+          label='Continue'
           style={{ marginLeft: 8 }}
           primary
           onClick={() => {
-            platformActions.changeMailtoLinkHandler(true)
             appWizardActions.progressNextStep()
           }} />
       </div>
@@ -47,17 +79,18 @@ module.exports = React.createClass({
     return (
       <Dialog
         modal={false}
-        title='Default Mail Client'
+        title='Notifications'
         actions={actions}
         open={isOpen}
         autoScrollBodyContent
         onRequestClose={() => appWizardActions.cancelWizard()}>
         <div style={{textAlign: 'center'}}>
           <p>
-            Would you like to make WMail your default mail client?
+            Choose your notification preferences
             <br />
-            <small>You can always change this later</small>
+            <small>You can always change these later</small>
           </p>
+          <NotificationSettingsSection os={os} />
         </div>
       </Dialog>
     )

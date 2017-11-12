@@ -1,4 +1,5 @@
 const {BrowserWindow} = require('electron')
+const { enableLiveReload } = require('electron-compile')
 const EventEmitter = require('events')
 const settingStore = require('../stores/settingStore')
 const appStorage = require('../storage/appStorage')
@@ -61,6 +62,10 @@ class WMailWindow extends EventEmitter {
   * @param url: the start url
   */
   createWindow (settings, url) {
+    const isDevMode = process.execPath.match(/[\\/]electron/)
+    if (isDevMode) enableLiveReload({ strategy: 'react-hmr' })
+    console.log('isDevMode', isDevMode);
+  
     const screenLocation = this.loadWindowScreenLocation()
 
     // Load up the window location & last state

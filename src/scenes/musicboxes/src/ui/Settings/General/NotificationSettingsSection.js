@@ -29,6 +29,34 @@ module.exports = React.createClass({
   },
 
   /* **************************************************************************/
+  // Lifecycle
+  /* **************************************************************************/
+
+  componentDidMount () {
+    window.speechSynthesis.onvoiceschanged = this.settingsDidUpdate
+  },
+
+  componentWillUnmount () {
+    window.speechSynthesis.onvoiceschanged = null
+  },
+
+  /* **************************************************************************/
+  // Data Lifecycle
+  /* **************************************************************************/
+
+  getInitialState () {
+    return {
+      voices: getVoices()
+    }
+  },
+
+  settingsDidUpdate (settingsState) {
+    this.setState({
+      voices: getVoices()
+    })
+  },
+
+  /* **************************************************************************/
   // Rendering
   /* **************************************************************************/
 
@@ -38,7 +66,8 @@ module.exports = React.createClass({
 
   render () {
     const { os, ...passProps } = this.props
-
+    const { voices } = this.state
+    
     return (
       <Paper zDepth={1} style={styles.paper} {...passProps}>
         <h1 style={styles.subheading}>Notifications</h1>
@@ -59,7 +88,7 @@ module.exports = React.createClass({
           disabled={!os.notificationsEnabled}
           onChange={this.handleNotificationVoiceChanged}
           value={os.notificationsVoice}>
-          {getVoices().map((voice, index) => {
+          {voices.map((voice, index) => {
             return (<MenuItem key={voice.voiceURI} value={index} primaryText={`${voice.voiceURI} (${voice.lang})`}/>)
           })}
         </SelectField>

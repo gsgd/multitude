@@ -3,7 +3,7 @@ const { appWizardStore } = require('../../stores/appWizard')
 const shallowCompare = require('react-addons-shallow-compare')
 const AppWizardStart = require('./AppWizardStart')
 const AppWizardComplete = require('./AppWizardComplete')
-const AppWizardMailto = require('./AppWizardMailto')
+const AppWizardNotifactions = require('./AppWizardNotifications')
 const AppWizardTray = require('./AppWizardTray')
 
 module.exports = React.createClass({
@@ -38,7 +38,7 @@ module.exports = React.createClass({
       itemsOpen: itemsOpen,
       render: itemsOpen,
       trayConfiguratorOpen: wizardState.trayConfiguratorOpen,
-      mailtoHandlerOpen: wizardState.mailtoHandlerOpen,
+      notificationHandlerOpen: wizardState.notificationHandlerOpen,
       completeOpen: wizardState.completeOpen,
       startOpen: wizardState.startOpen
     }
@@ -50,7 +50,7 @@ module.exports = React.createClass({
       const update = {
         itemsOpen: itemsOpen,
         trayConfiguratorOpen: wizardState.trayConfiguratorOpen,
-        mailtoHandlerOpen: wizardState.mailtoHandlerOpen,
+        notificationHandlerOpen: wizardState.notificationHandlerOpen,
         completeOpen: wizardState.completeOpen,
         startOpen: wizardState.startOpen
       }
@@ -78,13 +78,13 @@ module.exports = React.createClass({
   },
 
   render () {
-    const { render, startOpen, trayConfiguratorOpen, mailtoHandlerOpen, completeOpen } = this.state
+    const { render, startOpen, trayConfiguratorOpen, notificationHandlerOpen, completeOpen } = this.state
     if (render) {
       return (
         <div>
           <AppWizardStart isOpen={startOpen} />
           <AppWizardTray isOpen={trayConfiguratorOpen} />
-          <AppWizardMailto isOpen={mailtoHandlerOpen} />
+          <AppWizardNotifactions isOpen={notificationHandlerOpen} />
           <AppWizardComplete isOpen={completeOpen} />
         </div>
       )

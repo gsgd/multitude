@@ -3,7 +3,6 @@ const flux = {
   musicbox: require('../stores/musicbox'),
   settings: require('../stores/settings')
 }
-console.log(flux)
 const {
   ipcRenderer, remote: {shell}
 } = require('electron')
@@ -20,12 +19,9 @@ const AppBadge = require('./AppBadge')
 const appTheme = require('./appTheme')
 const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default
 
-const injectTapEventPlugin = require('react-tap-event-plugin')
-injectTapEventPlugin()
-
 navigationDispatch.bindIPCListeners()
 
-module.exports = React.createClass({
+const App = React.createClass({
   displayName: 'App',
   mixins: [TimerMixin],
 
@@ -190,3 +186,4 @@ module.exports = React.createClass({
     )
   }
 })
+module.exports = App

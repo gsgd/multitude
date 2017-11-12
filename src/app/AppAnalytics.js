@@ -5,7 +5,7 @@ const osLanguage = require('os-locale').sync().replace(/_/g, '-').toLowerCase()
 const pkg = require('../../package.json')
 const HttpsProxyAgent = require('https-proxy-agent')
 const settingStore = require('./stores/settingStore')
-const mailboxStore = require('./stores/mailboxStore')
+const musicboxStore = require('./stores/musicboxStore')
 const appStorage = require('./storage/appStorage')
 
 class AppAnalytics {
@@ -24,7 +24,7 @@ class AppAnalytics {
   /* ****************************************************************************/
 
   /**
-  * @param window: the mailbox window
+  * @param window: the musicbox window
   * @param args: the items to append
   * @return the querystring with all arguments setup
   */
@@ -41,7 +41,7 @@ class AppAnalytics {
       v: 1,
       tid: credentials.GOOGLE_ANALYTICS_ID,
       cid: this.id,
-      cd1: mailboxStore.index.length,
+      cd1: musicboxStore.index.length,
       t: 'screenview',
       vp: windowSize,
       ul: osLanguage,
@@ -64,29 +64,29 @@ class AppAnalytics {
 
   /**
   * Log the app was opened
-  * @param window: the mailbox window
+  * @param window: the musicbox window
   */
   appOpened (window) {
     if (!credentials.GOOGLE_ANALYTICS_ID) { return Promise.resolve() }
     return this.send(window, {
-      cd: 'mailboxes'
+      cd: 'musicboxes'
     })
   }
 
   /**
   * Log the app is alive
-  * @param window: the mailbox window
+  * @param window: the musicbox window
   */
   appHeartbeat (window) {
     if (!credentials.GOOGLE_ANALYTICS_ID) { return Promise.resolve() }
     return this.send(window, {
-      cd: 'mailboxes'
+      cd: 'musicboxes'
     })
   }
 
   /**
   * Log an exception
-  * @param window: the mailbox window
+  * @param window: the musicbox window
   * @param thread: the thread that it occured on
   * @param error: the error that was thrown
   */

@@ -3,24 +3,23 @@ const uuid = require('uuid')
 const fs = require('fs-extra')
 const path = require('path')
 const settingStore = require('../stores/settingStore')
-const mailboxStore = require('../stores/mailboxStore')
 const musicboxStore = require('../stores/musicboxStore')
 const unusedFilename = require('unused-filename')
 
 const COOKIE_PERSIST_WAIT = 1000 * 30 // 30 secs
 const COOKIE_PERSIST_PERIOD = 30 * 24 * 60 * 60 * 1000 // 30 days
 
-class MailboxesSessionManager {
+class MusicboxesSessionManager {
 
   /* ****************************************************************************/
   // Lifecycle
   /* ****************************************************************************/
 
   /**
-  * @param mailboxWindow: the mailbox window instance we're working for
+  * @param musicboxWindow: the musicbox window instance we're working for
   */
-  constructor (mailboxWindow) {
-    this.mailboxWindow = mailboxWindow
+  constructor (musicboxWindow) {
+    this.musicboxWindow = musicboxWindow
     this.downloadsInProgress = { }
     this.persistCookieThrottle = { }
 
@@ -33,15 +32,7 @@ class MailboxesSessionManager {
 
   /**
   * @param partition: the partition id
-  * @return the mailbox model for the partition
-  */
-  getMailboxFromPartition (partition) {
-    return mailboxStore.getMailbox(partition.replace('persist:', ''))
-  }
-
-  /**
-  * @param partition: the partition id
-  * @return the mailbox model for the partition
+  * @return the musicbox model for the partition
   */
   getMusicboxFromPartition (partition) {
     return musicboxStore.getMusicbox(partition.replace('persist:', ''))
@@ -99,7 +90,7 @@ class MailboxesSessionManager {
       fs.ensureDirSync(folderLocation)
       savePath = unusedFilename.sync(path.join(folderLocation, item.getFilename()))
     } else {
-      let pickedSavePath = dialog.showSaveDialog(this.mailboxWindow.window, {
+      let pickedSavePath = dialog.showSaveDialog(this.musicboxWindow.window, {
         title: 'Download',
         defaultPath: path.join(app.getPath('downloads'), item.getFilename())
       })
@@ -146,7 +137,7 @@ class MailboxesSessionManager {
         fs.move(downloadPath, savePath, () => {
           this.downloadFinished(id)
           const saveName = path.basename(savePath)
-          this.mailboxWindow.downloadCompleted(savePath, saveName)
+          this.musicboxWindow.downloadCompleted(savePath, saveName)
         })
       } else {
         // Tidy-up on failure
@@ -171,9 +162,9 @@ class MailboxesSessionManager {
     }, { received: 0, total: 0 })
 
     if (all.received === 0 && all.total === 0) {
-      this.mailboxWindow.setProgressBar(-1)
+      this.musicboxWindow.setProgressBar(-1)
     } else {
-      this.mailboxWindow.setProgressBar(all.received / all.total)
+      this.musicboxWindow.setProgressBar(all.received / all.total)
     }
   }
 
@@ -224,9 +215,8 @@ class MailboxesSessionManager {
   */
   artificiallyPersistCookies (session, partition) {
     // if (this.persistCookieThrottle[partition] !== undefined) { return }
-    const mailbox = this.getMailboxFromPartition(partition)
     const musicbox = this.getMusicboxFromPartition(partition)
-    if (!mailbox || !mailbox.artificiallyPersistCookies) { return }
+    if (!musicbox || !musicbox.artificiallyPersistCookies) { return }
 
     this.persistCookieThrottle[partition] = setTimeout(() => {
       session.cookies.get({ session: true }, (error, cookies) => {
@@ -258,4 +248,4 @@ class MailboxesSessionManager {
   }
 }
 
-module.exports = MailboxesSessionManager
+module.exports = MusicboxesSessionManager

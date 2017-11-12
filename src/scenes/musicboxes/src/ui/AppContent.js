@@ -16,7 +16,7 @@ const addLink = require('shared/addLink')
 addLink(__dirname, '/layout.less')
 addLink(__dirname, '/appContent.less')
 
-module.exports = React.createClass({
+const AppContent = React.createClass({
   displayName: 'AppContent',
 
   /* **************************************************************************/
@@ -105,3 +105,6 @@ module.exports = React.createClass({
     )
   }
 })
+
+// const AppContentClass = AppContent)
+module.exports = AppContent

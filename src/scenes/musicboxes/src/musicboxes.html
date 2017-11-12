@@ -1,64 +1,22 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
     <title>Multitude</title>
     <link rel="stylesheet" type="text/css" href="../../../../node_modules/bootstrap-grid/dist/grid.min.css">
     <link rel="stylesheet" type="text/css" href="../../../../node_modules/typeface-roboto/index.css">
     <link rel="stylesheet" type="text/css" href="../../../../node_modules/material-design-icons/iconfont/material-icons.css">
     <link rel="stylesheet" type="text/css" href="../../../../node_modules/font-awesome/css/font-awesome.min.css">
-    <style>
-      /**
-      * Core styles
-      */
-      html, body {
-        width: 100%;
-        height: 100%;
-        margin:0;
-        padding:0;
-        overflow: hidden;
-        font-family: 'Roboto', sans-serif;
-      }
-
-      * {
-         box-sizing: border-box;
-         -webkit-backface-visibility:hidden;
-         backface-visibility:hidden;
-       }
-
-       /**
-       * Mock loading UI
-       */
-       #loading {
-         position:absolute;
-         top:0;
-         left:0;
-         right:0;
-         bottom:0;
-         background-color:#f2f2f2;
-       }
-       #loading .sidebar {
-         position:absolute;
-         left:0;
-         top:0;
-         bottom:0;
-         width:70px;
-         background-color:rgb(38, 50, 56);
-         -webkit-app-region: drag;
-       }
-    </style>
-  </head>
-  <body>
+    <link rel="stylesheet" type="text/css" href="./musicboxes.less">
+    <link rel="stylesheet" type="text/css" href="./ReactComponents.less">
+</head>
+<body>
     <div id="loading">
-      <div class="sidebar"></div>
+        <div class="sidebar"></div>
     </div>
     <div id="app"></div>
-
-    <!--<script type="text/javascript" src="nativeRequire.js"></script>-->
     <script type="text/jsx">
-      require('./musicboxes')
-//      require('../../platform/src/nativeRequire')
+    require('./musicboxes')
     </script>
-    <!--<script type="text/javascript" src="musicboxes.js"></script>-->
-  </body>
+</body>
 </html>

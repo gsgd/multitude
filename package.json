@@ -14,7 +14,6 @@
     "lint": "eslint --cache --color --ext .jsx,.js src"
   },
   "keywords": [],
-  "keywords": [],
   "author": {
     "name": "George McGinley Smith",
     "email": "george@gsgd.co.uk",
@@ -45,7 +44,8 @@
         "icon": "assets/icons/icon",
         "ignore": [
           ".idea",
-          ".*\\.gvdesign"
+          ".*\\.gvdesign",
+          "material-design-icons/(?!iconfont|package\\.json)"
         ]
       },
       "electronWinstallerConfig": {
@@ -98,7 +98,7 @@
     "react-addons-shallow-compare": "15.4.2",
     "react-color": "2.11.1",
     "react-dom": "15.4.2",
-    "react-hot-loader": "^3.1.1",
+    "react-hot-loader": "^3.1.2",
     "react-tap-event-plugin": "2.0.1",
     "react-timer-mixin": "0.13.3",
     "react-tooltip": "3.2.7",
@@ -119,7 +119,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "electron-forge": "^4.1.2",
+    "electron-forge": "^4.1.3",
     "electron-prebuilt-compile": "1.7.9",
     "eslint": "^3.19.0",
     "eslint-plugin-import": "^2.8.0",

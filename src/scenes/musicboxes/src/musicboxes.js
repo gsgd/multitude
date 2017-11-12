@@ -1,15 +1,15 @@
-const addLink = require('shared/addLink')
-addLink(__dirname, './ReactComponents.less')
-
 const React = require('react')
 const ReactDOM = require('react-dom')
-import { AppContainer } from 'react-hot-loader'
+const { AppContainer } = require('react-hot-loader')
 
 const musicboxStore = require('./stores/musicbox')
 const settingsStore = require('./stores/settings')
 const composeStore = require('./stores/compose')
 const musicboxWizardStore = require('./stores/musicboxWizard')
 const { ipcRenderer } = require('electron')
+
+const injectTapEventPlugin = require('react-tap-event-plugin')
+injectTapEventPlugin()
 
 // See if we're offline and run a re-direct
 if (window.navigator.onLine === false) {
@@ -29,7 +29,6 @@ if (loading) {
 }
 
 const render = () => {
-
   const App = require('./ui/App')
 // Render and prepare for unrender
   //   ReactDOM.render(<App/>, document.getElementById('app'))
@@ -42,6 +41,7 @@ const render = () => {
 
 render()
 
+console.log('module.hot', module.hot)
 if (module.hot) {
   module.hot.accept(render)
 }

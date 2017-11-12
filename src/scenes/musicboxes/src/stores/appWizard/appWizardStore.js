@@ -10,14 +10,14 @@ class AppWizardStore {
   constructor () {
     this.startOpen = false
     this.trayConfiguratorOpen = false
-    this.mailtoHandlerOpen = false
+    this.notificationHandlerOpen = false
     this.completeOpen = false
 
     /**
     * @return true if any configuration dialogs are open
     */
     this.hasAnyItemsOpen = () => {
-      return this.startOpen || this.mailtoHandlerOpen || this.trayConfiguratorOpen || this.completeOpen
+      return this.startOpen || this.notificationHandlerOpen || this.trayConfiguratorOpen || this.completeOpen
     }
 
     /* ****************************************/
@@ -39,7 +39,7 @@ class AppWizardStore {
   clearAll () {
     this.startOpen = false
     this.trayConfiguratorOpen = false
-    this.mailtoHandlerOpen = false
+    this.notificationHandlerOpen = false
     this.completeOpen = false
   }
 
@@ -59,11 +59,11 @@ class AppWizardStore {
     } else if (this.trayConfiguratorOpen) {
       this.clearAll()
       if (process.platform === 'darwin' || process.platform === 'win32') {
-        this.mailtoHandlerOpen = true
+        this.notificationHandlerOpen = true
       } else {
         this.completeOpen = true
       }
-    } else if (this.mailtoHandlerOpen) {
+    } else if (this.notificationHandlerOpen) {
       this.clearAll()
       this.completeOpen = true
     } else if (this.completeOpen) {
