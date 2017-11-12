@@ -1,3 +1,5 @@
+const Browser = require('../Browser/Browser')
+const Multitude = require('../Multitude/Multitude')
 const ChangeEmitter = require('../ChangeEmitter/ChangeEmitter')
 const {ipcRenderer} = require('electron')
 const {
@@ -21,6 +23,9 @@ class StreamingService {
    * @param {MediaPlayer} player: the media player to use
    */
   constructor (player) {
+    this.browser = new Browser()
+    this.multitude = new Multitude()
+
     this.player = player
     this.__data__ = {
       intervals: []
@@ -44,7 +49,7 @@ class StreamingService {
   }
 
   addBindings () {
-    console.log('addBindings')
+    // console.log('addBindings')
     // Bind our listeners
     ipcRenderer.on(MUSICBOX_WINDOW_FADE_TO, this.handleFadeTo.bind(this))
     ipcRenderer.on(MUSICBOX_WINDOW_PLAY, this.handlePlay.bind(this))
@@ -55,7 +60,7 @@ class StreamingService {
   }
 
   removeBindings () {
-    console.log('removeBindings')
+    // console.log('removeBindings')
     // unbind our listeners
     ipcRenderer.removeListener(MUSICBOX_WINDOW_FADE_TO, this.handleFadeTo.bind(this))
     ipcRenderer.removeListener(MUSICBOX_WINDOW_INIT, this.handleInit.bind(this))
@@ -108,7 +113,7 @@ class StreamingService {
   }
 
   handleInit (evt, data) {
-    console.log('handleInit', evt, data)
+    // console.log('handleInit', evt, data)
     if (this.player.handleInit !== undefined) { this.player.handleInit(evt, data) }
   }
   handlePlay (evt, data) {

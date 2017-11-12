@@ -41,7 +41,6 @@ const render = () => {
 
 render()
 
-console.log('module.hot', module.hot)
 if (module.hot) {
   module.hot.accept(render)
 }

@@ -1,7 +1,6 @@
 class ImageUtil {
 
   constructor (url) {
-    // console.log();
     this.__data__ = { url: url }
   }
 

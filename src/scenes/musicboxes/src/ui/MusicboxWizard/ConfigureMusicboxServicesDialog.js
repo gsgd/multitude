@@ -152,7 +152,7 @@ const ConfigureMusicboxServicesDialog = React.createClass({
         open={isOpen}
         autoScrollBodyContent>
         <div style={styles.introduction}>
-          WMail also gives you access to the other services you use. Pick which
+          Multitude also gives you access to the other services you use. Pick which
           services you would like to enable for this account
         </div>
 

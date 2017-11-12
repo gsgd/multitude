@@ -1,7 +1,7 @@
-const WMailWindow = require('./WMailWindow')
+const MultitudeWindow = require('./MultitudeWindow')
 const {shell} = require('electron')
 
-class ContentWindow extends WMailWindow {
+class ContentWindow extends MultitudeWindow {
 
   /* ****************************************************************************/
   // Creation

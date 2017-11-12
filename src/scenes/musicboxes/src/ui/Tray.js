@@ -90,6 +90,7 @@ const TrayClass = React.createClass({
 
       if (!track) {
         return {
+          id: `${musicboxId}:${musicbox.displayName}`,
           label: `${musicbox.displayName || musicbox.title}`,
           click: (e) => {
             ipcRenderer.send('focus-app', { })
@@ -115,7 +116,9 @@ const TrayClass = React.createClass({
     })
 
     const sig = menuItems
-      .map((musicboxItem) => musicboxItem.submenu.map((item) => item.id).join('|'))
+      .map((musicboxItem) => {
+        return musicboxItem.submenu ? musicboxItem.submenu.map((item) => item.id).join('|') : musicboxItem.id
+      })
       .join('|')
 
     return { menuTrackMessages: menuItems, menuTrackMessagesSig: sig }

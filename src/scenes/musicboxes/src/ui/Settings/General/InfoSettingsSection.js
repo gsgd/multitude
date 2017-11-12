@@ -6,8 +6,8 @@ const Colors = require('material-ui/styles/colors')
 const { remote } = require('electron')
 const { shell } = remote
 const { WEB_URL, GITHUB_URL, GITHUB_ISSUE_URL } = require('shared/constants')
-const {mailboxDispatch} = require('../../../Dispatch')
-const mailboxStore = require('../../../stores/mailbox/mailboxStore')
+const {musicboxDispatch} = require('../../../Dispatch')
+const musicboxStore = require('../../../stores/musicbox/musicboxStore')
 const pkg = require('shared/appPackage')
 
 const InfoSettingsSection = React.createClass({
@@ -29,24 +29,25 @@ const InfoSettingsSection = React.createClass({
 
     const sizeToMb = (size) => { return Math.round(size / 1024) }
 
-    mailboxDispatch.fetchProcessMemoryInfo().then((mailboxesProc) => {
-      const mailboxProcIndex = mailboxesProc.reduce((acc, info) => {
-        acc[info.mailboxId] = info.memoryInfo
+    musicboxDispatch.fetchProcessMemoryInfo().then((musicboxesProc) => {
+      // console.log('fetchProcessMemoryInfo.musicboxesProc', musicboxesProc)
+      const musicboxProcIndex = musicboxesProc.reduce((acc, info) => {
+        acc[info.musicboxId] = info.memoryInfo
         return acc
       }, {})
-      const mailboxes = mailboxStore.getState().mailboxIds().map((mailboxId, index) => {
-        if (mailboxProcIndex[mailboxId]) {
-          return `Mailbox ${index + 1}: ${sizeToMb(mailboxProcIndex[mailboxId].workingSetSize)}mb`
+      const musicboxes = musicboxStore.getState().musicboxIds().map((musicboxId, index) => {
+        if (musicboxProcIndex[musicboxId]) {
+          return `Musicbox ${index + 1}: ${sizeToMb(musicboxProcIndex[musicboxId].workingSetSize)}mb`
         } else {
-          return `Mailbox ${index + 1}: No info`
+          return `Musicbox ${index + 1}: No info`
         }
       })
 
       window.alert([
         `Main Process ${sizeToMb(remote.process.getProcessMemoryInfo().workingSetSize)}mb`,
-        `Mailboxes Window ${sizeToMb(process.getProcessMemoryInfo().workingSetSize)}mb`,
+        `Musicboxes Window ${sizeToMb(process.getProcessMemoryInfo().workingSetSize)}mb`,
         ''
-      ].concat(mailboxes).join('\n'))
+      ].concat(musicboxes).join('\n'))
     })
   },
 

@@ -13,7 +13,7 @@ class SettingsActions {
   * Indicates the store to drop all data and load from disk
   */
   load () {
-    console.log('load')
+    // console.log('load')
     return {}
   }
 

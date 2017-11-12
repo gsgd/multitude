@@ -1,4 +1,4 @@
 module.exports = {
-  Mailbox: require('./Mailbox'),
+  Musicbox: require('./Musicbox'),
   Settings: require('./Settings')
 }

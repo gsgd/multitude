@@ -1,7 +1,7 @@
 const React = require('react')
 const { appWizardActions } = require('../../stores/appWizard')
-const { mailboxStore } = require('../../stores/mailbox')
-const { mailboxWizardActions } = require('../../stores/mailboxWizard')
+const { musicboxStore } = require('../../stores/musicbox')
+const { musicboxWizardActions } = require('../../stores/musicboxWizard')
 const shallowCompare = require('react-addons-shallow-compare')
 const { Dialog, RaisedButton, FontIcon } = require('material-ui')
 const Colors = require('material-ui/styles/colors')
@@ -31,11 +31,11 @@ const AppWizardComplete = React.createClass({
   /* **************************************************************************/
 
   componentDidMount () {
-    mailboxStore.listen(this.mailboxesUpdated)
+    musicboxStore.listen(this.musicboxesUpdated)
   },
 
   componentWillUnmount () {
-    mailboxStore.unlisten(this.mailboxesUpdated)
+    musicboxStore.unlisten(this.musicboxesUpdated)
   },
 
   /* **************************************************************************/
@@ -44,13 +44,13 @@ const AppWizardComplete = React.createClass({
 
   getInitialState () {
     return {
-      mailboxCount: mailboxStore.getState().mailboxCount()
+      musicboxCount: musicboxStore.getState().musicboxCount()
     }
   },
 
-  mailboxesUpdated (mailboxState) {
+  musicboxesUpdated (musicboxState) {
     this.setState({
-      mailboxCount: mailboxState.mailboxCount()
+      musicboxCount: musicboxState.musicboxCount()
     })
   },
 
@@ -64,7 +64,7 @@ const AppWizardComplete = React.createClass({
 
   render () {
     const { isOpen } = this.props
-    const { mailboxCount } = this.state
+    const { musicboxCount } = this.state
     const actions = (
       <div>
         <RaisedButton
@@ -73,16 +73,16 @@ const AppWizardComplete = React.createClass({
           onClick={() => appWizardActions.cancelWizard()} />
         <RaisedButton
           label='Finish'
-          primary={mailboxCount !== 0}
+          primary={musicboxCount !== 0}
           onClick={() => appWizardActions.progressNextStep()} />
-        {mailboxCount === 0 ? (
+        {musicboxCount === 0 ? (
           <RaisedButton
-            label='Add First Mailbox'
+            label='Add First Musicbox'
             style={{marginLeft: 8}}
             primary
             onClick={() => {
               appWizardActions.progressNextStep()
-              mailboxWizardActions.openAddMailbox()
+              musicboxWizardActions.openAddMusicbox()
             }} />
         ) : undefined}
       </div>

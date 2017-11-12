@@ -61,7 +61,7 @@ const App = React.createClass({
   /* **************************************************************************/
 
   getInitialState () {
-    console.log('getInitialState', flux.settings.S.getState(), flux.musicbox.S.getState())
+    // console.log('getInitialState', flux.settings.S.getState(), flux.musicbox.S.getState())
     const settingsStore = flux.settings.S.getState()
     const musicboxStore = flux.musicbox.S.getState()
     return {
@@ -149,7 +149,7 @@ const App = React.createClass({
   },
 
   render () {
-    console.log('render', this.state)
+    // console.log('render', this.state)
     const {
       traySettings,
       uiSettings,

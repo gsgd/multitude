@@ -5,7 +5,7 @@ const settingStore = require('../stores/settingStore')
 const appStorage = require('../storage/appStorage')
 const path = require('path')
 
-class WMailWindow extends EventEmitter {
+class MultitudeWindow extends EventEmitter {
 
   /* ****************************************************************************/
   // Lifecycle
@@ -64,7 +64,6 @@ class WMailWindow extends EventEmitter {
   createWindow (settings, url) {
     const isDevMode = process.execPath.match(/[\\/]electron/)
     if (isDevMode) enableLiveReload({ strategy: 'react-hmr' })
-    console.log('isDevMode', isDevMode);
   
     const screenLocation = this.loadWindowScreenLocation()
 
@@ -239,4 +238,4 @@ class WMailWindow extends EventEmitter {
   }
 }
 
-module.exports = WMailWindow
+module.exports = MultitudeWindow

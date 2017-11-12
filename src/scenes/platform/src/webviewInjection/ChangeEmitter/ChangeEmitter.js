@@ -111,7 +111,7 @@ class ChangeEmitter {
   */
   transmitEvent (type, data) {
     if (data === undefined) { return }
-    console.log('transmitEvent', type, data)
+    // console.log('transmitEvent', type, data)
     ipcRenderer.sendToHost({
       type: type,
       data: data

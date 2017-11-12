@@ -8,9 +8,9 @@
   "scripts": {
     "start": "electron-forge start",
     "prepackage": "electron-icon-maker --input=./assets/appIcon.png --output=./assets && mv ./assets/icons/*/icon* ./assets/icons",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
+    "package": "NODE_ENV=production electron-forge package",
+    "make": "NODE_ENV=production electron-forge make",
+    "publish": "NODE_ENV=production electron-forge publish",
     "lint": "eslint --cache --color --ext .jsx,.js src"
   },
   "keywords": [],

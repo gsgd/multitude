@@ -1,6 +1,5 @@
 const React = require('react')
 const MusicboxWindows = require('./Musicbox/MusicboxWindows')
-const MailboxComposePicker = require('./Mailbox/MailboxComposePicker')
 const Sidelist = require('./Sidelist')
 const shallowCompare = require('react-addons-shallow-compare')
 const SettingsDialog = require('./Settings/SettingsDialog')
@@ -100,7 +99,6 @@ const AppContent = React.createClass({
         <MusicboxWizard />
         <NewsDialog />
         <UpdateCheckDialog />
-        <MailboxComposePicker />
       </div>
     )
   }

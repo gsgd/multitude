@@ -191,6 +191,7 @@ const BrowserView = React.createClass({
   * @return promise
   */
   getProcessMemoryInfo () {
+    // console.log('getProcessMemoryInfo');
     return this.sendWithResponse('get-process-memory-info')
   },
 

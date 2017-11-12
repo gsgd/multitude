@@ -5,7 +5,7 @@ const shallowCompare = require('react-addons-shallow-compare')
 const { Dialog, RaisedButton } = require('material-ui')
 const NotificationSettingsSection = require('../Settings/General/NotificationSettingsSection')
 
-console.log('setttingsStore', settingsStore)
+// console.log('setttingsStore', settingsStore)
 
 const AppWizardNotifications = React.createClass({
   /* **************************************************************************/

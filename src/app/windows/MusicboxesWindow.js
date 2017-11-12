@@ -1,4 +1,4 @@
-const WMailWindow = require('./WMailWindow')
+const MultitudeWindow = require('./MultitudeWindow')
 const path = require('path')
 const MusicboxesSessionManager = require('./MusicboxesSessionManager')
 const settingStore = require('../stores/settingStore')
@@ -9,7 +9,7 @@ const ALLOWED_URLS = new Set([
   'file://' + path.join(MUSICBOXES_DIR, 'offline.html')
 ])
 
-class MusicboxesWindow extends WMailWindow {
+class MusicboxesWindow extends MultitudeWindow {
 
   /* ****************************************************************************/
   // Lifecycle

@@ -237,7 +237,9 @@ const MusicboxTab = React.createClass({
   * @return promise
   */
   handleFetchProcessMemoryInfo () {
+    // console.log('handleFetchProcessMemoryInfo');
     return this.refs[BROWSER_REF].getProcessMemoryInfo().then((memoryInfo) => {
+      // console.log('handleFetchProcessMemoryInfo.memoryInfo', memoryInfo);
       return Promise.resolve({
         musicboxId: this.props.musicboxId,
         memoryInfo: memoryInfo
@@ -250,9 +252,9 @@ const MusicboxTab = React.createClass({
   * @param musicboxId: int the id of the musicbox
   */
   handleMusicboxInitRequest ({musicboxId}) {
-    console.log('handleMusicboxInit.1', this.props.musicboxId, musicboxId, this.state.musicbox.init)
+    // console.log('handleMusicboxInit.1', this.props.musicboxId, musicboxId, this.state.musicbox.init)
     if (this.props.musicboxId !== musicboxId) { return }
-    console.log('handleMusicboxInit.2', this.props.musicboxId, musicboxId, this.state.musicbox.init)
+    // console.log('handleMusicboxInit.2', this.props.musicboxId, musicboxId, this.state.musicbox.init)
     this.refs[BROWSER_REF].send(MUSICBOX_WINDOW_INIT, this.state.musicbox.init)
   },
 
@@ -372,7 +374,7 @@ const MusicboxTab = React.createClass({
   * @param evt: the event that fired
   */
   dispatchFromBrowserIPCMessage (evt) {
-    console.log('dispatchFromBrowserIPCMessage', evt.path[0].id, evt.channel.type, evt.channel.data)
+    // console.log('dispatchFromBrowserIPCMessage', evt.path[0].id, evt.channel.type, evt.channel.data)
     const musicboxId = evt.path[0].id
     switch (evt.channel.type) {
       case 'open-settings': navigationDispatch.openSettings(); break
