@@ -1,4 +1,4 @@
-const alt = require('../alt')
+const alt = require('../altUtils')
 const actions = require('./musicboxWizardActions')
 const { Musicbox, Deezer } = require('shared/Models/Musicbox')
 const musicboxActions = require('../musicbox/musicboxActions')

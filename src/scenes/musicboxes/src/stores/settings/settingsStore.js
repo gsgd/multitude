@@ -1,4 +1,4 @@
-const alt = require('../alt')
+const alt = require('../altUtils')
 const actions = require('./settingsActions')
 const persistence = require('./settingsPersistence')
 const dictionaries = require('shared/dictionaries.js')

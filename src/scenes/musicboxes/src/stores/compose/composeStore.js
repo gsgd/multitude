@@ -1,4 +1,4 @@
-const alt = require('../alt')
+const alt = require('../altUtils')
 const actions = require('./composeActions')
 const uuid = require('uuid')
 const { ipcRenderer } = require('electron')

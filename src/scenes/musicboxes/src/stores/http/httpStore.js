@@ -1,4 +1,4 @@
-const alt = require('../alt')
+const alt = require('../altStore')
 const actions = require('./httpActions')
 
 class HttpStore {

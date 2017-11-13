@@ -1,4 +1,4 @@
-const alt = require('../alt')
+const alt = require('../altUtils')
 const actions = require('./musicboxActions')
 const Musicbox = require('shared/Models/Musicbox/Musicbox')
 const uuid = require('uuid')

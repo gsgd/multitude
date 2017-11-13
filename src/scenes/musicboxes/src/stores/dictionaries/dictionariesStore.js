@@ -1,4 +1,4 @@
-const alt = require('../alt')
+const alt = require('../altUtils')
 const actions = require('./dictionariesActions')
 const dictionaries = require('shared/dictionaries.js')
 const LanguageSettings = require('shared/Models/Settings/LanguageSettings')

@@ -1,4 +1,4 @@
-const alt = require('../alt')
+const alt = require('../altUtils')
 const actions = require('./appWizardActions')
 const settingsActions = require('../settings/settingsActions')
 

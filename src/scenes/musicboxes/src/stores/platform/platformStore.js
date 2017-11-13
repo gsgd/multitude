@@ -1,4 +1,4 @@
-const alt = require('../alt')
+const alt = require('../altUtils')
 const actions = require('./platformActions')
 const { remote } = require('electron')
 const path = require('path')
