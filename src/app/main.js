@@ -39,6 +39,12 @@
   const storage = require('./storage')
   const settingStore = require('./stores/settingStore')
 
+  if(NODE_ENV === 'development' && process.env.CLEAR && storage[process.env.CLEAR]) {
+    Object.keys(storage[process.env.CLEAR].allItems()).forEach((k) => {
+      storage[process.env.CLEAR]._removeItem(k);
+    })
+  }
+
   Object.keys(storage).forEach((k) => storage[k].checkAwake())
 
   /* ****************************************************************************/
