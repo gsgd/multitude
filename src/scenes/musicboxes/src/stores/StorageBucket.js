@@ -158,7 +158,7 @@ class StorageBucket {
   allJSONItemsSync () {
     const items = this.allItemsSync()
     return Object.keys(items).reduce((acc, key) => {
-      acc[key] = JSON.parse(items[key])
+      acc[key] = items[key] === 'undefined' ? undefined : JSON.parse(items[key])
       return acc
     }, {})
   }
