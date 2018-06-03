@@ -76,7 +76,7 @@ class TrayRenderer {
     return Promise.resolve()
       .then(() => TrayRenderer.renderCanvas(config))
       .then((canvas) => {
-        const pngData = nativeImage.createFromDataURL(canvas.toDataURL('image/png')).toPng()
+        const pngData = nativeImage.createFromDataURL(canvas.toDataURL('image/png')).toPNG()
         return Promise.resolve(nativeImage.createFromBuffer(pngData, config.pixelRatio))
       })
   }
