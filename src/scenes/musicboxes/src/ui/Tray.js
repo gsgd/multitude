@@ -20,7 +20,7 @@ const TrayClass = React.createClass({
   // Pretty strict on updating. If you're changing these, change shouldComponentUpdate :)
   propTypes: {
     activeTrack: React.PropTypes.object.isRequired,
-    activeMusicboxId: React.PropTypes.string.isRequired,
+    activeMusicboxId: React.PropTypes.string,
     traySettings: React.PropTypes.object.isRequired
   },
   statics: {
@@ -178,7 +178,7 @@ const TrayClass = React.createClass({
       { type: 'separator' }
     ]
 
-    if (trackDetails.length) {
+    if (trackDetails && trackDetails.length) {
       template = template.concat(trackDetails)
       template.push({ type: 'separator' })
     }
