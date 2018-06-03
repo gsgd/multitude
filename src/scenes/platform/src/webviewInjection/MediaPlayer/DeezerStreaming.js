@@ -1,5 +1,6 @@
 const injector = require('../injector')
 const MediaPlayer = require('./MediaPlayer')
+const SETTING_DOMAIN_IMG = 'https://e-cdns-images.dzcdn.net/images'
 
 class DeezerStreaming extends MediaPlayer {
 
@@ -12,6 +13,9 @@ class DeezerStreaming extends MediaPlayer {
     // Inject some styles
     injector.injectStyle(`
       button[data-type="log_out"] {
+        display: none !important;
+      }
+      .conversion-entrypoints {
         display: none !important;
       }
     `)
@@ -48,7 +52,7 @@ class DeezerStreaming extends MediaPlayer {
       title: title.join(' '),
       artist: data.ART_NAME,
       album: data.ALB_TITLE,
-      imageUrl: `${window.SETTING_DOMAIN_IMG}/cover/${data.ALB_PICTURE}/250x250.jpg`
+      imageUrl: `${SETTING_DOMAIN_IMG}/cover/${data.ALB_PICTURE}/250x250.jpg`
     }
   }
 
