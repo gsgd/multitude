@@ -87,13 +87,13 @@ class Musicbox extends Model {
     }
   }
   get url () {
-    // console.log('Musicbox.get url', this.type, Musicbox.TYPE_DEEZER, `http://www.deezer.com`);
+    // console.log('Musicbox.get url', this.type, URLS[this.type]);
     if (typeof URLS[this.type] !== 'undefined') { return URLS[this.type] }
   }
 
   get pageUrl () {
     // console.log('get pageUrl', this.__data__.pageUrl);
-    if (this.__data__.pageUrl) { return `${this.url}${this.__data__.pageUrl}` }
+    if (this.__data__.pageUrl && this.__data__.pageUrl !== 'text/html,chromewebdata') { return `${this.url}${this.__data__.pageUrl}` }
   }
 
   /* **************************************************************************/
