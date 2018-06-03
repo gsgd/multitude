@@ -130,7 +130,7 @@ class MusicboxStore {
     */
     this.activeTrackForAppBadge = () => {
       const activeMusicbox = this.activeMusicbox()
-      return activeMusicbox.isPlaying ? activeMusicbox.currentTrack : {}
+      return (activeMusicbox && activeMusicbox.isPlaying) ? activeMusicbox.currentTrack : {}
     }
 
     /**
