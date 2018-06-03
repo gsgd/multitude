@@ -18,6 +18,9 @@ class SpotifyStreaming extends MediaPlayer {
       .navBar-item.download-item {
         display: none !important;
       }
+      .ads-container {
+        display: none !important;
+      }
     `)
   }
 
@@ -99,9 +102,7 @@ class SpotifyStreaming extends MediaPlayer {
       if (!document.querySelector('.now-playing') ||
         !document.querySelector('.user-link') ||
         !document.querySelector('.track-info') ||
-        !document.querySelector('.spoticon-play-16') ||
-        !document.querySelector('.ads-container')) { return }
-      document.querySelector('.ads-container').style.display = 'none'
+      !document.querySelector('.spoticon-play-16')) { return }
       this.subscribeToEvents()
       ChangeEmitter.handleDisplayCurrentSong()
       clearInterval(interval)
