@@ -541,11 +541,12 @@ class MusicboxStore {
   * @param id: the id of the musicbox
   * @param updates: the updates to merge in
   */
-  handlePageChanged ({id, musicboxId, pageUrl}) {
+  handlePageChanged ({id, musicboxId, pageInfo}) {
     if (id !== musicboxId) { return }
-    // console.log('musicboxStore.handlePageChanged', pageUrl);
+    // console.log('musicboxStore.handlePageChanged', pageInfo);
     const data = this.musicboxes.get(id).cloneData()
-    data.pageUrl = pageUrl
+    data.pageUrl = pageInfo.location
+    if (pageInfo.style) { data.style = pageInfo.style }
     this.saveMusicbox(id, data)
   }
 

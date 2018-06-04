@@ -364,9 +364,9 @@ class MusicboxActions {
   }
 
   pageChanged (id, evt) {
-    const { musicboxId, pageUrl } = evt
-    // console.log('MusicboxActions.pageChanged', id, pageUrl)
-    return { id, musicboxId, pageUrl }
+    const { musicboxId, pageInfo } = evt
+    // console.log('MusicboxActions.pageChanged', id, pageInfo, evt)
+    return { id, musicboxId, pageInfo }
   }
 
   setTrackTime (id, evt) {

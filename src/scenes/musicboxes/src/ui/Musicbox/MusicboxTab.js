@@ -342,10 +342,10 @@ const MusicboxTab = React.createClass({
     }
   },
 
-  handlePageChanged ({ musicboxId, pageUrl }) {
-    // console.log('MusicboxTab.handlePageChanged', pageUrl)
+  handlePageChanged ({ musicboxId, pageInfo }) {
+    // console.log('MusicboxTab.handlePageChanged', pageInfo)
     if (this.props.musicboxId !== musicboxId) { return }
-    musicboxActions.pageChanged(this.props.musicboxId, { musicboxId, pageUrl })
+    musicboxActions.pageChanged(this.props.musicboxId, { musicboxId, pageInfo })
   },
 
   /* **************************************************************************/

@@ -63,8 +63,10 @@ class OvercastStreaming extends MediaPlayer {
     return undefined
   }
 
-  get currentPage () {
-    return window.location.pathname
+  get currentPageInfo () {
+    return {
+      location: window.location.pathname
+    }
   }
 
   /* **************************************************************************/

@@ -59,10 +59,12 @@ const Sidelist = React.createClass({
   },
 
   musicboxUpdated (musicboxState) {
-    if (this.state.activeMusicbox && this.state.activeMusicbox.id === musicboxState.activeMusicboxId()) { return }
+    // if (this.state.activeMusicbox && this.state.activeMusicbox.id === musicboxState.activeMusicboxId()) { return }
     // console.log(musicboxState)
+    const activeMusicbox = musicboxState.activeMusicbox()
     this.setState({
-      activeMusicbox: musicboxState.activeMusicbox()
+      activeMusicbox: activeMusicbox,
+      style: activeMusicbox.style
     })
   },
 
@@ -79,6 +81,7 @@ const Sidelist = React.createClass({
     const isDarwin = process.platform === 'darwin'
     const { style, ...passProps } = this.props
     const currentStyle = activeMusicbox ? activeMusicbox.style : {}
+    // console.log('Sidelist.currentStyle', currentStyle);
 
     let extraItems = 0
     extraItems += showWizard ? 1 : 0

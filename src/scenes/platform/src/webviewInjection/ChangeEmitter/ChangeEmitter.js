@@ -86,8 +86,8 @@ class ChangeEmitter {
   }
 
   handlePageChanged () {
-    // console.log('handlePageChanged', event, data)
-    this.transmitEvent(MUSICBOX_WINDOW_PAGE_CHANGED, this.player.currentPage)
+    // console.log('handlePageChanged', this.player.currentPageInfo)
+    this.transmitEvent(MUSICBOX_WINDOW_PAGE_CHANGED, this.player.currentPageInfo)
   }
 
   throttleTimeUpdated () {

@@ -93,7 +93,7 @@ class Musicbox extends Model {
 
   get pageUrl () {
     // console.log('get pageUrl', this.__data__.pageUrl);
-    if (this.__data__.pageUrl && this.__data__.pageUrl !== 'text/html,chromewebdata') { return `${this.url}${this.__data__.pageUrl}` }
+    if (this.__data__.pageUrl && typeof this.__data__.pageUrl === String) { return `${this.url}${this.__data__.pageUrl}` }
   }
 
   /* **************************************************************************/
@@ -209,7 +209,7 @@ class Musicbox extends Model {
   get style () {
     const customStyle = this.__data__.color ? {color: this.__data__.color} : {}
     const musicBoxStyle = COLORS[this.type] || {}
-    return Object.assign({}, COLORS['default'], musicBoxStyle, customStyle)
+    return Object.assign({}, COLORS['default'], musicBoxStyle, customStyle, this.__data__.style || {})
   }
 
   get name () { return this.__data__.name }

@@ -85,8 +85,10 @@ class MFPStreaming extends MediaPlayer {
     }
   }
 
-  get currentPage () {
-    return window.location.pathname + window.location.search
+  get currentPageInfo () {
+    return {
+      location: window.location.pathname + window.location.search
+    }
   }
 
   /* **************************************************************************/

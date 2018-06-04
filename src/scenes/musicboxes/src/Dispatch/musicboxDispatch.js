@@ -225,9 +225,9 @@ class MusicboxDispatch {
     this.emit('stopOthers', { musicboxId })
   }
 
-  pageChanged (musicboxId, pageUrl) {
-    // console.log('musicboxDispatch.pageChanged', pageUrl)
-    this.emit('pageChanged', { musicboxId, pageUrl })
+  pageChanged (musicboxId, pageInfo) {
+    // console.log('musicboxDispatch.pageChanged', pageInfo, { musicboxId, pageInfo })
+    this.emit('pageChanged', { musicboxId, pageInfo })
   }
 
   timeUpdated (musicboxId, trackTime) {

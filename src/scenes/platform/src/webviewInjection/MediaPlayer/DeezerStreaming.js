@@ -65,8 +65,10 @@ class DeezerStreaming extends MediaPlayer {
     }
   }
 
-  get currentPage () {
-    return window.location.pathname
+  get currentPageInfo () {
+    return {
+      location: window.location.pathname
+    }
   }
 
   /* **************************************************************************/

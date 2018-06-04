@@ -81,8 +81,13 @@ class SpotifyStreaming extends MediaPlayer {
     }
   }
 
-  get currentPage () {
-    return window.location.pathname
+  get currentPageInfo () {
+    return {
+      location: window.location.pathname,
+      style: {
+        backgroundImage: document.querySelectorAll('#main > div > div[style]')[0].style.backgroundImage
+      }
+    }
   }
 
   /* **************************************************************************/
@@ -99,9 +104,8 @@ class SpotifyStreaming extends MediaPlayer {
 
     const interval = setInterval(() => {
       // wait until it's all there before subscribing
-      if (!document.querySelector('.now-playing') ||
-        !document.querySelector('.user-link') ||
-        !document.querySelector('.track-info') ||
+      if (!document.querySelector('.now-playing-bar') ||
+        !document.querySelector('.hw-accelerate') ||
       !document.querySelector('.spoticon-play-16')) { return }
       this.subscribeToEvents()
       ChangeEmitter.handleDisplayCurrentSong()
@@ -110,8 +114,8 @@ class SpotifyStreaming extends MediaPlayer {
   }
 
   subscribeToEvents () {
-    // console.log('subscribe', event, data, this)
-    this.trackObserver.observe(document.querySelector('.now-playing'), config)
+    // console.log('subscribeToEvents')
+    this.trackObserver.observe(document.querySelector('.now-playing-bar'), config)
     this.pageObserver.observe(document.querySelector('.hw-accelerate'), config)
     this.playingObserver.observe(document.querySelector('.spoticon-play-16'), config)
   }
