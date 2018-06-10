@@ -92,8 +92,8 @@ class Musicbox extends Model {
   }
 
   get pageUrl () {
-    // console.log('get pageUrl', this.__data__.pageUrl);
-    if (this.__data__.pageUrl && typeof this.__data__.pageUrl === String) { return `${this.url}${this.__data__.pageUrl}` }
+    // console.log('get pageUrl', this.__data__.pageUrl)
+    if (this.__data__.pageUrl && typeof this.__data__.pageUrl === 'string') { return `${this.url}${this.__data__.pageUrl}` }
   }
 
   /* **************************************************************************/
