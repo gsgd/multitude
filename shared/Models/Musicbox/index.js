@@ -1,4 +1,5 @@
 module.exports = {
   Streaming: require('./Streaming'),
-  Musicbox: require('./Musicbox')
+  Musicbox: require('./Musicbox'),
+  Configuration: require('./MusicboxConfiguration')
 }

@@ -143,8 +143,7 @@ module.exports = {
   musicboxAvatar: {
     borderWidth: 4,
     borderStyle: 'solid',
-    cursor: 'pointer',
-    background: '#FFF'
+    cursor: 'pointer'
   },
   musicboxActionsContainer: {
     position: 'absolute',

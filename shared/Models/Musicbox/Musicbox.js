@@ -2,9 +2,7 @@ const Model = require('../Model')
 const uuid = require('uuid')
 const Streaming = require('./Streaming')
 const SERVICES = require('./MusicboxServices')
-const TYPES = require('./MusicboxTypes')
-const URLS = require('./MusicboxURLs')
-const COLORS = require('./MusicboxColors')
+const { MusicboxTypes, MusicboxData, Default } = require('./MusicboxConfiguration')
 
 class Musicbox extends Model {
 
@@ -13,7 +11,7 @@ class Musicbox extends Model {
   /* **************************************************************************/
 
   static provisionId () { return uuid.v4() }
-  static get TYPES () { return Object.assign({}, TYPES) }
+  static get TYPES () { return Object.assign({}, MusicboxTypes) }
   static get SERVICES () { return Object.assign({}, SERVICES) }
 
   static get TYPE_DEEZER () { return Musicbox.TYPES.DEEZER }
@@ -21,6 +19,8 @@ class Musicbox extends Model {
   static get TYPE_MFP () { return Musicbox.TYPES.MFP }
 
   static get TYPE_OVERCAST () { return Musicbox.TYPES.OVERCAST }
+
+  static get TYPE_SOUNDCLOUD () { return Musicbox.TYPES.SOUNDCLOUD }
 
   static get TYPE_SPOTIFY () { return Musicbox.TYPES.SPOTIFY }
 
@@ -33,32 +33,10 @@ class Musicbox extends Model {
     super(data)
     this.__id__ = id
 
-    switch (this.type) {
-      case Musicbox.TYPE_DEEZER:
-        this.__musicbox__ = new Streaming(
-          this.type,
-          this.__data__.deezerConf
-        )
-        break
-      case Musicbox.TYPE_MFP:
-        this.__musicbox__ = new Streaming(
-          this.type,
-          this.__data__.mfpConf
-        )
-        break
-      case Musicbox.TYPE_OVERCAST:
-        this.__musicbox__ = new Streaming(
-          this.type,
-          this.__data__.overcastConf
-        )
-        break
-      case Musicbox.TYPE_SPOTIFY:
-        this.__musicbox__ = new Streaming(
-          this.type,
-          this.__data__.spotifyConf
-        )
-        break
-    }
+    this.__musicbox__ = new Streaming(
+      this.type,
+      this.config
+    )
   }
 
   /* **************************************************************************/
@@ -71,24 +49,19 @@ class Musicbox extends Model {
 
   get typeWithUsername () { return this.username ? `${this.typeName} (${this.username})` : this.typeName }
   get id () { return this.__id__ }
-  get type () { return this._value_('type', Musicbox.TYPE_DEEZER) }
+  get type () { return this._value_('type', Musicbox.TYPES.DEEZER) }
+  get knownType () { return !!Musicbox.TYPES[this.type] }
+  get config () { return this._value_(this.type.toLowerCase() + 'Conf', {}) }
 
   /* **************************************************************************/
   // Properties: Constants
   /* **************************************************************************/
 
   get typeName () {
-    switch (this.type) {
-      case Musicbox.TYPE_DEEZER: return 'Deezer'
-      case Musicbox.TYPE_MFP: return 'musicForProgramming'
-      case Musicbox.TYPE_OVERCAST: return 'Overcast'
-      case Musicbox.TYPE_SPOTIFY: return 'Spotify'
-      default: return undefined
-    }
+    return MusicboxData[this.type] ? MusicboxData[this.type].title : undefined
   }
   get url () {
-    // console.log('Musicbox.get url', this.type, URLS[this.type]);
-    if (typeof URLS[this.type] !== 'undefined') { return URLS[this.type] }
+    if (typeof MusicboxData[this.type] !== 'undefined') { return MusicboxData[this.type].url }
   }
 
   get pageUrl () {
@@ -101,26 +74,10 @@ class Musicbox extends Model {
   /* **************************************************************************/
 
   get supportedServices () {
-    switch (this.type) {
-      case Musicbox.TYPE_DEEZER:
-      case Musicbox.TYPE_MFP:
-      case Musicbox.TYPE_OVERCAST:
-      case Musicbox.TYPE_SPOTIFY:
-        return Array.from(Streaming.SUPPORTED_SERVICES)
-      default:
-        return []
-    }
+    return this.knownType ? Array.from(Streaming.SUPPORTED_SERVICES) : []
   }
   get defaultServices () {
-    switch (this.type) {
-      case Musicbox.TYPE_DEEZER:
-      case Musicbox.TYPE_MFP:
-      case Musicbox.TYPE_OVERCAST:
-      case Musicbox.TYPE_SPOTIFY:
-        return Array.from(Streaming.DEFAULT_SERVICES)
-      default:
-        return []
-    }
+    return this.knownType ? Array.from(Streaming.DEFAULT_SERVICES) : []
   }
   get enabledServies () { return this._value_('services', this.defaultServices) }
   get hasEnabledServices () { return this.enabledServies.length !== 0 }
@@ -136,15 +93,7 @@ class Musicbox extends Model {
     if (service === SERVICES.DEFAULT) {
       return this.url
     } else {
-      switch (this.type) {
-        case Musicbox.TYPE_DEEZER:
-        case Musicbox.TYPE_MFP:
-        case Musicbox.TYPE_OVERCAST:
-        case Musicbox.TYPE_SPOTIFY:
-          return Streaming.SERVICE_URLS[service]
-        default:
-          return undefined
-      }
+      return this.knownType ? Streaming.SERVICE_URLS[service] : undefined
     }
   }
 
@@ -157,15 +106,7 @@ class Musicbox extends Model {
     if (service === SERVICES.DEFAULT) {
       return this.typeName
     } else {
-      switch (this.type) {
-        case Musicbox.TYPE_DEEZER:
-        case Musicbox.TYPE_MFP:
-        case Musicbox.TYPE_OVERCAST:
-        case Musicbox.TYPE_SPOTIFY:
-          return Streaming.SERVICE_NAMES[service]
-        default:
-          return undefined
-      }
+      return this.knownType ? Streaming.SERVICE_NAMES[service] : undefined
     }
   }
 
@@ -193,7 +134,10 @@ class Musicbox extends Model {
   // Properties : Account Details
   /* **************************************************************************/
 
-  get avatarURL () { return this.__data__.avatar }
+  get avatarURL () {
+    // console.log('avatarURL', this.__data__.avatar)
+    return this.__data__.avatar ? this.__data__.avatar : MusicboxData[this.type].img
+  }
   get hasCustomAvatar () { return this.__data__.customAvatar !== undefined }
   get customAvatarId () { return this.__data__.customAvatar }
   get currentTrack () { return this._value_('currentTrack', false) }
@@ -208,8 +152,8 @@ class Musicbox extends Model {
 
   get style () {
     const customStyle = this.__data__.color ? {color: this.__data__.color} : {}
-    const musicBoxStyle = COLORS[this.type] || {}
-    return Object.assign({}, COLORS['default'], musicBoxStyle, customStyle, this.__data__.style || {})
+    const musicBoxStyle = MusicboxData[this.type].style || {}
+    return Object.assign({}, Default.style, musicBoxStyle, customStyle, this.__data__.style || {})
   }
 
   get name () { return this.__data__.name }
@@ -229,6 +173,7 @@ class Musicbox extends Model {
 
   get customJS () { return this.__data__.customJS }
   get hasCustomJS () { return !!this.customJS }
+
 }
 
 module.exports = Musicbox

@@ -38,19 +38,18 @@ const SidelistItemMusicboxAvatar = React.createClass({
       backgroundColor = 'white'
     } else if (musicbox.avatarURL) {
       url = musicbox.avatarURL
-      backgroundColor = 'white'
+      backgroundColor = musicbox.color
     } else {
       children = index
       backgroundColor = musicbox.color
     }
-
     return (
       <Avatar
         {...passProps}
         src={url}
         size={50}
         backgroundColor={backgroundColor}
-        color='white'
+        color={musicbox.backgroundColor}
         draggable={false}
         style={Object.assign({ borderColor: borderColor }, styles.musicboxAvatar)}>
         {children}

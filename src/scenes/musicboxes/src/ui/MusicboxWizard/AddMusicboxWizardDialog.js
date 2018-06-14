@@ -2,9 +2,8 @@ const React = require('react')
 const { Dialog, RaisedButton, GridList, GridTile, IconButton, Subheader } = require('material-ui')
 const { musicboxWizardStore, musicboxWizardActions } = require('../../stores/musicboxWizard')
 const shallowCompare = require('react-addons-shallow-compare')
-const { Musicbox } = require('shared/Models/Musicbox')
+const { MusicboxData } = require('shared/Models/Musicbox/MusicboxConfiguration')
 const Colors = require('material-ui/styles/colors')
-const AssetsDir = '../../../../assets'
 
 const styles = {
   gridList: {},
@@ -30,29 +29,6 @@ const styles = {
     iconHoverColor: '#CCC'
   }
 }
-
-const tilesData = [
-  {
-    img: `${AssetsDir}/images/deezer_icon_512.svg`,
-    title: 'Deezer',
-    type: Musicbox.TYPE_DEEZER
-  },
-  {
-    img: `${AssetsDir}/images/mfp_icon_512.jpg`,
-    title: 'Music For Programmers',
-    type: Musicbox.TYPE_MFP
-  },
-  {
-    img: `${AssetsDir}/images/overcast_icon_512.svg`,
-    title: 'Overcast',
-    type: Musicbox.TYPE_OVERCAST
-  },
-  {
-    img: `${AssetsDir}/images/spotify_icon_512.svg`,
-    title: 'Spotify',
-    type: Musicbox.TYPE_SPOTIFY
-  }
-]
 
 const AddMusicboxWizardDialog = React.createClass({
   /* **************************************************************************/
@@ -116,7 +92,7 @@ const AddMusicboxWizardDialog = React.createClass({
           cols={4}
           style={styles.gridList}>
           <Subheader>Add your service</Subheader>
-          {tilesData.map((tile) => (
+          {Object.values(MusicboxData).map((tile) => (
             <GridTile
               key={tile.img}
               title={tile.title}

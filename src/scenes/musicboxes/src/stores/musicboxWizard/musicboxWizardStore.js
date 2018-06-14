@@ -44,7 +44,7 @@ class MusicboxWizardStore {
     */
     this.provisionalMusicboxSupportedServices = () => {
       const type = this.provisonaMusicboxType()
-      if (type === Musicbox.TYPE_DEEZER) {
+      if (type === Musicbox.TYPES.DEEZER) {
         return Deezer.SUPPORTED_SERVICES.filter((s) => s !== Musicbox.SERVICES.DEFAULT)
       } else {
         return []
@@ -56,7 +56,7 @@ class MusicboxWizardStore {
     */
     this.provisionalDefaultMusicboxServices = () => {
       const type = this.provisonaMusicboxType()
-      if (type === Musicbox.TYPE_DEEZER) {
+      if (type === Musicbox.TYPES.DEEZER) {
         return Deezer.DEFAULT_SERVICES
       } else {
         return []
