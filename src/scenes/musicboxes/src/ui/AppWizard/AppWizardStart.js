@@ -1,17 +1,20 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const { appWizardActions } = require('../../stores/appWizard')
 const shallowCompare = require('react-addons-shallow-compare')
-const { Dialog, RaisedButton, FontIcon, Avatar } = require('material-ui')
-const Colors = require('material-ui/styles/colors')
+import { Dialog, DialogActions, DialogTitle, DialogContent, Button, Icon, Avatar } from '@material-ui/core'
+import * as Colors from '@material-ui/core/colors'
+const styles = require('./styles')
+const createReactClass = require('create-react-class')
 
-const AppWizardStart = React.createClass({
+const AppWizardStart = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'AppWizardStart',
   propTypes: {
-    isOpen: React.PropTypes.bool.isRequired
+    isOpen: PropTypes.bool.isRequired
   },
 
   /* **************************************************************************/
@@ -24,44 +27,42 @@ const AppWizardStart = React.createClass({
 
   render () {
     const { isOpen } = this.props
-    const actions = (
-      <div>
-        <RaisedButton
-          label='Not interested'
-          style={{ float: 'left' }}
-          onClick={() => appWizardActions.discardWizard()} />
-        <RaisedButton
-          label='Later'
-          onClick={() => appWizardActions.cancelWizard()} />
-        <RaisedButton
-          label='Setup'
-          style={{ marginLeft: 8 }}
-          primary
-          onClick={() => appWizardActions.progressNextStep()} />
-      </div>
-    )
 
     return (
       <Dialog
-        modal={false}
-        actions={actions}
         open={isOpen}
-        autoScrollBodyContent
-        onRequestClose={() => appWizardActions.cancelWizard()}>
-        <div style={{ textAlign: 'center' }}>
-          <Avatar
-            color={Colors.yellow600}
-            backgroundColor={Colors.blueGrey900}
-            icon={(<FontIcon className='fa fa-fw fa-magic' />)}
-            size={80} />
-          <h3>Multitude Setup</h3>
+        onClose={() => appWizardActions.cancelWizard()}>
+        <DialogTitle style={{textAlign: 'center'}}>
+          <Avatar style={styles.avatar}>
+            <Icon style={styles.icon}
+              className='fa fa-fw fa-magic'/>
+          </Avatar>
+          <div>Multitude Setup</div>
+        </DialogTitle>
+        <DialogContent style={{textAlign: 'center'}}>
           <p>
             Customise Multitude to work best for you by configuring a few common settings
           </p>
           <p>
             Would you like to start Multitude setup now?
           </p>
-        </div>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => appWizardActions.discardWizard()}>
+            Not interested
+          </Button>
+          <Button
+            onClick={() => appWizardActions.cancelWizard()}>
+            Later
+          </Button>
+          <Button variant='contained'
+            style={{marginLeft: 8}}
+            color='primary'
+            onClick={() => appWizardActions.progressNextStep()}>
+            Setup
+          </Button>
+        </DialogActions>
       </Dialog>
     )
   }

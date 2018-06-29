@@ -9,12 +9,12 @@ const writeFileAtomic = require('write-file-atomic')
 const { DB_WRITE_DELAY_MS } = require('shared/constants')
 
 // Setup
+const dev = process.env.NODE_ENV === 'development' ? '/' + process.env.NODE_ENV : ''
 const appDirectory = new AppDirectory(pkg.name)
-const dbPath = appDirectory.userData()
+const dbPath = appDirectory.userData() + dev
 mkdirp.sync(dbPath)
 
 class StorageBucket {
-
   /* ****************************************************************************/
   // Lifecycle
   /* ****************************************************************************/

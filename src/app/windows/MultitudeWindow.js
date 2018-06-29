@@ -6,7 +6,6 @@ const appStorage = require('../storage/appStorage')
 const path = require('path')
 
 class MultitudeWindow extends EventEmitter {
-
   /* ****************************************************************************/
   // Lifecycle
   /* ****************************************************************************/
@@ -64,7 +63,7 @@ class MultitudeWindow extends EventEmitter {
   createWindow (settings, url) {
     const isDevMode = process.execPath.match(/[\\/]electron/)
     if (isDevMode) enableLiveReload({ strategy: 'react-hmr' })
-  
+
     const screenLocation = this.loadWindowScreenLocation()
 
     // Load up the window location & last state
@@ -173,6 +172,7 @@ class MultitudeWindow extends EventEmitter {
   * Focuses a window
   */
   focus () {
+    // console.log('MultitudeWindow.focus')
     this.window.focus()
   }
 

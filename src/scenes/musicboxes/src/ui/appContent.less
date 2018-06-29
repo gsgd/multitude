@@ -25,6 +25,15 @@
   }
 
   .detail {
-    left: 70px;
+    left: 0;
+  }
+
+  .sidebar {
+    & > div {
+      transition: background-color 225ms ease-out, transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms !important;
+    }
+  }
+  .with-sidebar {
+    margin-left: 70px;
   }
 }

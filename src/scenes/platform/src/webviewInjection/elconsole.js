@@ -24,4 +24,5 @@ class ELConsole {
   }
 }
 
-module.exports = new ELConsole()
+const instance = new ELConsole()
+module.exports = instance

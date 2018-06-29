@@ -1,13 +1,15 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const shallowCompare = require('react-addons-shallow-compare')
 const { remote } = require('electron')
 const {nativeImage, app} = remote
+const createReactClass = require('create-react-class')
 
-const AppBadge = React.createClass({
+const AppBadge = createReactClass({
   displayName: 'AppBadge',
 
   propTypes: {
-    unreadCount: React.PropTypes.number.isRequired
+    unreadCount: PropTypes.number.isRequired
   },
   statics: {
     /**

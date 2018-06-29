@@ -1,1 +1,2 @@
-module.exports = require('./Sidelist')
+const req = require('./Sidelist')
+module.exports = req

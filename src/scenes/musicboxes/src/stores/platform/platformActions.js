@@ -1,7 +1,6 @@
 const alt = require('../alt')
 
 class PlatformActions {
-
   /* **************************************************************************/
   // Login
   /* **************************************************************************/
@@ -27,4 +26,5 @@ class PlatformActions {
   }
 }
 
-module.exports = alt.createActions(PlatformActions)
+const actions = alt.createActions(PlatformActions)
+module.exports = actions

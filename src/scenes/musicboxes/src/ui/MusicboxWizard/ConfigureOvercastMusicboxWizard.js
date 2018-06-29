@@ -1,9 +1,10 @@
 const React = require('react')
-const { RaisedButton, Paper } = require('material-ui')
+const PropTypes = require('prop-types')
+import { Button, Paper } from '@material-ui/core'
 const shallowCompare = require('react-addons-shallow-compare')
 const { Configurations } = require('../../stores/musicboxWizard')
 const { Musicbox } = require('shared/Models/Musicbox')
-const Colors = require('material-ui/styles/colors')
+import * as Colors from '@material-ui/core/colors'
 
 const styles = {
   introduction: {
@@ -40,19 +41,20 @@ const styles = {
     backgroundRepeat: 'no-repeat'
   },
   configurationTechInfo: {
-    color: Colors.grey500,
+    color: Colors.grey[500],
     fontSize: '85%'
   }
 }
+const createReactClass = require('create-react-class')
 
-const ConfigureOvercastMusicboxWizard = React.createClass({
+const ConfigureOvercastMusicboxWizard = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'ConfigureOvercastMusicboxWizard',
   propTypes: {
-    onPickedConfiguration: React.PropTypes.func.isRequired
+    onPickedConfiguration: PropTypes.func.isRequired
   },
   statics: {
     /**
@@ -87,7 +89,7 @@ const ConfigureOvercastMusicboxWizard = React.createClass({
             style={styles.configuration}
             onClick={() => onPickedConfiguration(Configurations[Musicbox.TYPE_OVERCAST].DEFAULT_INBOX)}>
             <div>
-              <RaisedButton primary label='Categories Inbox' style={styles.configurationButton} />
+              <Button variant='raised' color='primary' style={styles.configurationButton}>Categories Inbox</Button>
               <div style={Object.assign({
                 backgroundImage: `url("../../images/gmail_inbox_categories_small.png")`
               }, styles.configurationImage)} />
@@ -103,7 +105,7 @@ const ConfigureOvercastMusicboxWizard = React.createClass({
             style={styles.configuration}
             onClick={() => onPickedConfiguration(Configurations[Musicbox.TYPE_OVERCAST].UNREAD_INBOX)}>
             <div>
-              <RaisedButton primary label='Unread Inbox' style={styles.configurationButton} />
+              <Button variant='raised' color='primary' style={styles.configurationButton}>Unread Inbox</Button>
               <div style={Object.assign({
                 backgroundImage: `url("../../images/gmail_inbox_unread_small.png")`
               }, styles.configurationImage)} />
@@ -119,7 +121,7 @@ const ConfigureOvercastMusicboxWizard = React.createClass({
             style={styles.configuration}
             onClick={() => onPickedConfiguration(Configurations[Musicbox.TYPE_OVERCAST].PRIORIY_INBOX)}>
             <div>
-              <RaisedButton primary label='Priority Inbox' style={styles.configurationButton} />
+              <Button variant='raised' color='primary' style={styles.configurationButton}>Priority Inbox</Button>
               <div style={Object.assign({
                 backgroundImage: `url("../../images/gmail_inbox_priority_small.png")`
               }, styles.configurationImage)} />

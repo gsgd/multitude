@@ -164,4 +164,5 @@ class MusicboxWizardStore {
   }
 }
 
-module.exports = alt.createStore(MusicboxWizardStore, 'MusicboxWizardStore')
+const store = alt.createStore(MusicboxWizardStore, 'MusicboxWizardStore')
+module.exports = store

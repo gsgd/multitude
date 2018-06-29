@@ -1,10 +1,14 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const { musicboxStore } = require('../../stores/musicbox')
 const SidelistItemMusicbox = require('./SidelistItemMusicbox')
+const SidelistItemMusicboxPopover = require('./SidelistItemMusicbox/SidelistItemMusicboxPopover')
+const shallowCompare = require('react-addons-shallow-compare')
 
 // console.log('SidelistMusicboxes', musicboxStore)
+const createReactClass = require('create-react-class')
 
-const SidelistMusicboxes = React.createClass({
+const SidelistMusicboxes = createReactClass({
 
   /* **************************************************************************/
   // Class
@@ -30,7 +34,12 @@ const SidelistMusicboxes = React.createClass({
 
   getInitialState () {
     return {
-      musicboxIds: musicboxStore.getState().musicboxIds()
+      musicboxIds: musicboxStore.getState().musicboxIds(),
+      musicbox: null,
+      popover: false,
+      popoverAnchor: null,
+      isFirst: false,
+      isLast: false
     }
   },
 
@@ -40,29 +49,53 @@ const SidelistMusicboxes = React.createClass({
     })
   },
 
+  /**
+   * Opens the popover
+   */
+  handleOpenPopover (evt, musicbox, isFirst, isLast) {
+    evt.preventDefault()
+    // console.log('handleOpenPopover', evt, musicbox, isFirst, isLast)
+    this.setState(Object.assign({musicbox, isFirst, isLast}, {popover: true, popoverAnchor: evt.currentTarget}))
+  },
+
+  /**
+   * Opens the popover
+   */
+  handleClosePopover (evt) {
+    // console.log('handleClosePopover', evt)
+    this.setState({popover: false})
+  },
+
   /* **************************************************************************/
   // Rendering
   /* **************************************************************************/
 
   shouldComponentUpdate (nextProps, nextState) {
     if (JSON.stringify(this.state.musicboxIds) !== JSON.stringify(nextState.musicboxIds)) { return true }
-    return false
+    return shallowCompare(this, nextProps, nextState)
   },
 
   render () {
-    const { styles, ...passProps } = this.props
-    const { musicboxIds } = this.state
+    const { musicboxIds, popover, popoverAnchor, musicbox, isFirst, isLast } = this.state
     return (
-      <div style={Object.assign({}, styles)} {...passProps}>
+      <div>
         {musicboxIds.map((musicboxId, index, arr) => {
           return (
             <SidelistItemMusicbox
+              openPopover={this.handleOpenPopover}
               musicboxId={musicboxId}
               key={musicboxId}
               index={index}
               isFirst={index === 0}
               isLast={index === arr.length - 1} />)
         })}
+        <SidelistItemMusicboxPopover
+          musicbox={musicbox}
+          isFirst={isFirst}
+          isLast={isLast}
+          isOpen={popover}
+          anchor={popoverAnchor}
+          onClose={this.handleClosePopover} />
       </div>
     )
   }

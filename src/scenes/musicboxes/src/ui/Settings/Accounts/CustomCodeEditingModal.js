@@ -1,20 +1,22 @@
 const React = require('react')
-const { RaisedButton, FlatButton, Dialog, TextField } = require('material-ui')
+const PropTypes = require('prop-types')
+import { Button, Dialog, TextField } from '@material-ui/core'
 const shallowCompare = require('react-addons-shallow-compare')
 const uuid = require('uuid')
+const createReactClass = require('create-react-class')
 
-const CustomCodeEditingModal = React.createClass({
+const CustomCodeEditingModal = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'CustomCodeEditingModal',
   propTypes: {
-    title: React.PropTypes.string,
-    open: React.PropTypes.bool.isRequired,
-    code: React.PropTypes.string,
-    onCancel: React.PropTypes.func.isRequired,
-    onSave: React.PropTypes.func.isRequired
+    title: PropTypes.string,
+    open: PropTypes.bool.isRequired,
+    code: PropTypes.string,
+    onCancel: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired
   },
 
   /* **************************************************************************/
@@ -47,16 +49,18 @@ const CustomCodeEditingModal = React.createClass({
 
   render () {
     const actions = [
-      (<FlatButton
+      (<Button variant='flat'
         key='cancel'
-        label='Cancel'
         style={{ marginRight: 8 }}
-        onTouchTap={(evt) => this.props.onCancel(evt)} />),
-      (<RaisedButton
+        onClick={(evt) => this.props.onCancel(evt)}>
+        Cancel
+      </Button>),
+      (<Button variant='raised'
         key='save'
-        label='Save'
-        primary
-        onTouchTap={(evt) => this.props.onSave(evt, this.refs.editor.getValue())} />)
+        color='primary'
+        onClick={(evt) => this.props.onSave(evt, this.refs.editor.getValue())}>
+        Save
+      </Button>)
     ]
 
     return (

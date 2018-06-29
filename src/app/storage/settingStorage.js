@@ -1,2 +1,3 @@
 const StorageBucket = require('./StorageBucket')
-module.exports = new StorageBucket('settings')
+const bucket = new StorageBucket('settings')
+module.exports = bucket

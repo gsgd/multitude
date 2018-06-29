@@ -1,9 +1,8 @@
 const React = require('react')
 const {
-  Stepper, Step, StepLabel, StepContent,
-  RaisedButton, FlatButton, LinearProgress,
-  SelectField, MenuItem
-} = require('material-ui')
+  Stepper, Step, StepLabel, StepContent, Button,
+  NativeSelect, FormHelperText, LinearProgress
+} = require('@material-ui/core')
 const dictionariesStore = require('../../stores/dictionaries/dictionariesStore')
 const dictionariesActions = require('../../stores/dictionaries/dictionariesActions')
 const {
@@ -16,8 +15,9 @@ const STEPS = {
   DOWNLOAD: 2,
   FINISH: 3
 }
+const createReactClass = require('create-react-class')
 
-const DictionaryInstallStepper = React.createClass({
+const DictionaryInstallStepper = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -115,23 +115,24 @@ const DictionaryInstallStepper = React.createClass({
         <Step>
           <StepLabel>Pick Language</StepLabel>
           <StepContent>
-            <SelectField
-              floatingLabelText='Pick the dictionary to install'
+            <NativeSelect
               fullWidth
               onChange={this.handlePickLanguage}>
               {[null].concat(uninstallDictionaries).map((info) => {
                 if (info === null) {
-                  return (<MenuItem key='null' value={null} primaryText='' />)
+                  return (<option key='null' value={null} >''</option>)
                 } else {
-                  return (<MenuItem key={info.lang} value={info.lang} primaryText={info.name} />)
+                  return (<option key={info.lang} value={info.lang} >{info.name}</option>)
                 }
               })}
-            </SelectField>
-            <FlatButton
-              label='Cancel'
+            </NativeSelect>
+            <FormHelperText>Pick the dictionary to install</FormHelperText>
+            <Button variant='flat'
               disableTouchRipple
               disableFocusRipple
-              onTouchTap={this.handleCancel} />
+              onClick={this.handleCancel}>
+              Cancel
+            </Button>
           </StepContent>
         </Step>
         <Step>
@@ -142,18 +143,20 @@ const DictionaryInstallStepper = React.createClass({
               <a href={(installLanguageInfo || {}).license} onClick={(evt) => { evt.preventDefault(); shell.openExternal(installLanguageInfo.license) }}>license</a>
               <span> of the <strong>{(installLanguageInfo || {}).name}</strong> dictionary</span>
             </p>
-            <RaisedButton
-              label='Next'
+            <Button variant='raised'
               disableTouchRipple
               disableFocusRipple
-              primary
-              onTouchTap={this.handleAgreeLicense}
-              style={{marginRight: 12}} />
-            <FlatButton
-              label='Cancel'
+              color='primary'
+              onClick={this.handleAgreeLicense}
+              style={{marginRight: 12}}>
+              Next
+            </Button>
+            <Button variant='flat'
               disableTouchRipple
               disableFocusRipple
-              onTouchTap={this.handleCancel} />
+              onClick={this.handleCancel}>
+              Cancel
+            </Button>
           </StepContent>
         </Step>
         <Step>
@@ -171,12 +174,13 @@ const DictionaryInstallStepper = React.createClass({
               <strong>{(installLanguageInfo || {}).name}</strong>
               <span> dictionary has been downloaded and installed.</span>
             </p>
-            <RaisedButton
-              label='Done'
+            <Button variant='raised'
               disableTouchRipple
               disableFocusRipple
-              primary
-              onTouchTap={this.handleCancel} />
+              color='primary'
+              onClick={this.handleCancel}>
+              Done
+            </Button>
           </StepContent>
         </Step>
       </Stepper>

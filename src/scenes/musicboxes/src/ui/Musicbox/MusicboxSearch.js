@@ -1,18 +1,20 @@
 const React = require('react')
-const { Paper, TextField, IconButton } = require('material-ui')
-const Colors = require('material-ui/styles/colors')
+const PropTypes = require('prop-types')
+import { Paper, TextField, IconButton } from '@material-ui/core'
+import * as Colors from '@material-ui/core/colors'
+const createReactClass = require('create-react-class')
 
-const MusicboxSearch = React.createClass({
+const MusicboxSearch = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'MusicboxSearch',
   propTypes: {
-    isSearching: React.PropTypes.bool.isRequired,
-    onSearchChange: React.PropTypes.func,
-    onSearchNext: React.PropTypes.func,
-    onSearchCancel: React.PropTypes.func
+    isSearching: PropTypes.bool.isRequired,
+    onSearchChange: PropTypes.func,
+    onSearchNext: PropTypes.func,
+    onSearchCancel: PropTypes.func
   },
 
   /* **************************************************************************/
@@ -105,24 +107,24 @@ const MusicboxSearch = React.createClass({
     return (
       <Paper {...passProps} className={className}>
         <TextField
-          ref='textField'
-          hintText='Search'
+          id='textField'
+          placeholder='Search'
           style={{ marginLeft: 15 }}
-          inputStyle={{ width: 200 }}
+          // inputStyle={{ width: 200 }}
           value={this.state.searchQuery}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyPress} />
         <IconButton
-          iconClassName='material-icons'
+          className='material-icons'
           style={{ bottom: -7 }}
-          iconStyle={{ color: Colors.grey600 }}
+          // iconStyle={{ color: Colors.grey[600] }}
           onClick={this.handleFindNext}>
           search
         </IconButton>
         <IconButton
-          iconClassName='material-icons'
+          className='material-icons'
           style={{ bottom: -7, zIndex: 1 }}
-          iconStyle={{ color: Colors.grey600 }}
+          // iconStyle={{ color: Colors.grey[600] }}
           onClick={this.handleStopSearch}>
           close
         </IconButton>

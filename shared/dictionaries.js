@@ -203,7 +203,7 @@ static const LocaleScript localeScriptList[] = {
 };
 */
 
-module.exports = {
+const dictionaries = {
   'bg_BG': {
     license: 'https://raw.githubusercontent.com/Thomas101/dictionaries/master/dictionaries/bg_BG/LICENSE',
     aff: 'https://raw.githubusercontent.com/Thomas101/dictionaries/master/dictionaries/bg_BG/index.aff',
@@ -506,3 +506,4 @@ module.exports = {
     charset: 'USCRIPT_LATIN'
   }
 }
+module.exports = dictionaries

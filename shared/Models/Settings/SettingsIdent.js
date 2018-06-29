@@ -1,4 +1,4 @@
-module.exports = {
+const SettingsIdent = {
   SEGMENTS: {
     APP: 'app',
     LANGUAGE: 'language',
@@ -9,3 +9,4 @@ module.exports = {
     UI: 'ui'
   }
 }
+module.exports = SettingsIdent

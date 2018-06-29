@@ -3,7 +3,6 @@ const Minivents = require('minivents')
 const {ipcRenderer} = require('electron')
 
 class NavigationDispatch {
-
   /* **************************************************************************/
   // Lifecycle
   /* **************************************************************************/
@@ -52,4 +51,5 @@ class NavigationDispatch {
   }
 }
 
-module.exports = new NavigationDispatch()
+const instance = new NavigationDispatch()
+module.exports = instance

@@ -1,12 +1,13 @@
 const React = require('react')
-const { Dialog, RaisedButton } = require('material-ui')
+import { Dialog, Button } from '@material-ui/core'
 const { musicboxWizardStore, musicboxWizardActions } = require('../../stores/musicboxWizard')
 const shallowCompare = require('react-addons-shallow-compare')
 const { Musicbox } = require('shared/Models/Musicbox')
 
 const ConfigureDeezerMusicboxWizard = require('./ConfigureDeezerMusicboxWizard')
+const createReactClass = require('create-react-class')
 
-const ConfigureMusicboxWizardDialog = React.createClass({
+const ConfigureMusicboxWizardDialog = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -73,7 +74,7 @@ const ConfigureMusicboxWizardDialog = React.createClass({
     return Configurator ? (
       <Configurator
         onPickedConfiguration={(cfg) => musicboxWizardActions.configureMusicbox(cfg)} />
-      ) : undefined
+    ) : ''
   },
 
   /**
@@ -93,9 +94,10 @@ const ConfigureMusicboxWizardDialog = React.createClass({
   renderActions () {
     return (
       <div style={{ textAlign: 'left' }}>
-        <RaisedButton
-          label='Skip'
-          onClick={() => musicboxWizardActions.configureMusicbox({})} />
+        <Button
+          onClick={() => musicboxWizardActions.configureMusicbox({})}>
+          Skip
+        </Button>
       </div>
     )
   },
@@ -105,14 +107,12 @@ const ConfigureMusicboxWizardDialog = React.createClass({
 
     return (
       <Dialog
-        bodyClassName='ReactComponent-MaterialUI-Dialog-Body-Scrollbars'
+        className='ReactComponent-MaterialUI-Dialog-Body-Scrollbars'
         contentStyle={{ width: '90%', maxWidth: 1200 }}
-        modal={false}
         title={this.renderMusicboxConfiguratorTitle(musicboxType)}
         actions={this.renderActions()}
         open={isOpen}
-        onRequestClose={() => musicboxWizardActions.cancelAddMusicbox()}
-        autoScrollBodyContent>
+        onClose={() => musicboxWizardActions.cancelAddMusicbox()}>
         {this.renderMusicboxConfigurator(musicboxType)}
       </Dialog>
     )

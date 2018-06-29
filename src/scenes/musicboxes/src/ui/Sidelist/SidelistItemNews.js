@@ -1,12 +1,14 @@
 const React = require('react')
-const { IconButton, Badge } = require('material-ui')
-const Colors = require('material-ui/styles/colors')
+const PropTypes = require('prop-types')
+import { IconButton, Icon, Badge } from '@material-ui/core'
+import * as Colors from '@material-ui/core/colors'
 const {navigationDispatch} = require('../../Dispatch')
 const styles = require('./SidelistStyles')
 const ReactTooltip = require('react-tooltip')
 const { settingsStore } = require('../../stores/settings')
+const createReactClass = require('create-react-class')
 
-const SidelistItemNews = React.createClass({
+const SidelistItemNews = createReactClass({
 
   /* **************************************************************************/
   // Class
@@ -57,18 +59,18 @@ const SidelistItemNews = React.createClass({
   /* **************************************************************************/
 
   render () {
-    const {style, iconColor, ...passProps} = this.props
+    const {style, ...passProps} = this.props
     const { hasUnopenedNewsId, newsLevel } = this.state
     return (
       <div
         {...passProps}
         style={Object.assign({}, styles.newsItemContainer, style)}
-        data-tip='News'
-        data-for='ReactComponent-Sidelist-Item-News'>
+        data-tip='News'>
         <IconButton
-          iconClassName='fa fa-fw fa-newspaper-o'
           onClick={this.handleClick}
-          iconStyle={{color: iconColor || Colors.blueGrey400}} />
+          color='primary'>
+          <Icon className='fa fa-fw fa-newspaper-o' />
+        </IconButton>
         {hasUnopenedNewsId && newsLevel === 'notify' ? (
           <Badge
             onClick={this.handleClick}
@@ -76,11 +78,6 @@ const SidelistItemNews = React.createClass({
             style={styles.newsBadgeContainer}
             badgeContent='New' />
         ) : undefined}
-        <ReactTooltip
-          id='ReactComponent-Sidelist-Item-News'
-          place='right'
-          type='dark'
-          effect='solid' />
       </div>
     )
   }

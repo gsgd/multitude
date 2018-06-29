@@ -70,4 +70,5 @@ class HttpStore {
   }
 }
 
-module.exports = alt.createStore(HttpStore, 'HttpStore')
+const store = alt.createStore(HttpStore, 'HttpStore')
+module.exports = store

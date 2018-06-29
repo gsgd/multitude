@@ -1,12 +1,13 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const {
-  Paper, IconButton, FontIcon, FlatButton, Popover, Menu, MenuItem, Checkbox, Toggle,
-  Table, TableBody, TableRow, TableRowColumn, TableHeader, TableHeaderColumn
-} = require('material-ui')
+  Paper, IconButton, Icon, Button, Popover, Menu, Checkbox, Switch, FormControlLabel,
+  Table, TableBody, TableRow, TableCell, TableHeader, TableHeaderColumn
+} = require('@material-ui/core')
 const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const shallowCompare = require('react-addons-shallow-compare')
 const Musicbox = require('shared/Models/Musicbox/Musicbox')
-const Colors = require('material-ui/styles/colors')
+import * as Colors from '@material-ui/core/colors'
 
 const settingStyles = require('../settingStyles')
 const serviceStyles = {
@@ -28,18 +29,19 @@ const serviceStyles = {
   disabled: {
     textAlign: 'center',
     fontSize: '85%',
-    color: Colors.grey300
+    color: Colors.grey[300]
   }
 }
+const createReactClass = require('create-react-class')
 
-const AccountServiceSettings = React.createClass({
+const AccountServiceSettings = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'AccountServiceSettings',
   propTypes: {
-    musicbox: React.PropTypes.object.isRequired
+    musicbox: PropTypes.object.isRequired
   },
 
   /* **************************************************************************/
@@ -112,7 +114,7 @@ const AccountServiceSettings = React.createClass({
       const sleepableServicesSet = new Set(sleepableServices)
 
       return (
-        <Table selectable={false}>
+        <Table>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn style={serviceStyles.actionCell} />
@@ -128,42 +130,44 @@ const AccountServiceSettings = React.createClass({
               <TableHeaderColumn style={serviceStyles.actionCell} />
             </TableRow>
           </TableHeader>
-          <TableBody displayRowCheckbox={false}>
+          <TableBody
+            // displayRowCheckbox={false}
+          >
             {services.map((service, index, arr) => {
               return (
                 <TableRow key={service}>
-                  <TableRowColumn style={serviceStyles.actionCell}>
+                  <TableCell style={serviceStyles.actionCell}>
                     <img
                       style={serviceStyles.avatar}
                       src={this.getServiceIconUrl(musicbox.type, service)} />
-                  </TableRowColumn>
-                  <TableRowColumn style={serviceStyles.titleCell}>
+                  </TableCell>
+                  <TableCell style={serviceStyles.titleCell}>
                     {this.getServiceName(musicbox.type, service)}
-                  </TableRowColumn>
-                  <TableRowColumn style={serviceStyles.actionCell}>
+                  </TableCell>
+                  <TableCell style={serviceStyles.actionCell}>
                     <Checkbox
                       onCheck={(evt, checked) => musicboxActions.toggleServiceSleepable(musicbox.id, service, checked)}
                       checked={sleepableServicesSet.has(service)} />
-                  </TableRowColumn>
-                  <TableRowColumn style={serviceStyles.actionCell}>
+                  </TableCell>
+                  <TableCell style={serviceStyles.actionCell}>
                     <IconButton
                       onClick={() => musicboxActions.moveServiceUp(musicbox.id, service)}
                       disabled={index === 0}>
-                      <FontIcon className='material-icons'>arrow_upwards</FontIcon>
+                      <Icon className='material-icons'>arrow_upwards</Icon>
                     </IconButton>
-                  </TableRowColumn>
-                  <TableRowColumn style={serviceStyles.actionCell}>
+                  </TableCell>
+                  <TableCell style={serviceStyles.actionCell}>
                     <IconButton
                       onClick={() => musicboxActions.moveServiceDown(musicbox.id, service)}
                       disabled={index === arr.length - 1}>
-                      <FontIcon className='material-icons'>arrow_downwards</FontIcon>
+                      <Icon className='material-icons'>arrow_downwards</Icon>
                     </IconButton>
-                  </TableRowColumn>
-                  <TableRowColumn style={serviceStyles.actionCell}>
+                  </TableCell>
+                  <TableCell style={serviceStyles.actionCell}>
                     <IconButton onClick={() => musicboxActions.removeService(musicbox.id, service)}>
-                      <FontIcon className='material-icons'>delete</FontIcon>
+                      <Icon className='material-icons'>delete</Icon>
                     </IconButton>
-                  </TableRowColumn>
+                  </TableCell>
                 </TableRow>
               )
             })}
@@ -172,12 +176,12 @@ const AccountServiceSettings = React.createClass({
       )
     } else {
       return (
-        <Table selectable={false}>
-          <TableBody displayRowCheckbox={false}>
+        <Table>
+          <TableBody>
             <TableRow>
-              <TableRowColumn style={serviceStyles.disabled}>
+              <TableCell style={serviceStyles.disabled}>
                 All Services Disabled
-              </TableRowColumn>
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -196,25 +200,28 @@ const AccountServiceSettings = React.createClass({
       const { addPopoverOpen, addPopoverAnchor } = this.state
       return (
         <div style={{ textAlign: 'right' }}>
-          <FlatButton
-            label='Add Service'
-            onClick={(evt) => this.setState({ addPopoverOpen: true, addPopoverAnchor: evt.currentTarget })} />
+          <Button variant='flat'
+            onClick={(evt) => this.setState({ addPopoverOpen: true, addPopoverAnchor: evt.currentTarget })}>
+            Add Service
+          </Button>
           <Popover
             open={addPopoverOpen}
             anchorEl={addPopoverAnchor}
             anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
             targetOrigin={{horizontal: 'left', vertical: 'top'}}
-            onRequestClose={() => this.setState({ addPopoverOpen: false })}>
+            onClose={() => this.setState({ addPopoverOpen: false })}>
             <Menu>
               {disabledServices.map((service) => {
                 return (
-                  <MenuItem
+                  <option
                     key={service}
                     onClick={() => {
                       this.setState({ addPopoverOpen: false })
                       musicboxActions.addService(musicbox.id, service)
-                    }}
-                    primaryText={this.getServiceName(musicbox.type, service)} />)
+                    }}>
+                    {this.getServiceName(musicbox.type, service)}
+                  </option>
+                )
               })}
             </Menu>
           </Popover>
@@ -233,15 +240,15 @@ const AccountServiceSettings = React.createClass({
       .filter((s) => s !== Musicbox.SERVICES.DEFAULT && !enabledServicesSet.has(s))
 
     return (
-      <Paper zDepth={1} style={settingStyles.paper} {...passProps}>
+      <Paper elevation={1} style={settingStyles.paper} {...passProps}>
         <h1 style={settingStyles.subheading}>Services</h1>
         {this.renderServices(musicbox, musicbox.enabledServies, musicbox.sleepableServices)}
         {this.renderAddPopover(musicbox, disabledServices)}
-        <Toggle
-          toggled={musicbox.compactServicesUI}
+        <FormControlLabel
+          control={<Switch />}
+          checked={musicbox.compactServicesUI}
           label='Compact Services UI'
-          labelPosition='right'
-          onToggle={(evt, toggled) => musicboxActions.setCompactServicesUI(musicbox.id, toggled)} />
+          onChange={(evt, toggled) => musicboxActions.setCompactServicesUI(musicbox.id, toggled)} />
       </Paper>
     )
   }

@@ -1,21 +1,23 @@
 const React = require('react')
-const { RaisedButton, Popover } = require('material-ui')
+const PropTypes = require('prop-types')
+import { Button, Popover } from '@material-ui/core'
 const { ChromePicker } = require('react-color')
+const createReactClass = require('create-react-class')
 
-const ColorPickerButton = React.createClass({
+const ColorPickerButton = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'ColorPickerButton',
   propTypes: {
-    value: React.PropTypes.string,
-    label: React.PropTypes.string.isRequired,
-    disabled: React.PropTypes.bool.isRequired,
-    anchorOrigin: React.PropTypes.object.isRequired,
-    targetOrigin: React.PropTypes.object.isRequired,
-    icon: React.PropTypes.node,
-    onChange: React.PropTypes.func
+    value: PropTypes.string,
+    label: PropTypes.string.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    anchorOrigin: PropTypes.object.isRequired,
+    targetOrigin: PropTypes.object.isRequired,
+    icon: PropTypes.node,
+    onChange: PropTypes.func
   },
 
   /* **************************************************************************/
@@ -46,17 +48,18 @@ const ColorPickerButton = React.createClass({
     const { label, disabled, onChange, anchorOrigin, targetOrigin, icon, ...passProps } = this.props
     return (
       <div {...passProps}>
-        <RaisedButton
+        <Button variant='raised'
           icon={icon}
-          label={label}
           disabled={disabled}
-          onClick={(evt) => this.setState({ open: true, anchor: evt.target })} />
+          onClick={(evt) => this.setState({ open: true, anchor: evt.target })}>
+          {label}
+        </Button>
         <Popover
           anchorOrigin={anchorOrigin}
           targetOrigin={targetOrigin}
           anchorEl={this.state.anchor}
           open={this.state.open}
-          onRequestClose={() => this.setState({open: false})}>
+          onClose={() => this.setState({open: false})}>
           <ChromePicker
             color={this.props.value}
             onChangeComplete={(col) => {

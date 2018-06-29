@@ -1,6 +1,7 @@
 {
   "extends": "standard",
   "rules": {
+    "semi": 2,
     "import/extensions": 0,
     "import/no-extraneous-dependencies": 0,
     //    "import/no-unresolved": [2, { "ignore": ["electron"] }],

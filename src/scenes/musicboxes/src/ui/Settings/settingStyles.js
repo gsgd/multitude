@@ -1,22 +1,22 @@
-module.exports = {
+const settingsStyles = {
   /* **************************************************************************/
   // Modal
   /* **************************************************************************/
   dialog: {
-    width: '90%',
-    maxWidth: 1200
+  //   width: '90%',
+  //   maxWidth: 1200
   },
   tabToggles: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignContent: 'stretch'
+    // display: 'flex',
+    // flexDirection: 'row',
+    // alignContent: 'stretch'
   },
   tabToggle: {
-    height: 50,
-    borderRadius: 0,
-    flex: 1,
-    borderBottomWidth: 2,
-    borderBottomStyle: 'solid'
+    // height: 50,
+    // borderRadius: 0,
+    // flex: 1,
+    // borderBottomWidth: 2,
+    // borderBottomStyle: 'solid'
   },
 
   /* **************************************************************************/
@@ -24,8 +24,10 @@ module.exports = {
   /* **************************************************************************/
   paper: {
     padding: 15,
-    marginBottom: 5,
-    marginTop: 5
+    // marginBottom: 5,
+    // marginTop: 5
+    height: '100%',
+    width: '100%'
   },
   subheading: {
     marginTop: 0,
@@ -75,3 +77,4 @@ module.exports = {
     right: 0
   }
 }
+module.exports = settingsStyles

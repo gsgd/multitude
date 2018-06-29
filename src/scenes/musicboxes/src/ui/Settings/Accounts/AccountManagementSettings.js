@@ -1,12 +1,14 @@
 const React = require('react')
-const Colors = require('material-ui/styles/colors')
-const { Paper, FlatButton, FontIcon } = require('material-ui')
+const PropTypes = require('prop-types')
+import * as Colors from '@material-ui/core/colors'
+import { Paper, Button, Icon } from '@material-ui/core'
 const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const TimerMixin = require('react-timer-mixin')
+const createReactClass = require('create-react-class')
 
-const AccountManagementSettings = React.createClass({
+const AccountManagementSettings = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -14,7 +16,7 @@ const AccountManagementSettings = React.createClass({
   displayName: 'AccountManagementSettings',
   mixins: [TimerMixin],
   propTypes: {
-    musicbox: React.PropTypes.object.isRequired
+    musicbox: PropTypes.object.isRequired
   },
 
   /* **************************************************************************/
@@ -73,12 +75,14 @@ const AccountManagementSettings = React.createClass({
     delete passProps.musicbox
 
     return (
-      <Paper zDepth={1} style={styles.paper} {...passProps}>
-        <FlatButton
-          label={this.state.confirmingDelete ? 'Click again to confirm' : 'Delete Account'}
-          icon={<FontIcon color={Colors.red600} className='material-icons'>delete</FontIcon>}
-          labelStyle={{color: Colors.red600}}
-          onTouchTap={this.handleDeleteTapped} />
+      <Paper elevation={1} style={styles.paper} {...passProps}>
+        <Button variant='flat'
+          icon={<Icon color={Colors.red[600]} className='material-icons'>delete</Icon>}
+          onClick={this.handleDeleteTapped}>
+          <span style={{color: Colors.red[600]}}>
+            {this.state.confirmingDelete ? 'Click again to confirm' : 'Delete Account'}
+          </span>
+        </Button>
       </Paper>
     )
   }

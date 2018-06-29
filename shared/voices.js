@@ -6,8 +6,9 @@ const introText = [
   'Right now'
 ]
 
-module.exports = {
+const voices = {
   // todo convert to promise based to return when loaded using window.speechSynthesis.onvoiceschanged
   getVoices: () => { return window.speechSynthesis.getVoices() },
   getIntro: () => { return introText[(Math.random() * introText.length) | 0] }
 }
+module.exports = voices

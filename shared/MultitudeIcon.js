@@ -1,5 +1,6 @@
 const React = require('react')
-const { SvgIcon } = require('material-ui')
+const PropTypes = require('prop-types')
+import SvgIcon from '@material-ui/core/SvgIcon'
 
 const style = {
   lightGradient: {
@@ -43,7 +44,7 @@ const style = {
   }
 }
 
-module.exports = (props) => {
+const MultitudeIcon = (props) => {
   return (
     <SvgIcon viewBox='0 0 512 512' {...props}>
       <g id='Dark'>
@@ -55,3 +56,5 @@ module.exports = (props) => {
     </SvgIcon>
   )
 }
+
+module.exports = MultitudeIcon

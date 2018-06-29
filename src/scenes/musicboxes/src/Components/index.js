@@ -1,4 +1,4 @@
-module.exports = {
+const index = {
   ColorPickerButton: require('./ColorPickerButton'),
   Grid: require('./Grid'),
   TrayIconEditor: require('./TrayIconEditor'),
@@ -6,3 +6,4 @@ module.exports = {
   TrayRenderer: require('./TrayRenderer'),
   WebView: require('./WebView')
 }
+module.exports = index

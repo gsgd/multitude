@@ -1,4 +1,5 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const { musicboxStore, musicboxActions } = require('../../stores/musicbox')
 const { settingsStore } = require('../../stores/settings')
 const { ipcRenderer } = require('electron')
@@ -19,8 +20,9 @@ const {
 
 const BROWSER_REF = 'browser'
 const SEARCH_REF = 'search'
+const createReactClass = require('create-react-class')
 
-const MusicboxTab = React.createClass({
+const MusicboxTab = createReactClass({
 
   /* **************************************************************************/
   // Class
@@ -28,12 +30,12 @@ const MusicboxTab = React.createClass({
 
   displayName: 'MusicboxTab',
   propTypes: Object.assign({
-    service: React.PropTypes.string.isRequired,
-    preload: React.PropTypes.string,
-    src: React.PropTypes.string,
-    controls: React.PropTypes.object
+    service: PropTypes.string.isRequired,
+    preload: PropTypes.string,
+    src: PropTypes.string,
+    controls: PropTypes.object
   }, WebView.REACT_WEBVIEW_EVENTS.reduce((acc, name) => {
-    acc[name] = React.PropTypes.func
+    acc[name] = PropTypes.func
     return acc
   }, {})),
 
@@ -211,6 +213,7 @@ const MusicboxTab = React.createClass({
   * @param evt: the event that fired
   */
   handleRefocus (evt) {
+    // console.log('handleRefocus', evt)
     if (!evt.musicboxId || !evt.service || (evt.musicboxId === this.props.musicboxId && evt.service === this.props.service)) {
       setTimeout(() => { this.refs[BROWSER_REF].focus() })
     }
@@ -629,7 +632,6 @@ const MusicboxTab = React.createClass({
       setTimeout(() => { this.refs[BROWSER_REF].focus() })
     }
 
-    // console.log('MusicboxTab.render', browserSrc);
     return (
       <div className={saltedClassName}>
         <WebView

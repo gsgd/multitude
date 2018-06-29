@@ -1,18 +1,20 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const { appWizardActions } = require('../../stores/appWizard')
 const { settingsStore } = require('../../stores/settings')
 const shallowCompare = require('react-addons-shallow-compare')
-const { Dialog, RaisedButton } = require('material-ui')
+import { Dialog, DialogContent, DialogActions, DialogTitle, Button } from '@material-ui/core'
 const { TrayIconEditor } = require('../../Components')
+const createReactClass = require('create-react-class')
 
-const AppWizardTray = React.createClass({
+const AppWizardTray = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'AppWizardTray',
   propTypes: {
-    isOpen: React.PropTypes.bool.isRequired
+    isOpen: PropTypes.bool.isRequired
   },
 
   /* **************************************************************************/
@@ -53,36 +55,34 @@ const AppWizardTray = React.createClass({
     const { isOpen } = this.props
     const { tray } = this.state
 
-    const actions = (
-      <div>
-        <RaisedButton
-          label='Cancel'
-          style={{ float: 'left' }}
-          onClick={() => appWizardActions.cancelWizard()} />
-        <RaisedButton
-          label='Next'
-          primary
-          onClick={() => appWizardActions.progressNextStep()} />
-      </div>
-    )
-
     return (
       <Dialog
-        modal={false}
-        title='Tray Icon'
-        actions={actions}
         open={isOpen}
-        autoScrollBodyContent
-        onRequestClose={() => appWizardActions.cancelWizard()}>
-        <p style={{ textAlign: 'center' }}>
+        onClose={() => appWizardActions.cancelWizard()}>
+        <DialogTitle>
+          Tray Icon
+        </DialogTitle>
+        <DialogContent style={{ textAlign: 'center' }}>
           Customise the tray icon so that it fits in with the other icons in
           your taskbar. You can change the way the icon appears when you have unread
           mail and when you have no unread mail
-        </p>
-        <TrayIconEditor
-          tray={tray}
-          style={{ textAlign: 'center' }}
-          trayPreviewStyles={{ margin: '0px auto' }} />
+          <TrayIconEditor
+            tray={tray}
+            style={{ textAlign: 'center' }}
+            trayPreviewStyles={{ margin: '0px auto' }} />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => appWizardActions.cancelWizard()}>
+            Cancel
+          </Button>
+          <Button variant='raised'
+            color='primary'
+            onClick={() => appWizardActions.progressNextStep()}>
+            Next
+          </Button>
+
+        </DialogActions>
       </Dialog>
     )
   }

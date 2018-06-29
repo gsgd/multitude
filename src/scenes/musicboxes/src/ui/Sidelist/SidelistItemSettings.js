@@ -1,11 +1,12 @@
 const React = require('react')
-const { IconButton } = require('material-ui')
-const Colors = require('material-ui/styles/colors')
+import { IconButton } from '@material-ui/core'
+import * as Colors from '@material-ui/core/colors'
 const {navigationDispatch} = require('../../Dispatch')
 const styles = require('./SidelistStyles')
 const ReactTooltip = require('react-tooltip')
+const createReactClass = require('create-react-class')
 
-const SidelistItemSettings = React.createClass({
+const SidelistItemSettings = createReactClass({
 
   /* **************************************************************************/
   // Class
@@ -21,24 +22,18 @@ const SidelistItemSettings = React.createClass({
   * Renders the app
   */
   render () {
-    const {style, iconColor, ...passProps} = this.props
+    const {style, ...passProps} = this.props
     return (
       <div
         {...passProps}
         style={Object.assign({}, styles.itemContainer, style)}
-        data-tip='Settings'
-        data-for='ReactComponent-Sidelist-Item-Settings'>
+        data-tip='Settings'>
         <IconButton
-          iconClassName='material-icons'
+          className='material-icons'
           onClick={() => navigationDispatch.openSettings()}
-          iconStyle={{color: iconColor || Colors.blueGrey400}}>
+          color='primary'>
           settings
         </IconButton>
-        <ReactTooltip
-          id='ReactComponent-Sidelist-Item-Settings'
-          place='right'
-          type='dark'
-          effect='solid' />
       </div>
     )
   }

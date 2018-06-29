@@ -6,4 +6,5 @@ class Reporter {
   }
 }
 
-module.exports = new Reporter()
+const instance = new Reporter()
+module.exports = instance

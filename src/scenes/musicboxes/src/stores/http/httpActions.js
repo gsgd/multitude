@@ -2,7 +2,6 @@ const alt = require('../alt')
 const uuid = require('uuid')
 
 class HttpActions {
-
   /* **************************************************************************/
   // Requests
   /* **************************************************************************/
@@ -59,4 +58,5 @@ class HttpActions {
   }
 }
 
-module.exports = alt.createActions(HttpActions)
+const actions = alt.createActions(HttpActions)
+module.exports = actions

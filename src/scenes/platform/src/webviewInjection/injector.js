@@ -92,4 +92,5 @@ class Injector {
   }
 }
 
-module.exports = new Injector()
+const instance = new Injector()
+module.exports = instance

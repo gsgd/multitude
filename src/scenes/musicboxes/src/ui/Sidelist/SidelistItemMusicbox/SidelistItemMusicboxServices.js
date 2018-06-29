@@ -1,19 +1,21 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const shallowCompare = require('react-addons-shallow-compare')
 const styles = require('../SidelistStyles')
 const SidelistItemMusicboxService = require('./SidelistItemMusicboxService')
+const createReactClass = require('create-react-class')
 
-const SidelistItemMusicboxServices = React.createClass({
+const SidelistItemMusicboxServices = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'SidelistItemMusicboxServices',
   propTypes: {
-    musicbox: React.PropTypes.object.isRequired,
-    isActiveMusicbox: React.PropTypes.bool.isRequired,
-    activeService: React.PropTypes.string.isRequired,
-    onOpenService: React.PropTypes.func.isRequired
+    musicbox: PropTypes.object.isRequired,
+    isActiveMusicbox: PropTypes.bool.isRequired,
+    activeService: PropTypes.string.isRequired,
+    onOpenService: PropTypes.func.isRequired
   },
 
   /* **************************************************************************/

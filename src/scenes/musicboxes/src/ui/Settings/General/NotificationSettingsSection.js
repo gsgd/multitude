@@ -1,11 +1,13 @@
 const React = require('react')
-const {Toggle, Paper, SelectField, MenuItem} = require('material-ui')
+const PropTypes = require('prop-types')
+import {Switch, FormControlLabel, FormControl, NativeSelect, FormHelperText, Paper} from '@material-ui/core'
 const settingsActions = require('../../../stores/settings/settingsActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const {getVoices} = require('shared/voices')
+const createReactClass = require('create-react-class')
 
-const NotificationSettingsSection = React.createClass({
+const NotificationSettingsSection = createReactClass({
 
   /* **************************************************************************/
   // UI Events
@@ -25,7 +27,7 @@ const NotificationSettingsSection = React.createClass({
 
   displayName: 'NotificationSettingsSection',
   propTypes: {
-    os: React.PropTypes.object.isRequired
+    os: PropTypes.object.isRequired
   },
 
   /* **************************************************************************/
@@ -67,32 +69,33 @@ const NotificationSettingsSection = React.createClass({
   render () {
     const { os, ...passProps } = this.props
     const { voices } = this.state
-    
-    return (
-      <Paper zDepth={1} style={styles.paper} {...passProps}>
-        <h1 style={styles.subheading}>Notifications</h1>
-        <Toggle
-          toggled={os.notificationsEnabled}
-          labelPosition='right'
-          label='Show track notifications'
-          onToggle={(evt, toggled) => settingsActions.setNotificationsEnabled(toggled)} />
-        <Toggle
-          toggled={!os.notificationsSilent}
-          label='Speak track names'
-          labelPosition='right'
-          disabled={!os.notificationsEnabled}
-          onToggle={(evt, toggled) => settingsActions.setNotificationsSilent(!toggled)} />
-        <SelectField
-          fullWidth
-          floatingLabelText='Choose voice for track names'
-          disabled={!os.notificationsEnabled}
-          onChange={this.handleNotificationVoiceChanged}
-          value={os.notificationsVoice}>
-          {voices.map((voice, index) => {
-            return (<MenuItem key={voice.voiceURI} value={index} primaryText={`${voice.voiceURI} (${voice.lang})`}/>)
-          })}
-        </SelectField>
 
+    return (
+      <Paper elevation={1} style={styles.paper} {...passProps}>
+        <h1 style={styles.subheading}>Notifications</h1>
+        <FormControlLabel
+          control={<Switch />}
+          checked={os.notificationsEnabled}
+          label='Show track notifications'
+          onChange={(evt, toggled) => settingsActions.setNotificationsEnabled(toggled)} />
+        <FormControlLabel
+          control={<Switch />}
+          checked={!os.notificationsSilent}
+          label='Speak track names'
+          disabled={!os.notificationsEnabled}
+          onChange={(evt, toggled) => settingsActions.setNotificationsSilent(!toggled)} />
+        <FormControl>
+          <NativeSelect
+            fullWidth
+            disabled={!os.notificationsEnabled}
+            onChange={this.handleNotificationVoiceChanged}
+            value={os.notificationsVoice}>
+            {voices.map((voice, index) => {
+              return (<option key={voice.voiceURI} value={index}>{`${voice.voiceURI} (${voice.lang})`}</option>)
+            })}
+          </NativeSelect>
+          <FormHelperText>Choose voice for track names</FormHelperText>
+        </FormControl>
       </Paper>
     )
   }

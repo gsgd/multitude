@@ -1,1 +1,2 @@
-module.exports = require('./SidelistItemMusicbox')
+const slim = require('./SidelistItemMusicbox')
+module.exports = slim

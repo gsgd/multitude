@@ -1,18 +1,20 @@
 const React = require('react')
-const { Paper, RaisedButton, FontIcon } = require('material-ui')
+const PropTypes = require('prop-types')
+import { Paper, Button, Icon } from '@material-ui/core'
 const { ColorPickerButton } = require('../../../Components')
 const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
+const createReactClass = require('create-react-class')
 
-const AccountAvatarSettings = React.createClass({
+const AccountAvatarSettings = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'AccountAvatarSettings',
   propTypes: {
-    musicbox: React.PropTypes.object.isRequired
+    musicbox: PropTypes.object.isRequired
   },
 
   /* **************************************************************************/
@@ -60,31 +62,32 @@ const AccountAvatarSettings = React.createClass({
     const { musicbox, ...passProps } = this.props
 
     return (
-      <Paper zDepth={1} style={styles.paper} {...passProps}>
+      <Paper elevation={1} style={styles.paper} {...passProps}>
         <h1 style={styles.subheading}>Icon</h1>
         <div style={styles.button}>
-          <RaisedButton
-            label='Change Account Icon'
-            containerElement='label'
-            icon={<FontIcon className='material-icons'>insert_emoticon</FontIcon>}
+          <Button variant='raised'
+            // containerElement='label'
+            icon={<Icon className='material-icons'>insert_emoticon</Icon>}
             style={styles.fileInputButton}>
+            Change Account Icon
             <input
               type='file'
               accept='image/*'
               onChange={this.handleCustomAvatarChange}
               style={styles.fileInput} />
-          </RaisedButton>
+          </Button>
         </div>
         <div style={styles.button}>
-          <RaisedButton
-            icon={<FontIcon className='material-icons'>not_interested</FontIcon>}
-            onClick={() => musicboxActions.setCustomAvatar(musicbox.id, undefined)}
-            label='Reset Account Icon' />
+          <Button variant='raised'
+            icon={<Icon className='material-icons'>not_interested</Icon>}
+            onClick={() => musicboxActions.setCustomAvatar(musicbox.id, undefined)}>
+            Reset Account Icon
+          </Button>
         </div>
         <div style={styles.button}>
           <ColorPickerButton
             label='Account Colour'
-            icon={<FontIcon className='material-icons'>color_lens</FontIcon>}
+            icon={<Icon className='material-icons'>color_lens</Icon>}
             value={musicbox.color}
             onChange={(col) => musicboxActions.setColor(musicbox.id, col)} />
         </div>

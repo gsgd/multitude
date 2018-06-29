@@ -1,4 +1,5 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const MusicboxTab = require('../MusicboxTab')
 // const Musicbox = require('shared/Models/Musicbox/Musicbox')
 const { musicboxStore } = require('../../../stores/musicbox')
@@ -10,16 +11,17 @@ const {
 } = require('electron')
 
 const REF = 'musicbox_tab'
+const createReactClass = require('create-react-class')
 
-const MusicboxStreamingTab = React.createClass({
+const MusicboxStreamingTab = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'MusicboxStreamingTab',
   propTypes: {
-    musicboxId: React.PropTypes.string.isRequired,
-    preload: React.PropTypes.string.isRequired
+    musicboxId: PropTypes.string.isRequired,
+    preload: PropTypes.string.isRequired
   },
 
   /* **************************************************************************/

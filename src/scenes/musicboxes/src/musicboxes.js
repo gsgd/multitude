@@ -1,4 +1,5 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const ReactDOM = require('react-dom')
 const { AppContainer } = require('react-hot-loader')
 
@@ -8,8 +9,8 @@ const composeStore = require('./stores/compose')
 const musicboxWizardStore = require('./stores/musicboxWizard')
 const { ipcRenderer } = require('electron')
 
-const injectTapEventPlugin = require('react-tap-event-plugin')
-injectTapEventPlugin()
+// const injectTapEventPlugin = require('react-tap-event-plugin')
+// injectTapEventPlugin()
 
 // See if we're offline and run a re-direct
 if (window.navigator.onLine === false) {
@@ -30,9 +31,9 @@ if (loading) {
 
 const render = () => {
   const App = require('./ui/App')
-// Render and prepare for unrender
-  //   ReactDOM.render(<App/>, document.getElementById('app'))
-  ReactDOM.render(<AppContainer><App/></AppContainer>, document.getElementById('app'))
+  // Render and prepare for unrender
+
+  ReactDOM.render(<AppContainer><App /></AppContainer>, document.getElementById('app'))
   ipcRenderer.on('prepare-reload', function () {
     ReactDOM.unmountComponentAtNode(document.getElementById('app'))
   })

@@ -2,7 +2,6 @@ const alt = require('../alt')
 const uuid = require('uuid')
 
 class DictionariesActions {
-
   /* **************************************************************************/
   // Changing
   /* **************************************************************************/
@@ -40,4 +39,5 @@ class DictionariesActions {
   }
 }
 
-module.exports = alt.createActions(DictionariesActions)
+const actions = alt.createActions(DictionariesActions)
+module.exports = actions

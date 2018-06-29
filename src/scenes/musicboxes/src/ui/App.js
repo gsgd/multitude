@@ -14,14 +14,20 @@ const TimerMixin = require('react-timer-mixin')
 const constants = require('shared/constants')
 const TrackNotifications = require('../Notifications/TrackNotifications')
 const shallowCompare = require('react-addons-shallow-compare')
+const shallowEqual = require('fbjs/lib/shallowEqual')
 const Tray = require('./Tray')
 const AppBadge = require('./AppBadge')
-const appTheme = require('./appTheme')
-const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default
+
+const appColors = require('./appColors')
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles'
+import createPalette from '@material-ui/core/styles/createPalette'
+
+let themes = {}
 
 navigationDispatch.bindIPCListeners()
+const createReactClass = require('create-react-class')
 
-const App = React.createClass({
+const App = createReactClass({
   displayName: 'App',
   mixins: [TimerMixin],
 
@@ -45,7 +51,7 @@ const App = React.createClass({
   },
 
   componentWillUnmount () {
-    this.trackNotifications.stop()
+    if (this.trackNotifications) this.trackNotifications.stop()
 
     flux.musicbox.S.unlisten(this.musicboxesChanged)
     flux.settings.S.unlisten(this.settingsChanged)
@@ -68,14 +74,16 @@ const App = React.createClass({
       activeMusicboxId: musicboxStore.activeMusicboxId(),
       activeTrack: musicboxStore.activeTrackForAppBadge(),
       uiSettings: settingsStore.ui,
-      traySettings: settingsStore.tray
+      traySettings: settingsStore.tray,
+      theme: this.appTheme(musicboxStore.activeMusicbox())
     }
   },
 
   musicboxesChanged (store) {
     this.setState({
       activeMusicboxId: store.activeMusicboxId(),
-      activeTrack: store.activeTrackForAppBadge()
+      activeTrack: store.activeTrackForAppBadge(),
+      theme: this.appTheme(store.activeMusicbox())
     })
     ipcRenderer.send('musicboxes-changed', {
       musicboxes: store.allMusicboxes().map((musicbox) => {
@@ -109,6 +117,64 @@ const App = React.createClass({
     }
   },
 
+  appTheme (musicbox) {
+    const type = (musicbox) ? musicbox.type : 'default'
+    // console.log(type, themes[type] && musicbox && !shallowEqual(themes[type].style, musicbox.style))
+
+    // cache themes that have the same musicbox.style
+    if (themes[type] === undefined || (musicbox && !shallowEqual(themes[type].style, musicbox.style))) {
+      themes[type] = {
+        theme: this.makeTheme(musicbox),
+        style: musicbox ? musicbox.style : null
+      }
+    }
+    return themes[type].theme
+  },
+
+  makeTheme (musicbox) {
+    const palette = createPalette(Object.assign({}, musicbox ? musicbox.palette : appColors))
+    const shadow = '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)'
+    const styles = Object.assign({}, musicbox ? musicbox.style : {backgroundColor: appColors.secondary.main})
+    // console.log('appTheme.palette', palette, styles)
+    return createMuiTheme({
+      fontFamily: 'Roboto, sans-serif',
+      palette: palette,
+      overrides: {
+        MuiButton: {
+          containedPrimary: {
+            backgroundColor: palette.primary.main,
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.24), rgba(255,255,255,0) 85%)`,
+            boxShadow: 'none',
+            '&:hover': {
+              boxShadow: shadow
+            }
+          }
+        },
+        MuiDrawer: {
+          paper: Object.assign({width: 'initial'}, styles)
+        },
+        MuiDialogContent: {
+          root: {paddingTop: 20}
+        },
+        MuiGridListTile: {
+          tile: {
+            backgroundColor: palette.primary.main,
+            '&:hover': {
+              boxShadow: shadow,
+              backgroundColor: palette.primary.dark
+            }
+          }
+        },
+        MuiGridListTileBar: {
+          root: {
+            backgroundColor: 'rgba(0,0,0,0.6)'
+          },
+          actionIcon: { color: palette.primary.main }
+        }
+      }
+    })
+  },
+
   /* **************************************************************************/
   // Rendering Events
   /* **************************************************************************/
@@ -121,14 +187,19 @@ const App = React.createClass({
     // Requeue the event to run on the end of the render cycle
     this.setTimeout(() => {
       const active = document.activeElement
+      // console.log('musicboxBlurred', active.tagName)
       if (active.tagName === 'WEBVIEW') {
         // Nothing to do, already focused on mailbox
         this.clearInterval(this.forceFocusTO)
+        delete this.forceFocusTO
       } else if (active.tagName === 'BODY') {
         // Focused on body, just dip focus onto the webview
         this.clearInterval(this.forceFocusTO)
+        delete this.forceFocusTO
         musicboxDispatch.refocus()
       } else {
+        // unset interval if set
+        if (this.forceFocusTO) this.clearInterval(this.forceFocusTO)
         // focused on some element in the ui, poll until we move back to body
         this.forceFocusTO = this.setInterval(() => {
           if (document.activeElement.tagName === 'BODY') {
@@ -154,9 +225,10 @@ const App = React.createClass({
       traySettings,
       uiSettings,
       activeTrack,
-      activeMusicboxId
+      activeMusicboxId,
+      theme
     } = this.state
-
+    // console.log('App.theme', theme)
     // Update the app title
     if (uiSettings.showTitlebarTrack) {
       if (!activeTrack.title) {
@@ -170,7 +242,7 @@ const App = React.createClass({
 
     return (
       <div>
-        <MuiThemeProvider muiTheme={appTheme}>
+        <MuiThemeProvider theme={theme}>
           <AppContent />
         </MuiThemeProvider>
         {!traySettings.show ? undefined : (

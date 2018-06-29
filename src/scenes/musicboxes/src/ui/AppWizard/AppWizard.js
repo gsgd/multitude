@@ -1,12 +1,14 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const { appWizardStore } = require('../../stores/appWizard')
 const shallowCompare = require('react-addons-shallow-compare')
 const AppWizardStart = require('./AppWizardStart')
 const AppWizardComplete = require('./AppWizardComplete')
 const AppWizardNotifactions = require('./AppWizardNotifications')
 const AppWizardTray = require('./AppWizardTray')
+const createReactClass = require('create-react-class')
 
-const AppWizard = React.createClass({
+const AppWizard = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/

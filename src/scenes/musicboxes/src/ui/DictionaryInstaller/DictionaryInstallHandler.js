@@ -1,9 +1,10 @@
 const React = require('react')
-const { Dialog } = require('material-ui')
+import { Dialog } from '@material-ui/core'
 const dictionariesStore = require('../../stores/dictionaries/dictionariesStore')
 const DictionaryInstallStepper = require('./DictionaryInstallStepper')
+const createReactClass = require('create-react-class')
 
-const DictionaryInstallHandler = React.createClass({
+const DictionaryInstallHandler = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -46,14 +47,12 @@ const DictionaryInstallHandler = React.createClass({
   /* **************************************************************************/
 
   render () {
-    return (
+    return !this.state.isInstalling ? null : (
       <Dialog
         modal
         title={`Install Dictionary`}
         open={this.state.isInstalling}>
-        {!this.state.isInstalling ? undefined : (
-          <DictionaryInstallStepper key={this.state.installId} />
-        )}
+        <DictionaryInstallStepper key={this.state.installId} />
       </Dialog>
     )
   }

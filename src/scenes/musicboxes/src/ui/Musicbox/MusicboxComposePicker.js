@@ -1,10 +1,11 @@
 const React = require('react')
-const { Dialog, RaisedButton, List, ListItem, Avatar } = require('material-ui')
+import { Dialog, Button, List, ListItem, Avatar } from '@material-ui/core'
 const { composeStore, composeActions } = require('../../stores/compose')
 const { musicboxStore, musicboxActions } = require('../../stores/musicbox')
 const shallowCompare = require('react-addons-shallow-compare')
+const createReactClass = require('create-react-class')
 
-const MusicboxComposePicker = React.createClass({
+const MusicboxComposePicker = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -99,20 +100,18 @@ const MusicboxComposePicker = React.createClass({
     const { musicboxes } = this.state
     const musicboxState = musicboxStore.getState()
     const actions = (
-      <RaisedButton label='Cancel' onClick={this.handleCancel} />
+      <Button variant='raised' onClick={this.handleCancel}>Cancel</Button>
     )
 
     return (
       <Dialog
-        modal={false}
         title='Compose New Message'
         titleStyle={{ lineHeight: '22px' }}
         actions={actions}
         open={this.isOpen()}
         contentStyle={{ maxWidth: 'none', width: 300 }}
         bodyStyle={{ padding: 0 }}
-        autoScrollBodyContent
-        onRequestClose={this.handleCancel}>
+        onClose={this.handleCancel}>
         <List>
           {musicboxes.map((musicbox) => {
             let avatarSrc = ''
@@ -123,11 +122,12 @@ const MusicboxComposePicker = React.createClass({
             }
 
             return (
-              <ListItem
-                leftAvatar={<Avatar src={avatarSrc} backgroundColor='white' />}
-                primaryText={(musicbox.typeWithUsername)}
-                onClick={(evt) => this.handleSelectMusicbox(evt, musicbox.id)}
-                key={musicbox.id} />)
+              <ListItem onClick={(evt) => this.handleSelectMusicbox(evt, musicbox.id)}
+                key={musicbox.id}>
+                <Avatar src={avatarSrc} backgroundColor='white' />
+                {(musicbox.typeWithUsername)}
+              </ListItem>
+            )
           })}
         </List>
       </Dialog>

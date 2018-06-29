@@ -7,8 +7,9 @@ const Welcome = require('../Welcome/Welcome')
 const Musicbox = require('shared/Models/Musicbox/Musicbox')
 
 const MusicboxStreamingTab = require('./Streaming/MusicboxStreamingTab')
+const createReactClass = require('create-react-class')
 
-const MusicboxWindows = React.createClass({
+const MusicboxWindows = createReactClass({
   displayName: 'MusicboxWindows',
 
   /* **************************************************************************/
@@ -96,7 +97,7 @@ const MusicboxWindows = React.createClass({
   render () {
     const { tabIds } = this.state
 
-    if (tabIds.length) {
+    if (tabIds.length && 1) {
       return (
         <div className='ReactComponent-MusicboxWindows'>
           {tabIds.map((id) => {

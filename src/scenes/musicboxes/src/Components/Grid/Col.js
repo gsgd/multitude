@@ -1,16 +1,18 @@
 const React = require('react')
+const PropTypes = require('prop-types')
+const createReactClass = require('create-react-class')
 
-const GridCol = React.createClass({
+const GridCol = createReactClass({
   displayName: 'GridCol',
 
   propTypes: {
-    xs: React.PropTypes.number,
-    sm: React.PropTypes.number,
-    md: React.PropTypes.number,
-    lg: React.PropTypes.number,
-    offset: React.PropTypes.number,
-    className: React.PropTypes.string,
-    children: React.PropTypes.node
+    xs: PropTypes.number,
+    sm: PropTypes.number,
+    md: PropTypes.number,
+    lg: PropTypes.number,
+    offset: PropTypes.number,
+    className: PropTypes.string,
+    children: PropTypes.node
   },
 
   render () {

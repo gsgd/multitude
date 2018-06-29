@@ -1,21 +1,23 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const shallowCompare = require('react-addons-shallow-compare')
 const { Musicbox } = require('shared/Models/Musicbox')
-const { Avatar } = require('material-ui')
+import { Avatar } from '@material-ui/core'
 const styles = require('../SidelistStyles')
+const createReactClass = require('create-react-class')
 
-const SidelistItemMusicboxServices = React.createClass({
+const SidelistItemMusicboxServices = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'SidelistItemMusicboxServices',
   propTypes: {
-    musicbox: React.PropTypes.object.isRequired,
-    isActiveMusicbox: React.PropTypes.bool.isRequired,
-    isActiveService: React.PropTypes.bool.isRequired,
-    onOpenService: React.PropTypes.func.isRequired,
-    service: React.PropTypes.string.isRequired
+    musicbox: PropTypes.object.isRequired,
+    isActiveMusicbox: PropTypes.bool.isRequired,
+    isActiveService: PropTypes.bool.isRequired,
+    onOpenService: PropTypes.func.isRequired,
+    service: PropTypes.string.isRequired
   },
 
   /* **************************************************************************/

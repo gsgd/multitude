@@ -1,18 +1,20 @@
 const React = require('react')
-const { Paper, Toggle } = require('material-ui')
+const PropTypes = require('prop-types')
+import { Paper, Switch, FormControlLabel } from '@material-ui/core'
 const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
+const createReactClass = require('create-react-class')
 
-const AccountAdvancedSettings = React.createClass({
+const AccountAdvancedSettings = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'AccountAdvancedSettings',
   propTypes: {
-    musicbox: React.PropTypes.object.isRequired,
-    showRestart: React.PropTypes.func.isRequired
+    musicbox: PropTypes.object.isRequired,
+    showRestart: PropTypes.func.isRequired
   },
 
   /* **************************************************************************/
@@ -27,13 +29,13 @@ const AccountAdvancedSettings = React.createClass({
     const { musicbox, showRestart, ...passProps } = this.props
 
     return (
-      <Paper zDepth={1} style={styles.paper} {...passProps}>
+      <Paper elevation={1} style={styles.paper} {...passProps}>
         <h1 style={styles.subheading}>Advanced</h1>
-        <Toggle
-          toggled={musicbox.artificiallyPersistCookies}
+        <FormControlLabel
+          control={<Switch />}
+          checked={musicbox.artificiallyPersistCookies}
           label='Artificially Persist Cookies. Use if you are signed out every restart. (Requires Restart)'
-          labelPosition='right'
-          onToggle={(evt, toggled) => {
+          onChange={(evt, toggled) => {
             showRestart()
             musicboxActions.artificiallyPersistCookies(musicbox.id, toggled)
           }} />

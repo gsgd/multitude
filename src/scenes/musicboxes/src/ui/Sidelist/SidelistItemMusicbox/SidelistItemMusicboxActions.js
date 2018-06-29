@@ -1,21 +1,25 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const shallowCompare = require('react-addons-shallow-compare')
 const styles = require('../SidelistStyles')
-const {IconButton} = require('material-ui')
+// import IconButton from '@material-ui/core/IconButton'
+import { Button, Icon } from '@material-ui/core'
+
 const {musicboxDispatch} = require('../../../Dispatch')
 const { lighten, isLight } = require('colorutilities')
 
 // console.log(lighten)
+const createReactClass = require('create-react-class')
 
-const SidelistItemMusicboxActions = React.createClass({
+const SidelistItemMusicboxActions = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'SidelistItemMusicboxActions',
   propTypes: {
-    musicbox: React.PropTypes.object.isRequired,
-    isActiveMusicbox: React.PropTypes.bool.isRequired
+    musicbox: PropTypes.object.isRequired,
+    isActiveMusicbox: PropTypes.bool.isRequired
   },
 
   /* **************************************************************************/
@@ -41,16 +45,21 @@ const SidelistItemMusicboxActions = React.createClass({
     const playIcon = musicbox.isPlaying ? 'pause' : 'play_arrow'
     return (
       <div style={styles.musicboxActionsContainer}>
-        <IconButton
-          iconClassName='material-icons'
-          iconStyle={Object.assign({}, styles.musicboxActionIconStyle, musicboxColor)}
+        <Button
+          mini
+          className='musicbox-actions'
+          // style={styles.musicboxActionButtonStyle}
           style={Object.assign({}, styles.musicboxActionStyle, musicboxBackgroundColor)}
-          hoveredStyle={Object.assign({}, musicboxBackgroundColorHover)}
+          // hoveredStyle={Object.assign({}, musicboxBackgroundColorHover)}
           onClick={() => {
             musicboxDispatch.musicboxPlayPause(musicbox.id)
           }} >
-          {playIcon}
-        </IconButton>
+          <Icon
+            style={Object.assign({}, styles.musicboxActionIconStyle, musicboxColor)}
+          >
+            {playIcon}
+          </Icon>
+        </Button>
       </div>
     )
   }

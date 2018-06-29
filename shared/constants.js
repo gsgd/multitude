@@ -1,7 +1,7 @@
 const BASE_URL = 'http://gsgd.github.io/multitude'
 const GITHUB_URL = 'https://github.com/gsgd/multitude'
 
-module.exports = Object.freeze({
+const CONSTANTS = Object.freeze({
   APP_ID: 'gsgd.multitude',
 
   MUSICBOX_INDEX_KEY: '__mindex__',
@@ -46,3 +46,5 @@ module.exports = Object.freeze({
   MUSICBOX_WINDOW_USERNAME: 'musicbox-window-username',
   MUSICBOX_WINDOW_TIME_UPDATED: 'musicbox-window-time-updated'
 })
+
+module.exports = CONSTANTS

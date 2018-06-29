@@ -174,4 +174,5 @@ class PlatformStore {
   }
 }
 
-module.exports = alt.createStore(PlatformStore, 'PlatformStore')
+const store = alt.createStore(PlatformStore, 'PlatformStore')
+module.exports = store

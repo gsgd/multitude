@@ -1,1 +1,2 @@
-module.exports = require('./AppWizard')
+const appWizard = require('./AppWizard')
+module.exports = appWizard

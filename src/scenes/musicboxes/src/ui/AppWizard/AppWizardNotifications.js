@@ -1,20 +1,22 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const { appWizardActions } = require('../../stores/appWizard')
 const { settingsStore, settingsActions } = require('../../stores/settings')
 const shallowCompare = require('react-addons-shallow-compare')
-const { Dialog, RaisedButton } = require('material-ui')
+import { Dialog, DialogContent, DialogTitle, DialogActions, Button } from '@material-ui/core'
 const NotificationSettingsSection = require('../Settings/General/NotificationSettingsSection')
 
 // console.log('setttingsStore', settingsStore)
+const createReactClass = require('create-react-class')
 
-const AppWizardNotifications = React.createClass({
+const AppWizardNotifications = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'AppWizardNotifications',
   propTypes: {
-    isOpen: React.PropTypes.bool.isRequired
+    isOpen: PropTypes.bool.isRequired
   },
 
   /* **************************************************************************/
@@ -57,41 +59,36 @@ const AppWizardNotifications = React.createClass({
   render () {
     const { isOpen } = this.props
     const { os } = this.state
-    const actions = (
-      <div>
-        <RaisedButton
-          label='Cancel'
-          style={{ float: 'left' }}
-          onClick={() => appWizardActions.cancelWizard()} />
-        <RaisedButton
-          label='Later'
-          onClick={() => appWizardActions.progressNextStep()} />
-        <RaisedButton
-          label='Continue'
-          style={{ marginLeft: 8 }}
-          primary
-          onClick={() => {
-            appWizardActions.progressNextStep()
-          }} />
-      </div>
-    )
 
     return (
       <Dialog
-        modal={false}
-        title='Notifications'
-        actions={actions}
         open={isOpen}
-        autoScrollBodyContent
-        onRequestClose={() => appWizardActions.cancelWizard()}>
-        <div style={{textAlign: 'center'}}>
+        onClose={() => appWizardActions.cancelWizard()}>
+        <DialogTitle>
+          Notifications
+        </DialogTitle>
+        <DialogContent style={{textAlign: 'center'}}>
           <p>
             Choose your notification preferences
             <br />
             <small>You can always change these later</small>
           </p>
           <NotificationSettingsSection os={os} />
-        </div>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => appWizardActions.cancelWizard()}>
+            Later
+          </Button>
+          <Button variant='raised'
+            style={{marginLeft: 8}}
+            color='primary'
+            onClick={() => {
+              appWizardActions.progressNextStep()
+            }}>
+            Next
+          </Button>
+        </DialogActions>
       </Dialog>
     )
   }

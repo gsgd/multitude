@@ -1,17 +1,19 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const shallowCompare = require('react-addons-shallow-compare')
 const TimerMixin = require('react-timer-mixin')
 const compareVersion = require('compare-version')
 const { UPDATE_CHECK_URL, UPDATE_CHECK_INTERVAL, UPDATE_DOWNLOAD_URL } = require('shared/constants')
-const { FlatButton, RaisedButton, Dialog } = require('material-ui')
+import { Button, Dialog } from '@material-ui/core'
 const settingsStore = require('../stores/settings/settingsStore')
 const settingsActions = require('../stores/settings/settingsActions')
 const pkg = require('shared/appPackage')
 const {
   remote: {shell}
 } = require('electron')
+const createReactClass = require('create-react-class')
 
-const UpdateCheckDialog = React.createClass({
+const UpdateCheckDialog = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -142,30 +144,33 @@ const UpdateCheckDialog = React.createClass({
 
   render () {
     const buttons = [
-      (<FlatButton
+      (<Button
         key='restart'
-        label='After Restart'
         style={{ marginRight: 16 }}
-        onClick={this.recheckRestart} />),
-      (<FlatButton
+        onClick={this.recheckRestart}>
+        After Restart
+      </Button>),
+      (<Button
         key='later'
-        label='Later'
         style={{ marginRight: 16 }}
-        onClick={this.recheckLater} />),
-      (<RaisedButton
+        onClick={this.recheckLater}>
+        Later
+      </Button>),
+      (<Button
         key='now'
-        primary
-        label='Download Now'
-        onClick={this.downloadNow} />)
+        variant='contained'
+        color='primary'
+        onClick={this.downloadNow}>
+        Download Now
+      </Button>)
     ]
 
     return (
       <Dialog
-        modal={false}
         title='Update Available'
         actions={buttons}
         open={this.state.newerVersion !== null}
-        onRequestClose={this.recheckLater}>
+        onClose={this.recheckLater}>
         <p>
           <span>Version </span>
           <span>{this.state.newerVersion}</span>

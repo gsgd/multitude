@@ -5,7 +5,6 @@ const SERVICES = require('./MusicboxServices')
 const { MusicboxTypes, MusicboxData, Default } = require('./MusicboxConfiguration')
 
 class Musicbox extends Model {
-
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -156,6 +155,16 @@ class Musicbox extends Model {
     return Object.assign({}, Default.style, musicBoxStyle, customStyle, this.__data__.style || {})
   }
 
+  get palette () {
+    return {
+      primary: {
+        main: this.style.color
+      },
+      secondary: {
+        main: this.style.backgroundColor
+      }
+    }
+  }
   get name () { return this.__data__.name }
 
   /* **************************************************************************/
@@ -173,7 +182,6 @@ class Musicbox extends Model {
 
   get customJS () { return this.__data__.customJS }
   get hasCustomJS () { return !!this.customJS }
-
 }
 
 module.exports = Musicbox

@@ -1,5 +1,6 @@
 const React = require('react')
-const { Toggle, Paper, SelectField, MenuItem } = require('material-ui')
+const PropTypes = require('prop-types')
+import { Switch, FormControlLabel, Paper, NativeSelect, FormHelperText } from '@material-ui/core'
 const platformActions = require('../../../stores/platform/platformActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
@@ -9,19 +10,20 @@ const LOGIN_OPEN_MODES = {
   ON: 'true|false',
   ON_BACKGROUND: 'true|true'
 }
+const createReactClass = require('create-react-class')
 
-const PlatformSettingsSection = React.createClass({
+const PlatformSettingsSection = createReactClass({
   /* **************************************************************************/
   // Rendering
   /* **************************************************************************/
 
   displayName: 'PlatformSettingsSection',
   propTypes: {
-    mailtoLinkHandlerSupported: React.PropTypes.bool.isRequired,
-    isMailtoLinkHandler: React.PropTypes.bool.isRequired,
-    openAtLoginSupported: React.PropTypes.bool.isRequired,
-    openAtLogin: React.PropTypes.bool.isRequired,
-    openAsHiddenAtLogin: React.PropTypes.bool.isRequired
+    mailtoLinkHandlerSupported: PropTypes.bool.isRequired,
+    isMailtoLinkHandler: PropTypes.bool.isRequired,
+    openAtLoginSupported: PropTypes.bool.isRequired,
+    openAtLogin: PropTypes.bool.isRequired,
+    openAsHiddenAtLogin: PropTypes.bool.isRequired
   },
 
   /* **************************************************************************/
@@ -66,25 +68,27 @@ const PlatformSettingsSection = React.createClass({
     if (!mailtoLinkHandlerSupported && !openAtLoginSupported) { return null }
 
     return (
-      <Paper zDepth={1} style={styles.paper} {...passProps}>
+      <Paper elevation={1} style={styles.paper} {...passProps}>
         <h1 style={styles.subheading}>Platform</h1>
         {mailtoLinkHandlerSupported ? (
-          <Toggle
-            toggled={isMailtoLinkHandler}
-            labelPosition='right'
+          <FormControlLabel
+            control={<Switch />}
+            checked={isMailtoLinkHandler}
             label='Handle mailto links'
-            onToggle={(evt, toggled) => platformActions.changeMailtoLinkHandler(toggled)} />
+            onChange={(evt, toggled) => platformActions.changeMailtoLinkHandler(toggled)} />
         ) : undefined}
         {openAtLoginSupported ? (
-          <SelectField
-            fullWidth
-            floatingLabelText='Open at Login'
-            onChange={this.handleOpenAtLoginChanged}
-            value={`${openAtLogin}|${openAsHiddenAtLogin}`}>
-            <MenuItem value={LOGIN_OPEN_MODES.OFF} primaryText={'Don\'t open at login'} />
-            <MenuItem value={LOGIN_OPEN_MODES.ON} primaryText='Open at login' />
-            <MenuItem value={LOGIN_OPEN_MODES.ON_BACKGROUND} primaryText='Open at login (in background)' />
-          </SelectField>
+          <div>
+            <NativeSelect
+              fullWidth
+              onChange={this.handleOpenAtLoginChanged}
+              value={`${openAtLogin}|${openAsHiddenAtLogin}`}>
+              <option value={LOGIN_OPEN_MODES.OFF} >{'Don\'t open at login'}</option>
+              <option value={LOGIN_OPEN_MODES.ON}>Open at login</option>
+              <option value={LOGIN_OPEN_MODES.ON_BACKGROUND}>Open at login (in background)</option>
+            </NativeSelect>
+            <FormHelperText>Open at Login</FormHelperText>
+          </div>
         ) : undefined}
       </Paper>
     )

@@ -1,7 +1,6 @@
 const Minivents = require('minivents')
 
 class MusicboxDispatch {
-
   /* **************************************************************************/
   // Lifecycle
   /* **************************************************************************/
@@ -236,4 +235,5 @@ class MusicboxDispatch {
   }
 }
 
-module.exports = new MusicboxDispatch()
+const instance = new MusicboxDispatch()
+module.exports = instance

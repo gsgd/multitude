@@ -17,10 +17,12 @@ const mouseEvent = function (type, x, y) {
   }
   return new window.MouseEvent(type, e)
 }
-module.exports = {
+
+const actions = {
   clickMove: function (el, x, y) {
     el.dispatchEvent(mouseEvent('mousedown', x, y))
     el.dispatchEvent(mouseEvent('mousemove', x, y))
     el.dispatchEvent(mouseEvent('mouseup', x, y))
   }
 }
+module.exports = actions

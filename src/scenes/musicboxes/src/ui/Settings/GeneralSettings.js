@@ -1,4 +1,5 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const {
   Grid: { Container, Row, Col }
 } = require('../../Components')
@@ -12,15 +13,17 @@ const TraySettingsSection = require('./General/TraySettingsSection')
 const UISettingsSection = require('./General/UISettingsSection')
 const InfoSettingsSection = require('./General/InfoSettingsSection')
 const PlatformSettingsSection = require('./General/PlatformSettingsSection')
+const createReactClass = require('create-react-class')
+import { Grid } from '@material-ui/core'
 
-const GeneralSettings = React.createClass({
+const GeneralSettings = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'GeneralSettings',
   propTypes: {
-    showRestart: React.PropTypes.func.isRequired
+    showRestart: PropTypes.func.isRequired
   },
 
   /* **************************************************************************/
@@ -103,33 +106,42 @@ const GeneralSettings = React.createClass({
       isMailtoLinkHandler
     } = this.state
     const {showRestart, ...passProps} = this.props
+    const spacing = 16
 
     return (
       <div {...passProps}>
-        <Container fluid>
-          <Row>
-            <Col md={6}>
-              <UISettingsSection
-                ui={ui}
-                os={os}
-                news={news}
-                showRestart={showRestart} />
-              <NotificationSettingsSection os={os} />
-              <DownloadSettingsSection os={os} />
-              <LanguageSettingsSection language={language} showRestart={showRestart} />
-            </Col>
-            <Col md={6}>
-              <PlatformSettingsSection
-                mailtoLinkHandlerSupported={mailtoLinkHandlerSupported}
-                isMailtoLinkHandler={isMailtoLinkHandler}
-                openAtLoginSupported={openAtLoginSupported}
-                openAtLogin={openAtLogin}
-                openAsHiddenAtLogin={openAsHiddenAtLogin} />
-              <TraySettingsSection tray={tray} />
-              <InfoSettingsSection />
-            </Col>
-          </Row>
-        </Container>
+        <Grid container direction='row' spacing={spacing} alignItems='stretch'>
+          <Grid item sm={12}>
+            <UISettingsSection
+              ui={ui}
+              os={os}
+              news={news}
+              showRestart={showRestart} />
+          </Grid>
+          <Grid container item sm={6} xs={12}>
+            <NotificationSettingsSection os={os} />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <DownloadSettingsSection os={os}/>
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <LanguageSettingsSection language={language} showRestart={showRestart}/>
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <TraySettingsSection tray={tray}/>
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <PlatformSettingsSection
+              mailtoLinkHandlerSupported={mailtoLinkHandlerSupported}
+              isMailtoLinkHandler={isMailtoLinkHandler}
+              openAtLoginSupported={openAtLoginSupported}
+              openAtLogin={openAtLogin}
+              openAsHiddenAtLogin={openAsHiddenAtLogin}/>
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <InfoSettingsSection/>
+          </Grid>
+        </Grid>
       </div>
     )
   }

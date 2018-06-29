@@ -1,1 +1,2 @@
-module.exports = require('./MusicboxWizard')
+const req = require('./MusicboxWizard')
+module.exports = req

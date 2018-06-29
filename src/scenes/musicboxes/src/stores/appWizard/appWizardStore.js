@@ -82,4 +82,5 @@ class AppWizardStore {
   }
 }
 
-module.exports = alt.createStore(AppWizardStore, 'AppWizardStore')
+const store = alt.createStore(AppWizardStore, 'AppWizardStore')
+module.exports = store

@@ -2,6 +2,7 @@ const electron = require('electron')
 const { ipcRenderer, remote } = electron
 const { Tray, Menu, nativeImage } = remote
 const React = require('react')
+const PropTypes = require('prop-types')
 const { musicboxDispatch } = require('../Dispatch')
 const { musicboxActions, musicboxStore } = require('../stores/musicbox')
 const { composeActions } = require('../stores/compose')
@@ -11,7 +12,9 @@ const navigationDispatch = require('../Dispatch/navigationDispatch')
 const uuid = require('uuid')
 
 // because Tray is already in use
-const TrayClass = React.createClass({
+const createReactClass = require('create-react-class')
+
+const TrayClass = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -19,9 +22,9 @@ const TrayClass = React.createClass({
 
   // Pretty strict on updating. If you're changing these, change shouldComponentUpdate :)
   propTypes: {
-    activeTrack: React.PropTypes.object.isRequired,
-    activeMusicboxId: React.PropTypes.string,
-    traySettings: React.PropTypes.object.isRequired
+    activeTrack: PropTypes.object.isRequired,
+    activeMusicboxId: PropTypes.string,
+    traySettings: PropTypes.object.isRequired
   },
   statics: {
     platformSupportsDpiMultiplier: () => {

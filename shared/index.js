@@ -1,4 +1,4 @@
-module.exports = {
+const index = {
   b64Assets: require('./b64Assets'),
   credentials: require('./credentials'),
   constants: require('./constants'),
@@ -6,3 +6,4 @@ module.exports = {
   dictionaries: require('./dictionaries.js'),
   voices: require('./voices')
 }
+module.exports = index

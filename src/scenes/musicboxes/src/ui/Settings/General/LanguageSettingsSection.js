@@ -1,21 +1,23 @@
 const React = require('react')
-const { Toggle, Paper, SelectField, MenuItem, RaisedButton, FontIcon } = require('material-ui')
+const PropTypes = require('prop-types')
+import { Switch, FormControlLabel, Paper, NativeSelect, FormHelperText, Button, Icon } from '@material-ui/core'
 const flux = {
   settings: require('../../../stores/settings'),
   dictionaries: require('../../../stores/dictionaries')
 }
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
+const createReactClass = require('create-react-class')
 
-const LanguageSettingsSection = React.createClass({
+const LanguageSettingsSection = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'LanguageSettingsSection',
   propTypes: {
-    language: React.PropTypes.object.isRequired,
-    showRestart: React.PropTypes.func.isRequired
+    language: PropTypes.object.isRequired,
+    showRestart: PropTypes.func.isRequired
   },
 
   /* **************************************************************************/
@@ -61,27 +63,26 @@ const LanguageSettingsSection = React.createClass({
     const primaryDictionaryInfo = dictionaryState.getDictionaryInfo(language.spellcheckerLanguage)
 
     return (
-      <Paper zDepth={1} style={styles.paper} {...passProps}>
+      <Paper elevation={1} style={styles.paper} {...passProps}>
         <h1 style={styles.subheading}>Language</h1>
-        <Toggle
-          toggled={language.spellcheckerEnabled}
-          labelPosition='right'
+        <FormControlLabel
+          control={<Switch />}
+          checked={language.spellcheckerEnabled}
           label='Spell-checker (Requires Restart)'
-          onToggle={(evt, toggled) => {
+          onChange={(evt, toggled) => {
             showRestart()
             flux.settings.A.setEnableSpellchecker(toggled)
           }} />
-        <SelectField
-          floatingLabelText='Spell-checker language'
+        <NativeSelect
           value={language.spellcheckerLanguage}
           fullWidth
           onChange={(evt, index, value) => { flux.settings.A.setSpellcheckerLanguage(value) }}>
           {installedDictionaries.map((info) => {
-            return (<MenuItem key={info.lang} value={info.lang} primaryText={info.name} />)
+            return (<option key={info.lang} value={info.lang} >{info.name}</option>)
           })}
-        </SelectField>
-        <SelectField
-          floatingLabelText='Secondary Spell-checker language'
+        </NativeSelect>
+        <FormHelperText>Spell-checker language</FormHelperText>
+        <NativeSelect
           value={language.secondarySpellcheckerLanguage !== null ? language.secondarySpellcheckerLanguage : '__none__'}
           fullWidth
           onChange={(evt, index, value) => {
@@ -89,17 +90,19 @@ const LanguageSettingsSection = React.createClass({
           }}>
           {[undefined].concat(installedDictionaries).map((info) => {
             if (info === undefined) {
-              return (<MenuItem key='__none__' value='__none__' primaryText='None' />)
+              return (<option key='__none__' value='__none__'>None</option>)
             } else {
               const disabled = primaryDictionaryInfo.charset !== info.charset
-              return (<MenuItem key={info.lang} value={info.lang} primaryText={info.name} disabled={disabled} />)
+              return (<option key={info.lang} value={info.lang} >{info.name} disabled={disabled}</option>)
             }
           })}
-        </SelectField>
-        <RaisedButton
-          label='Install more Dictionaries'
-          icon={<FontIcon className='material-icons'>language</FontIcon>}
-          onTouchTap={() => { flux.dictionaries.A.startDictionaryInstall() }} />
+        </NativeSelect>
+        <FormHelperText>Secondary Spell-checker language</FormHelperText>
+        <Button variant='raised'
+          icon={<Icon className='material-icons'>language</Icon>}
+          onClick={() => { flux.dictionaries.A.startDictionaryInstall() }}>
+          Install more Dictionaries
+        </Button>
       </Paper>
     )
   }

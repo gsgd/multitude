@@ -1,16 +1,18 @@
 const React = require('react')
-const {Paper} = require('material-ui')
+const PropTypes = require('prop-types')
+import {Paper, Grid} from '@material-ui/core'
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
-const Colors = require('material-ui/styles/colors')
+import * as Colors from '@material-ui/core/colors'
 const { remote } = require('electron')
 const { shell } = remote
 const { WEB_URL, GITHUB_URL, GITHUB_ISSUE_URL } = require('shared/constants')
 const {musicboxDispatch} = require('../../../Dispatch')
 const musicboxStore = require('../../../stores/musicbox/musicboxStore')
 const pkg = require('shared/appPackage')
+const createReactClass = require('create-react-class')
 
-const InfoSettingsSection = React.createClass({
+const InfoSettingsSection = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -61,32 +63,53 @@ const InfoSettingsSection = React.createClass({
 
   render () {
     return (
-      <Paper zDepth={1} style={styles.paper} {...this.props}>
-        <a
-          style={{color: Colors.blue700, fontSize: '85%', marginBottom: 10, display: 'block'}}
-          onClick={(evt) => { evt.preventDefault(); shell.openExternal(WEB_URL) }}
-          href={WEB_URL}>Multitude Website</a>
-        <a
-          style={{color: Colors.blue700, fontSize: '85%', marginBottom: 10, display: 'block'}}
-          onClick={(evt) => { evt.preventDefault(); shell.openExternal(GITHUB_URL) }}
-          href={GITHUB_URL}>Multitude GitHub</a>
-        <a
-          style={{color: Colors.blue700, fontSize: '85%', marginBottom: 10, display: 'block'}}
-          onClick={(evt) => { evt.preventDefault(); shell.openExternal(GITHUB_ISSUE_URL) }}
-          href={GITHUB_ISSUE_URL}>Report a bug</a>
-        <a
-          style={{color: Colors.blue700, fontSize: '85%', marginBottom: 10, display: 'block'}}
-          onClick={this.handleShowMemoryInfo}
-          href='#'>Memory Info</a>
-        <div style={{ fontSize: '85%' }}>
-          <p>
-            {`Version ${pkg.version} ${pkg.prerelease ? 'Prerelease' : ''}`}
-          </p>
-          <p>
-            Hacked with ▶︎ by GSGD
-            Built on work by Thomas Beverley.
-          </p>
-        </div>
+      <Paper elevation={1} style={styles.paper} {...this.props}>
+        <Grid container spacing={0} style={{fontSize: '85%'}} justify='center'>
+          <Grid item xs={6}>
+            <Grid container spacing={16}>
+              <Grid item xs={12}>
+                <a
+                  onClick={(evt) => { evt.preventDefault(); shell.openExternal(WEB_URL) }}
+                  href={WEB_URL}>Multitude Website</a>
+              </Grid>
+              <Grid item xs={12}>
+                <a
+                  onClick={(evt) => {
+                    evt.preventDefault()
+                    shell.openExternal(GITHUB_URL)
+                  }}
+                  href={GITHUB_URL}>Multitude GitHub</a>
+              </Grid>
+              <Grid item xs={12}>
+                <a
+                  onClick={(evt) => {
+                    evt.preventDefault()
+                    shell.openExternal(GITHUB_ISSUE_URL)
+                  }}
+                  href={GITHUB_ISSUE_URL}>Report a bug</a>
+              </Grid>
+              <Grid item xs={12}>
+                <a
+                  // style={{color: Colors.blue[700], fontSize: '85%', marginBottom: 10, display: 'block'}}
+                  onClick={this.handleShowMemoryInfo}
+                  href='#'>Memory Info</a>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <Grid container spacing={32}>
+              <Grid item xs={12}>
+                {`Version ${pkg.version} ${pkg.prerelease ? 'Prerelease' : ''}`}
+              </Grid>
+              <Grid item xs={12}>
+                Hacked with ▶︎ by GSGD
+              </Grid>
+              <Grid item xs={12}>
+                Built on work by Thomas Beverley.
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </Paper>
     )
   }

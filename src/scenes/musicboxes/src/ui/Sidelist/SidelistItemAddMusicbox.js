@@ -1,11 +1,13 @@
 const React = require('react')
-const { IconButton } = require('material-ui')
-const Colors = require('material-ui/styles/colors')
+const PropTypes = require('prop-types')
+import { IconButton } from '@material-ui/core'
+import * as Colors from '@material-ui/core/colors'
 const styles = require('./SidelistStyles')
 const ReactTooltip = require('react-tooltip')
 const { musicboxWizardActions } = require('../../stores/musicboxWizard')
+const createReactClass = require('create-react-class')
 
-const SidelistItemAddMusicbox = React.createClass({
+const SidelistItemAddMusicbox = createReactClass({
 
   /* **************************************************************************/
   // Class
@@ -18,24 +20,18 @@ const SidelistItemAddMusicbox = React.createClass({
   /* **************************************************************************/
 
   render () {
-    const {style, iconColor, ...passProps} = this.props
+    const {style, ...passProps} = this.props
     return (
       <div
         {...passProps}
         style={Object.assign({}, styles.itemContainer, style)}
-        data-tip='Add Musicbox'
-        data-for='ReactComponent-Sidelist-Item-Add-Musicbox'>
-        <IconButton
-          iconClassName='material-icons'
+        data-tip='Add Musicbox'>
+        <IconButton variant='fab'
+          className='material-icons'
           onClick={() => musicboxWizardActions.openAddMusicbox()}
-          iconStyle={{color: iconColor || Colors.blueGrey400}}>
+          color='primary'>
           add_circle
         </IconButton>
-        <ReactTooltip
-          id='ReactComponent-Sidelist-Item-Add-Musicbox'
-          place='right'
-          type='dark'
-          effect='solid' />
       </div>
     )
   }

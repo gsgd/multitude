@@ -65,4 +65,5 @@ class MusicboxStore {
   }
 }
 
-module.exports = new MusicboxStore()
+const store = new MusicboxStore()
+module.exports = store

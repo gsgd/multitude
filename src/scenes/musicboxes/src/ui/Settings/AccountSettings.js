@@ -1,5 +1,6 @@
 const React = require('react')
-const {SelectField, MenuItem, Avatar, Paper} = require('material-ui')
+const PropTypes = require('prop-types')
+import { NativeSelect, FormHelperText, Avatar, Paper, Grid } from '@material-ui/core'
 const {
   Grid: { Container, Row, Col }
 } = require('../../Components')
@@ -13,12 +14,14 @@ const AccountAdvancedSettings = require('./Accounts/AccountAdvancedSettings')
 const AccountManagementSettings = require('./Accounts/AccountManagementSettings')
 const AccountServiceSettings = require('./Accounts/AccountServiceSettings')
 const pkg = require('shared/appPackage')
+const createReactClass = require('create-react-class')
+import { withTheme } from '@material-ui/core/styles'
 
-const AccountSettings = React.createClass({
+const AccountSettings = createReactClass({
   displayName: 'AccountSettings',
   propTypes: {
-    showRestart: React.PropTypes.func.isRequired,
-    initialMusicboxId: React.PropTypes.string
+    showRestart: PropTypes.func.isRequired,
+    initialMusicboxId: PropTypes.string
   },
 
   /* **************************************************************************/
@@ -72,7 +75,8 @@ const AccountSettings = React.createClass({
   // User Interaction
   /* **************************************************************************/
 
-  handleAccountChange (evt, index, musicboxId) {
+  handleAccountChange (evt) {
+    const musicboxId = evt.target.value
     this.setState({ selected: musicboxStore.getState().getMusicbox(musicboxId) })
   },
 
@@ -87,7 +91,7 @@ const AccountSettings = React.createClass({
 
     return (
       <div {...passProps}>
-        <Paper zDepth={1} style={styles.paper}>
+        <Paper elevation={1} style={styles.paper}>
           <small>No accounts available</small>
         </Paper>
       </div>
@@ -95,14 +99,16 @@ const AccountSettings = React.createClass({
   },
 
   renderMusicboxes () {
-    const {selected} = this.state
-    const {showRestart, ...passProps} = this.props
+    const {selected} = this.state || this.props.musicboxes[0]
+    const {showRestart, theme, ...passProps} = this.props
+    const spacing = 16
+
     delete passProps.initialMusicboxId
 
     let avatarSrc = ''
-    if (selected.hasCustomAvatar) {
+    if (selected && selected.hasCustomAvatar) {
       avatarSrc = musicboxStore.getState().getAvatar(selected.customAvatarId)
-    } else if (selected.avatarURL) {
+    } else if (selected && selected.avatarURL) {
       avatarSrc = selected.avatarURL
     }
 
@@ -111,45 +117,51 @@ const AccountSettings = React.createClass({
         <div style={styles.accountPicker}>
           <Avatar
             src={avatarSrc}
-            size={60}
-            backgroundColor='white'
-            style={styles.accountPickerAvatar} />
+            size={80}
+            style={Object.assign({backgroundColor: theme.palette.primary.main}, styles.accountPickerAvatar)} />
           <div style={styles.accountPickerContainer}>
-            <SelectField
+            <NativeSelect
               value={selected.id}
               style={{marginTop: -14}}
-              floatingLabelText='Pick your account'
               fullWidth
               onChange={this.handleAccountChange}>
               {
                 this.state.musicboxes.map((m) => {
                   return (
-                    <MenuItem
+                    <option
                       value={m.id}
-                      key={m.id}
-                      primaryText={(m.typeWithUsername)}/>
+                      key={m.id}>
+                      {(m.typeWithUsername)}
+                    </option>
                   )
                 })
               }
-            </SelectField>
+            </NativeSelect>
+            <FormHelperText>Pick your account</FormHelperText>
           </div>
         </div>
-        <Container fluid>
-          <Row>
-            <Col md={6}>
-              <AccountUnreadSettings musicbox={selected} />
-              <AccountAvatarSettings musicbox={selected} />
-              <AccountCustomCodeSettings musicbox={selected} />
-            </Col>
-            <Col md={6}>
-              {pkg.prerelease ? (
-                <AccountServiceSettings musicbox={selected} />
-              ) : undefined}
-              <AccountAdvancedSettings musicbox={selected} showRestart={showRestart} />
-              <AccountManagementSettings musicbox={selected} />
-            </Col>
-          </Row>
-        </Container>
+        <Grid container direction='row' spacing={spacing} alignItems='stretch'>
+          <Grid item sm={12} md={6}>
+            <AccountUnreadSettings musicbox={selected}/>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <AccountAvatarSettings musicbox={selected}/>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <AccountCustomCodeSettings musicbox={selected}/>
+          </Grid>
+          {pkg.prerelease ? (
+            <Grid item sm={12}>
+              <AccountServiceSettings musicbox={selected}/>
+            </Grid>
+          ) : undefined}
+          <Grid item xs={12} sm={6}>
+            <AccountAdvancedSettings musicbox={selected} showRestart={showRestart}/>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <AccountManagementSettings musicbox={selected} />
+          </Grid>
+        </Grid>
       </div>
     )
   },
@@ -162,4 +174,6 @@ const AccountSettings = React.createClass({
     }
   }
 })
-module.exports = AccountSettings
+
+const themed = withTheme()(AccountSettings)
+module.exports = themed

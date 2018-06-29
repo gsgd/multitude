@@ -1,12 +1,14 @@
 const React = require('react')
+const PropTypes = require('prop-types')
+const createReactClass = require('create-react-class')
 
-const GridContainer = React.createClass({
+const GridContainer = createReactClass({
   displayName: 'GridContainer',
 
   propTypes: {
-    className: React.PropTypes.string,
-    children: React.PropTypes.node,
-    fluid: React.PropTypes.bool
+    className: PropTypes.string,
+    children: PropTypes.node,
+    fluid: PropTypes.bool
   },
 
   render () {

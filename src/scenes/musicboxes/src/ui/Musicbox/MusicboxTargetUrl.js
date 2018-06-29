@@ -1,14 +1,16 @@
 const React = require('react')
-const { Paper } = require('material-ui')
+const PropTypes = require('prop-types')
+import { Paper } from '@material-ui/core'
+const createReactClass = require('create-react-class')
 
-const MusicboxTargetUrl = React.createClass({
+const MusicboxTargetUrl = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'MusicboxTargetUrl',
   propTypes: {
-    url: React.PropTypes.string
+    url: PropTypes.string
   },
 
   /* **************************************************************************/

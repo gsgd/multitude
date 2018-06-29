@@ -1,16 +1,19 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const SidelistMusicboxes = require('./SidelistMusicboxes')
 const SidelistItemAddMusicbox = require('./SidelistItemAddMusicbox')
 const SidelistItemSettings = require('./SidelistItemSettings')
 const SidelistItemWizard = require('./SidelistItemWizard')
 const SidelistItemNews = require('./SidelistItemNews')
+const ReactTooltip = require('react-tooltip')
 const { settingsStore } = require('../../stores/settings')
 const {musicboxStore} = require('../../stores/musicbox')
 const styles = require('./SidelistStyles')
 const shallowCompare = require('react-addons-shallow-compare')
-const Colors = require('material-ui/styles/colors')
+import * as Colors from '@material-ui/core/colors'
+const createReactClass = require('create-react-class')
 
-const Sidelist = React.createClass({
+const Sidelist = createReactClass({
 
   /* **************************************************************************/
   // Class
@@ -64,7 +67,7 @@ const Sidelist = React.createClass({
     const activeMusicbox = musicboxState.activeMusicbox()
     this.setState({
       activeMusicbox: activeMusicbox,
-      style: activeMusicbox.style
+      style: activeMusicbox ? activeMusicbox.style : {}
     })
   },
 
@@ -99,7 +102,7 @@ const Sidelist = React.createClass({
       extraItems === 2 ? styles.footer4Icons : undefined
     )
 
-    const color = activeMusicbox ? activeMusicbox.color : Colors.lightBlue100
+    const color = activeMusicbox ? activeMusicbox.color : Colors.lightBlue[100]
 
     return (
       <div
@@ -111,12 +114,16 @@ const Sidelist = React.createClass({
           <SidelistMusicboxes />
         </div>
         <div style={footerStyle}>
-          {showWizard ? (<SidelistItemWizard />) : undefined}
+          {showWizard && <SidelistItemWizard />}
           {hasUpdateInfo && (showNewsInSidebar || hasUnopenedNewsId) ? (
-            <SidelistItemNews iconColor={color} />) : undefined}
-          <SidelistItemAddMusicbox iconColor={color} />
-          <SidelistItemSettings iconColor={color} />
+            <SidelistItemNews />) : undefined}
+          <SidelistItemAddMusicbox />
+          <SidelistItemSettings />
         </div>
+        <ReactTooltip
+          place='right'
+          type='dark'
+          effect='solid'/>
       </div>
     )
   }

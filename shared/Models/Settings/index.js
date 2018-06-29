@@ -1,4 +1,4 @@
-module.exports = {
+const index = {
   AppSettings: require('./AppSettings'),
   LanguageSettings: require('./LanguageSettings'),
   NewsSettings: require('./NewsSettings'),
@@ -9,3 +9,4 @@ module.exports = {
 
   SettingsIdent: require('./SettingsIdent')
 }
+module.exports = index

@@ -1,8 +1,9 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const {
-  Dialog, RaisedButton, Checkbox, Toggle,
-  Table, TableBody, TableRow, TableRowColumn
-} = require('material-ui')
+  Dialog, Button, Checkbox, Switch,
+  Table, TableBody, TableRow, TableCell
+} = require('@material-ui/core')
 const { musicboxWizardStore, musicboxWizardActions } = require('../../stores/musicboxWizard')
 const { Musicbox } = require('shared/Models/Musicbox')
 
@@ -29,8 +30,9 @@ const styles = {
     top: 2
   }
 }
+const createReactClass = require('create-react-class')
 
-const ConfigureMusicboxServicesDialog = React.createClass({
+const ConfigureMusicboxServicesDialog = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -136,55 +138,55 @@ const ConfigureMusicboxServicesDialog = React.createClass({
   render () {
     const { isOpen, enabledServices, musicboxType, availableServices, compactServices } = this.state
     const actions = (
-      <RaisedButton
-        label='Next'
-        primary
+      <Button
+        color='primary'
         onClick={() => {
           musicboxWizardActions.configureMusicboxServices(Array.from(enabledServices), compactServices)
-        }} />
+        }}>
+          Next
+      </Button>
     )
 
     return (
       <Dialog
-        bodyClassName='ReactComponent-MaterialUI-Dialog-Body-Scrollbars'
+        className='ReactComponent-MaterialUI-Dialog-Body-Scrollbars'
         modal
         actions={actions}
-        open={isOpen}
-        autoScrollBodyContent>
+        open={isOpen}>
         <div style={styles.introduction}>
           Multitude also gives you access to the other services you use. Pick which
           services you would like to enable for this account
         </div>
 
-        <Table selectable={false}>
-          <TableBody displayRowCheckbox={false}>
+        <Table>
+          <TableBody>
             {availableServices.map((service) => {
               return (
                 <TableRow key={service}>
-                  <TableRowColumn style={styles.actionCell}>
+                  <TableCell style={styles.actionCell}>
                     <img
                       style={styles.avatar}
                       src={this.getServiceIconUrl(musicboxType, service)} />
-                  </TableRowColumn>
-                  <TableRowColumn style={styles.titleCell}>
+                  </TableCell>
+                  <TableCell style={styles.titleCell}>
                     {this.getServiceName(musicboxType, service)}
-                  </TableRowColumn>
-                  <TableRowColumn style={styles.actionCell}>
+                  </TableCell>
+                  <TableCell style={styles.actionCell}>
                     <Checkbox
                       onCheck={(evt, checked) => this.handleToggleService(service, checked)}
                       checked={enabledServices.has(service)} />
-                  </TableRowColumn>
+                  </TableCell>
                 </TableRow>
               )
             })}
           </TableBody>
         </Table>
 
-        <Toggle
-          toggled={compactServices}
+        <Switch
+          checked={compactServices}
           label='Show sidebar services in compact mode'
-          labelPosition='right'
-          onToggle={(evt, toggled) => this.setState({ compactServices: toggled })} />
+          value='compactServices'
+          onChange={(evt, toggled) => this.setState({ compactServices: toggled })} />
       </Dialog>
     )
   }

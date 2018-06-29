@@ -687,7 +687,7 @@ class MusicboxStore {
       this.search.delete(`${this.active}:${this.activeService}`)
     }
   }
-
 }
 
-module.exports = alt.createStore(MusicboxStore, 'MusicboxStore')
+const store = alt.createStore(MusicboxStore, 'MusicboxStore')
+module.exports = store

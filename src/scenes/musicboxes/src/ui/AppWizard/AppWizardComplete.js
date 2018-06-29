@@ -1,29 +1,22 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const { appWizardActions } = require('../../stores/appWizard')
 const { musicboxStore } = require('../../stores/musicbox')
 const { musicboxWizardActions } = require('../../stores/musicboxWizard')
 const shallowCompare = require('react-addons-shallow-compare')
-const { Dialog, RaisedButton, FontIcon } = require('material-ui')
-const Colors = require('material-ui/styles/colors')
+import { Dialog, DialogContent, DialogTitle, DialogActions, Button, Avatar, Icon } from '@material-ui/core'
+import * as Colors from '@material-ui/core/colors'
+const styles = require('./styles')
+const createReactClass = require('create-react-class')
 
-const styles = {
-  container: {
-    textAlign: 'center'
-  },
-  tick: {
-    color: Colors.green600,
-    fontSize: '80px'
-  }
-}
-
-const AppWizardComplete = React.createClass({
+const AppWizardComplete = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'AppWizardComplete',
   propTypes: {
-    isOpen: React.PropTypes.bool.isRequired
+    isOpen: PropTypes.bool.isRequired
   },
 
   /* **************************************************************************/
@@ -65,43 +58,40 @@ const AppWizardComplete = React.createClass({
   render () {
     const { isOpen } = this.props
     const { musicboxCount } = this.state
-    const actions = (
-      <div>
-        <RaisedButton
-          label='Cancel'
-          style={{ float: 'left' }}
-          onClick={() => appWizardActions.cancelWizard()} />
-        <RaisedButton
-          label='Finish'
-          primary={musicboxCount !== 0}
-          onClick={() => appWizardActions.progressNextStep()} />
-        {musicboxCount === 0 ? (
-          <RaisedButton
-            label='Add First Musicbox'
-            style={{marginLeft: 8}}
-            primary
-            onClick={() => {
-              appWizardActions.progressNextStep()
-              musicboxWizardActions.openAddMusicbox()
-            }} />
-        ) : undefined}
-      </div>
-    )
 
     return (
       <Dialog
-        modal={false}
-        actions={actions}
         open={isOpen}
-        autoScrollBodyContent
-        onRequestClose={() => appWizardActions.cancelWizard()}>
-        <div style={styles.container}>
-          <FontIcon className='material-icons' style={styles.tick}>check_circle</FontIcon>
-          <h3>All Done!</h3>
+        onClose={() => appWizardActions.cancelWizard()}>
+        <DialogTitle style={styles.container}>
+          <Avatar style={styles.avatar}>
+            <Icon className='material-icons' style={styles.icon}>check_circle</Icon>
+          </Avatar>
+          <div>All Done!</div>
+        </DialogTitle>
+        <DialogContent style={styles.container}>
           <p>
             You can go to settings at any time to update your preferences
           </p>
-        </div>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            primary={musicboxCount !== 0}
+            onClick={() => appWizardActions.progressNextStep()}>
+            Finish
+          </Button>
+          {musicboxCount === 0 ? (
+            <Button variant='contained'
+              style={{marginLeft: 8}}
+              color='primary'
+              onClick={() => {
+                appWizardActions.progressNextStep()
+                musicboxWizardActions.openAddMusicbox()
+              }}>
+            Add First Musicbox
+            </Button>
+          ) : null}
+        </DialogActions>
       </Dialog>
     )
   }

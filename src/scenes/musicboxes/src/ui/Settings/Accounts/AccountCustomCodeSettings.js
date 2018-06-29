@@ -1,24 +1,26 @@
 const React = require('react')
-const { Paper, RaisedButton, FontIcon } = require('material-ui')
+const PropTypes = require('prop-types')
+import { Paper, Button, Icon } from '@material-ui/core'
 const CustomCodeEditingModal = require('./CustomCodeEditingModal')
 const musicboxActions = require('../../../stores/musicbox/musicboxActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const {musicboxDispatch} = require('../../../Dispatch')
 const { USER_SCRIPTS_WEB_URL } = require('shared/constants')
-const Colors = require('material-ui/styles/colors')
+import * as Colors from '@material-ui/core/colors'
 const {
   remote: {shell}
 } = require('electron')
+const createReactClass = require('create-react-class')
 
-const AccountCustomCodeSettings = React.createClass({
+const AccountCustomCodeSettings = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'AccountCustomCodeSettings',
   propTypes: {
-    musicbox: React.PropTypes.object.isRequired
+    musicbox: PropTypes.object.isRequired
   },
 
   /* **************************************************************************/
@@ -68,23 +70,25 @@ const AccountCustomCodeSettings = React.createClass({
     }
 
     return (
-      <Paper zDepth={1} style={styles.paper} {...passProps}>
+      <Paper elevation={1} style={styles.paper} {...passProps}>
         <h1 style={styles.subheading}>Custom Code</h1>
         <div style={styles.button}>
-          <RaisedButton
-            label='Custom CSS'
-            icon={<FontIcon className='material-icons'>code</FontIcon>}
-            onTouchTap={() => this.setState({ editingCSS: true, editingJS: false })} />
+          <Button variant='raised'
+            icon={<Icon className='material-icons'>code</Icon>}
+            onClick={() => this.setState({ editingCSS: true, editingJS: false })}>
+            Custom CSS
+          </Button>
         </div>
         <div style={styles.button}>
-          <RaisedButton
-            label='Custom JavaScript'
-            icon={<FontIcon className='material-icons'>code</FontIcon>}
-            onTouchTap={() => this.setState({ editingCSS: false, editingJS: true })} />
+          <Button variant='raised'
+            icon={<Icon className='material-icons'>code</Icon>}
+            onClick={() => this.setState({ editingCSS: false, editingJS: true })}>
+            Custom JavaScript
+          </Button>
         </div>
         <div style={styles.button}>
           <a
-            style={{color: Colors.blue700, fontSize: '85%', marginBottom: 10, display: 'block'}}
+            style={{color: Colors.blue[700], fontSize: '85%', marginBottom: 10, display: 'block'}}
             onClick={(evt) => { evt.preventDefault(); shell.openExternal(USER_SCRIPTS_WEB_URL) }}
             href={USER_SCRIPTS_WEB_URL}>Find custom userscripts</a>
         </div>

@@ -21,10 +21,12 @@ const EN = new Set([
   'wouldn'
 ])
 
-module.exports = {
+const excludes = {
   en_AU: EN,
   en_CA: EN,
   en_GB: EN,
   en_US: EN,
   en_ZA: EN
 }
+
+module.exports = excludes

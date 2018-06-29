@@ -1,22 +1,24 @@
 const React = require('react')
-const { Popover, Menu, MenuItem, Divider, FontIcon } = require('material-ui')
+const PropTypes = require('prop-types')
+import { Popover, Menu, MenuList, MenuItem, ListItemIcon, ListItemText, Divider, Icon } from '@material-ui/core'
 const { musicboxDispatch, navigationDispatch } = require('../../../Dispatch')
 const { musicboxActions } = require('../../../stores/musicbox')
 const shallowCompare = require('react-addons-shallow-compare')
+const createReactClass = require('create-react-class')
 
-const SidelistItemMusicboxPopover = React.createClass({
+const SidelistItemMusicboxPopover = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'SidelistItemMusicboxPopover',
   propTypes: {
-    musicbox: React.PropTypes.object.isRequired,
-    isFirst: React.PropTypes.bool.isRequired,
-    isLast: React.PropTypes.bool.isRequired,
-    isOpen: React.PropTypes.bool.isRequired,
-    anchor: React.PropTypes.any,
-    onRequestClose: React.PropTypes.func.isRequired
+    musicbox: PropTypes.object,
+    isFirst: PropTypes.bool.isRequired,
+    isLast: PropTypes.bool.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    anchor: PropTypes.any,
+    onClose: PropTypes.func.isRequired
   },
 
   /* **************************************************************************/
@@ -28,7 +30,7 @@ const SidelistItemMusicboxPopover = React.createClass({
   * @param evtOrFn: the fired event or a function to call on closed
   */
   handleClosePopover (evtOrFn) {
-    this.props.onRequestClose()
+    this.props.onClose()
     if (typeof (evtOrFn) === 'function') {
       setTimeout(() => { evtOrFn() }, 200)
     }
@@ -115,71 +117,108 @@ const SidelistItemMusicboxPopover = React.createClass({
       musicbox.typeWithUsername ? (
         <MenuItem
           key='info'
-          primaryText={musicbox.email}
-          disabled />) : undefined,
+          disabled>
+          {musicbox.typeWithUsername}
+        </MenuItem>) : undefined,
 
       // Ordering controls
       isFirst ? undefined : (
         <MenuItem
           key='moveup'
-          primaryText='Move Up'
-          onClick={this.handleMoveUp}
-          leftIcon={<FontIcon className='material-icons'>arrow_upward</FontIcon>} />),
+          onClick={this.handleMoveUp}>
+          <ListItemIcon>
+            <Icon className='material-icons'>arrow_upward</Icon>
+          </ListItemIcon>
+          <ListItemText>
+            Move Up
+          </ListItemText>
+        </MenuItem>),
       isLast ? undefined : (
         <MenuItem
           key='movedown'
-          primaryText='Move Down'
-          onClick={this.handleMoveDown}
-          leftIcon={<FontIcon className='material-icons'>arrow_downward</FontIcon>} />),
+          onClick={this.handleMoveDown}>
+          <ListItemIcon>
+            <Icon className='material-icons'>arrow_downward</Icon>
+          </ListItemIcon>
+          <ListItemText>
+            Move Down
+          </ListItemText>
+        </MenuItem>),
       isFirst && isLast ? undefined : (<Divider key='div-0' />),
 
       // Account Actions
       (<MenuItem
         key='delete'
-        primaryText='Delete'
-        onClick={this.handleDelete}
-        leftIcon={<FontIcon className='material-icons'>delete</FontIcon>} />),
+        onClick={this.handleDelete}>
+        <ListItemIcon>
+          <Icon className='material-icons'>delete</Icon>
+        </ListItemIcon>
+        <ListItemText>
+            Delete
+        </ListItemText>
+      </MenuItem>),
       (<MenuItem
         key='settings'
-        primaryText='Account Settings'
-        onClick={this.handleAccountSettings}
-        leftIcon={<FontIcon className='material-icons'>settings</FontIcon>} />),
+        onClick={this.handleAccountSettings}>
+        <ListItemIcon>
+          <Icon className='material-icons'>settings</Icon>
+        </ListItemIcon>
+        <ListItemText>
+            Account Settings
+        </ListItemText>
+      </MenuItem>),
       !musicbox.artificiallyPersistCookies ? undefined : (
         <MenuItem
           key='reauthenticate'
-          primaryText='Re-Authenticate'
-          onClick={this.handeReAuthenticate}
-          leftIcon={<FontIcon className='material-icons'>lock_outline</FontIcon>} />),
+          onClick={this.handeReAuthenticate}>
+          <ListItemIcon>
+            <Icon className='material-icons'>lock_outline</Icon>
+          </ListItemIcon>
+          <ListItemText>
+            Re-Authenticate
+          </ListItemText>
+        </MenuItem>),
       (<Divider key='div-1' />),
 
       // Advanced Actions
       (<MenuItem
         key='reload'
-        primaryText='Reload'
-        onClick={this.handleReload}
-        leftIcon={<FontIcon className='material-icons'>refresh</FontIcon>} />),
+        onClick={this.handleReload}>
+        <ListItemIcon>
+          <Icon className='material-icons'>refresh</Icon>
+        </ListItemIcon>
+        <ListItemText>
+            Reload
+        </ListItemText>
+      </MenuItem>),
       (<MenuItem
         key='inspect'
-        primaryText='Inspect'
-        onClick={this.handleInspect}
-        leftIcon={<FontIcon className='material-icons'>bug_report</FontIcon>} />)
+        onClick={this.handleInspect}>
+        <ListItemIcon>
+          <Icon className='material-icons'>bug_report</Icon>
+        </ListItemIcon>
+        <ListItemText>
+            Inspect
+        </ListItemText>
+      </MenuItem>)
     ].filter((item) => !!item)
   },
 
   render () {
     const { musicbox, isFirst, isLast, isOpen, anchor } = this.props
-
+    if (!musicbox) return null
     return (
-      <Popover
+      <Menu
         open={isOpen}
         anchorEl={anchor}
-        anchorOrigin={{ horizontal: 'middle', vertical: 'center' }}
-        targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-        onRequestClose={this.handleClosePopover}>
-        <Menu desktop onEscKeyDown={this.handleClosePopover}>
+        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+        disableAutoFocus
+        onEscapeKeyDown={this.handleClosePopover}
+        onClose={this.handleClosePopover}>
+        <MenuList>
           {this.renderMenuItems(musicbox, isFirst, isLast)}
-        </Menu>
-      </Popover>
+        </MenuList>
+      </Menu>
     )
   }
 })

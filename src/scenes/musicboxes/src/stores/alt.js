@@ -1,2 +1,3 @@
 const Alt = require('alt')
-module.exports = new Alt()
+const instance = new Alt()
+module.exports = instance

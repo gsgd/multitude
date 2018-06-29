@@ -1,11 +1,10 @@
 const React = require('react')
-const { IconButton } = require('material-ui')
-const Colors = require('material-ui/styles/colors')
+import { IconButton, Icon } from '@material-ui/core'
 const { appWizardActions } = require('../../stores/appWizard')
 const styles = require('./SidelistStyles')
-const ReactTooltip = require('react-tooltip')
+const createReactClass = require('create-react-class')
 
-const SidelistItemWizard = React.createClass({
+const SidelistItemWizard = createReactClass({
 
   /* **************************************************************************/
   // Class
@@ -26,17 +25,12 @@ const SidelistItemWizard = React.createClass({
       <div
         {...passProps}
         style={Object.assign({}, styles.itemContainer, style)}
-        data-tip='Setup Wizard'
-        data-for='ReactComponent-Sidelist-Item-Wizard'>
+        data-tip='Setup Wizard'>
         <IconButton
-          iconClassName='fa fa-fw fa-magic'
-          onClick={() => appWizardActions.startWizard()}
-          iconStyle={{ color: Colors.yellow600 }} />
-        <ReactTooltip
-          id='ReactComponent-Sidelist-Item-Wizard'
-          place='right'
-          type='dark'
-          effect='solid' />
+          color='primary'
+          onClick={() => appWizardActions.startWizard()}>
+          <Icon className='fa fa-fw fa-magic' />
+        </IconButton>
       </div>
     )
   }

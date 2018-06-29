@@ -15,7 +15,8 @@ MusicboxData[MusicboxTypes.DEEZER] = {
   title: 'Deezer',
   type: MusicboxTypes.DEEZER,
   style: {color: '#72727d', backgroundColor: '#23232c'},
-  url: 'http://www.deezer.com'
+  url: 'http://www.deezer.com',
+  customTileBackground: 'https://cdns-files.dzcdn.net/cache/slash/images/unlogged/homepage/header/visual.f3a2f31edaa3cf69ef9c3aae31da9ae0.jpg'
 }
 
 MusicboxData[MusicboxTypes.MFP] = {
@@ -39,7 +40,8 @@ MusicboxData[MusicboxTypes.SOUNDCLOUD] = {
   title: 'SoundCloud',
   type: MusicboxTypes.SOUNDCLOUD,
   style: {color: '#f50', backgroundColor: '#333'},
-  url: 'https://soundcloud.com'
+  url: 'https://soundcloud.com',
+  customTileBackground: 'https://a-v2.sndcdn.com/assets/images/home/hp_image@2x-ae2160d.jpg'
 }
 
 MusicboxData[MusicboxTypes.SPOTIFY] = {
@@ -51,13 +53,15 @@ MusicboxData[MusicboxTypes.SPOTIFY] = {
     backgroundColor: '#181818',
     backgroundImage: 'linear-gradient(rgb(96, 64, 55), rgb(9, 6, 5) 85%)'
   },
-  url: 'https://open.spotify.com'
+  url: 'https://open.spotify.com',
+  customTileBackground: 'https://open.scdn.co/static/images/login-background.jpg'
 }
 
-module.exports = Object.freeze({
+const config = Object.freeze({
   MusicboxTypes: MusicboxTypes,
   MusicboxData: MusicboxData,
   Default: {
     style: {color: 'rgb(230,220,210)', backgroundColor: 'rgb(0,0,0)'}
   }
 })
+module.exports = config

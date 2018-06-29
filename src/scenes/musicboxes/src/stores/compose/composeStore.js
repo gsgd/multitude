@@ -69,4 +69,5 @@ class ComposeStore {
   }
 }
 
-module.exports = alt.createStore(ComposeStore, 'ComposeStore')
+const store = alt.createStore(ComposeStore, 'ComposeStore')
+module.exports = store

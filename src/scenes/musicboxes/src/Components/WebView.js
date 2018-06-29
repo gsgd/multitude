@@ -1,4 +1,5 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const ReactDOM = require('react-dom')
 const camelCase = require('camelcase')
 
@@ -34,29 +35,30 @@ const WEBVIEW_EVENTS = [
 const REACT_WEBVIEW_EVENTS = WEBVIEW_EVENTS.map((name) => camelCase(name))
 
 const WEBVIEW_PROPS = {
-  id: React.PropTypes.string,
-  autosize: React.PropTypes.bool,
-  blinkfeatures: React.PropTypes.string,
-  disableblinkfeatures: React.PropTypes.string,
-  disablewebsecurity: React.PropTypes.bool,
-  httpreferrer: React.PropTypes.string,
-  nodeintegration: React.PropTypes.bool,
-  partition: React.PropTypes.string,
-  plugins: React.PropTypes.bool,
-  preload: React.PropTypes.string,
-  src: React.PropTypes.string
+  id: PropTypes.string,
+  autosize: PropTypes.bool,
+  blinkfeatures: PropTypes.string,
+  disableblinkfeatures: PropTypes.string,
+  disablewebsecurity: PropTypes.bool,
+  httpreferrer: PropTypes.string,
+  nodeintegration: PropTypes.bool,
+  partition: PropTypes.string,
+  plugins: PropTypes.bool,
+  preload: PropTypes.string,
+  src: PropTypes.string
 }
 const WEBVIEW_ATTRS = Object.keys(WEBVIEW_PROPS)
+const createReactClass = require('create-react-class')
 
-const BrowserView = React.createClass({
+const BrowserView = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
   displayName: 'BrowserView',
   propTypes: Object.assign({
-    className: React.PropTypes.string
+    className: PropTypes.string
   }, WEBVIEW_PROPS, REACT_WEBVIEW_EVENTS.reduce((acc, name) => {
-    acc[name] = React.PropTypes.func
+    acc[name] = PropTypes.func
     return acc
   }, {})),
   statics: {
@@ -108,6 +110,7 @@ const BrowserView = React.createClass({
         if (didSiphon) { return }
       }
 
+      // console.log('dispatchWebViewEvent', name, evt)
       this.props[camelCase(name)](evt)
     }
   },
@@ -142,12 +145,18 @@ const BrowserView = React.createClass({
 
   focus () {
     const node = this.getWebviewNode()
-    if (document.activeElement !== node) {
+    const el = document.activeElement
+    // console.log('WebView.focus', el.getAttribute('role'))
+    if (el !== node && el !== document.body && el.getAttribute('role') === null) {
+      // console.log('WebView.focus.activeElement')
       this.getWebviewNode().focus()
     }
   },
 
-  blur () { this.getWebviewNode().blur() },
+  blur () {
+    // console.log('WebView.blur')
+    this.getWebviewNode().blur()
+  },
 
   toggleDevTools () {
     const webview = this.getWebviewNode()

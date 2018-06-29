@@ -1,6 +1,7 @@
 const React = require('react')
-const { FontIcon, Dialog, RaisedButton } = require('material-ui')
-const Colors = require('material-ui/styles/colors')
+const PropTypes = require('prop-types')
+import { Icon, Modal, Dialog, DialogContent, DialogActions, Button } from '@material-ui/core'
+import * as Colors from '@material-ui/core/colors'
 const { musicboxWizardStore, musicboxWizardActions } = require('../../stores/musicboxWizard')
 const { appWizardActions } = require('../../stores/appWizard')
 const { settingsStore } = require('../../stores/settings')
@@ -10,15 +11,16 @@ const styles = {
     textAlign: 'center'
   },
   tick: {
-    color: Colors.green600,
+    color: Colors.green[600],
     fontSize: '80px'
   },
   instruction: {
     textAlign: 'center'
   }
 }
+const createReactClass = require('create-react-class')
 
-const ConfigureCompleteWizardDialog = React.createClass({
+const ConfigureCompleteWizardDialog = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -65,9 +67,8 @@ const ConfigureCompleteWizardDialog = React.createClass({
   render () {
     const { isOpen, hasSeenAppWizard } = this.state
     const actions = (
-      <RaisedButton
-        label='Finish'
-        primary
+      <Button variant='raised'
+        color='primary'
         onClick={() => {
           musicboxWizardActions.configurationComplete()
           if (!hasSeenAppWizard) {
@@ -75,23 +76,26 @@ const ConfigureCompleteWizardDialog = React.createClass({
               appWizardActions.startWizard()
             }, 500) // Feels more natural after a delay
           }
-        }} />
+        }}>
+        Finish
+      </Button>
     )
 
     return (
       <Dialog
-        bodyClassName='ReactComponent-MaterialUI-Dialog-Body-Scrollbars'
-        modal
-        actions={actions}
-        open={isOpen}
-        autoScrollBodyContent>
-        <div style={styles.container}>
-          <FontIcon className='material-icons' style={styles.tick}>check_circle</FontIcon>
+        className='ReactComponent-MaterialUI-Dialog-Body-Scrollbars'
+        // modal
+        open={isOpen}>
+        <DialogContent style={styles.container}>
+          <Icon className='material-icons' style={styles.tick}>check_circle</Icon>
           <h3>All Done!</h3>
           <p style={styles.instruction}>
             You can change your musicbox settings at any time in the settings
           </p>
-        </div>
+        </DialogContent>
+        <DialogActions>
+          {actions}
+        </DialogActions>
       </Dialog>
     )
   }

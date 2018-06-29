@@ -3,15 +3,16 @@ addLink(__dirname, './NewsDialog.less')
 
 const React = require('react')
 const shallowCompare = require('react-addons-shallow-compare')
-const { RaisedButton, Dialog, Toggle } = require('material-ui')
+import { Button, Dialog, DialogActions, DialogContent, Switch, FormControlLabel, Grid } from '@material-ui/core'
 const { settingsActions, settingsStore } = require('../stores/settings')
 const navigationDispatch = require('../Dispatch/navigationDispatch')
 const WebView = require('../Components/WebView')
 const {
   remote: {shell}
 } = require('electron')
+const createReactClass = require('create-react-class')
 
-const NewsDialog = React.createClass({
+const NewsDialog = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -104,42 +105,51 @@ const NewsDialog = React.createClass({
   },
 
   render () {
-    const { open, feedUrl, showNewsInSidebar } = this.state
+    if (!this.state.open) return null
 
-    const buttons = (
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div style={{ width: '50%', textAlign: 'left', paddingTop: 8 }}>
-          <Toggle
-            toggled={showNewsInSidebar}
-            label='Always show in sidebar'
-            labelPosition='right'
-            labelStyle={{ color: 'rgb(189,189,189)' }}
-            onToggle={(evt, toggled) => {
-              settingsActions.setShowNewsInSidebar(toggled)
-            }} />
-        </div>
-        <div>
-          <RaisedButton
-            primary
-            label='Done'
-            onClick={this.handleDone} />
-        </div>
-      </div>
-    )
+    const { open, feedUrl, showNewsInSidebar } = this.state
+    const {sidebarClasses} = this.props
 
     return (
       <Dialog
-        modal={false}
-        actions={buttons}
         open={open}
-        onRequestClose={this.handleDone}
-        bodyClassName='ReactComponent-NewsDialog-Body'>
-        {open ? (
+        fullScreen
+        onClose={this.handleDone}
+        classes={sidebarClasses}>
+        <DialogContent
+          className='ReactComponent-NewsDialog-Body'>
           <WebView
             src={feedUrl}
             newWindow={this.handleOpenNewWindow}
-           />
-        ) : undefined}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Grid container>
+            <Grid item container xs={6} justify='flex-start'>
+              <Grid item>
+                <FormControlLabel
+                  control={<Switch/>}
+                  checked={showNewsInSidebar}
+                  label='Always show in sidebar'
+                  // labelStyle={{ color: 'rgb(189,189,189)' }}
+                  style={{color: 'rgb(189,189,189)'}}
+                  onChange={(evt, toggled) => {
+                    settingsActions.setShowNewsInSidebar(toggled)
+                  }}/>
+              </Grid>
+            </Grid>
+            <Grid item container xs={6} justify='flex-end'>
+              <Grid item>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  onClick={this.handleDone}>
+                  Done
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </DialogActions>
       </Dialog>
     )
   }

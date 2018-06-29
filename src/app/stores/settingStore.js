@@ -70,5 +70,5 @@ class SettingStore {
     })
   }
 }
-
-module.exports = new SettingStore()
+const store = new SettingStore()
+module.exports = store

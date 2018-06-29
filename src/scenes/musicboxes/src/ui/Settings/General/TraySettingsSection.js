@@ -1,19 +1,21 @@
 const React = require('react')
-const { Toggle, Paper, SelectField, MenuItem } = require('material-ui')
+const PropTypes = require('prop-types')
+import { Switch, FormControlLabel, Paper, NativeSelect, FormHelperText, Grid } from '@material-ui/core'
 const { TrayIconEditor } = require('../../../Components')
 const settingsActions = require('../../../stores/settings/settingsActions')
 const styles = require('../settingStyles')
 const shallowCompare = require('react-addons-shallow-compare')
 const Tray = require('../../Tray')
+const createReactClass = require('create-react-class')
 
-const TraySettingsSection = React.createClass({
+const TraySettingsSection = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'TraySettingsSection',
   propTypes: {
-    tray: React.PropTypes.object.isRequired
+    tray: PropTypes.object.isRequired
   },
 
   /* **************************************************************************/
@@ -28,35 +30,40 @@ const TraySettingsSection = React.createClass({
     const {tray, ...passProps} = this.props
 
     return (
-      <Paper zDepth={1} style={styles.paper} {...passProps}>
-        <h1 style={styles.subheading}>{process.platform === 'darwin' ? 'Menu Bar' : 'Tray'}</h1>
-        <div>
-          <Toggle
-            toggled={tray.show}
-            label='Show icon'
-            labelPosition='right'
-            onToggle={(evt, toggled) => settingsActions.setShowTrayIcon(toggled)} />
-          <Toggle
-            toggled={tray.showActiveTrack}
-            label='Show active track'
-            labelPosition='right'
-            disabled={!tray.show}
-            onToggle={(evt, toggled) => settingsActions.setShowTrayUnreadCount(toggled)} />
-          {Tray.platformSupportsDpiMultiplier() ? (
-            <SelectField
-              floatingLabelText='DPI Multiplier'
-              value={tray.dpiMultiplier}
-              onChange={(evt, index, value) => settingsActions.setDpiMultiplier(value)}>
-              <MenuItem value={1} primaryText='1x' />
-              <MenuItem value={2} primaryText='2x' />
-              <MenuItem value={3} primaryText='3x' />
-              <MenuItem value={4} primaryText='4x' />
-              <MenuItem value={5} primaryText='5x' />
-            </SelectField>
-          ) : undefined }
-        </div>
-        <br />
-        <TrayIconEditor tray={tray} />
+      <Paper elevation={1} style={styles.paper} {...passProps}>
+        <Grid container>
+          <Grid item sm={6}>
+            <h1 style={styles.subheading}>{process.platform === 'darwin' ? 'Menu Bar' : 'Tray'}</h1>
+            <FormControlLabel
+              control={<Switch/>}
+              checked={tray.show}
+              label='Show icon'
+              onChange={(evt, toggled) => settingsActions.setShowTrayIcon(toggled)}/>
+            <FormControlLabel
+              control={<Switch/>}
+              checked={tray.showActiveTrack}
+              label='Show active track'
+              disabled={!tray.show}
+              onChange={(evt, toggled) => settingsActions.setShowTrayUnreadCount(toggled)}/>
+            {Tray.platformSupportsDpiMultiplier() ? (
+              <div>
+                <NativeSelect
+                  value={tray.dpiMultiplier}
+                  onChange={(evt, index, value) => settingsActions.setDpiMultiplier(value)}>
+                  <option value={1}>1x</option>
+                  <option value={2}>2x</option>
+                  <option value={3}>3x</option>
+                  <option value={4}>4x</option>
+                  <option value={5}>5x</option>
+                </NativeSelect>
+                <FormHelperText>DPI Multiplier</FormHelperText>
+              </div>
+            ) : undefined}
+          </Grid>
+          <Grid item sm={6}>
+            <TrayIconEditor tray={tray}/>
+          </Grid>
+        </Grid>
       </Paper>
     )
   }

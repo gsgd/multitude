@@ -1,16 +1,18 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const TrayRenderer = require('./TrayRenderer')
 const shallowCompare = require('react-addons-shallow-compare')
+const createReactClass = require('create-react-class')
 
-const TrayPreview = React.createClass({
+const TrayPreview = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'TrayPreview',
   propTypes: {
-    config: React.PropTypes.object.isRequired,
-    size: React.PropTypes.number.isRequired
+    config: PropTypes.object.isRequired,
+    size: PropTypes.number.isRequired
   },
 
   /* **************************************************************************/

@@ -1,7 +1,6 @@
 const alt = require('../alt')
 
 class AppWizardActions {
-
   /* **************************************************************************/
   // Lifecycle
   /* **************************************************************************/
@@ -27,4 +26,5 @@ class AppWizardActions {
   discardWizard () { return {} }
 }
 
-module.exports = alt.createActions(AppWizardActions)
+const actions = alt.createActions(AppWizardActions)
+module.exports = actions

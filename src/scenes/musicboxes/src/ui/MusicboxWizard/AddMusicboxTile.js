@@ -1,9 +1,13 @@
 const React = require('react')
-import {Dialog, Button, GridList, GridListTile, GridListTileBar, DialogTitle, DialogActions, DialogContent, Avatar, IconButton, Icon} from '@material-ui/core'
-const { musicboxWizardStore, musicboxWizardActions } = require('../../stores/musicboxWizard')
+import {
+  Dialog, Button, GridList, GridListTile, GridListTileBar,
+  DialogTitle, DialogActions, DialogContent, Avatar,
+  IconButton, Icon } from '@material-ui/core'
+import {withStyles} from '@material-ui/core/styles'
+
+const {musicboxWizardStore, musicboxWizardActions} = require('../../stores/musicboxWizard')
 const shallowCompare = require('react-addons-shallow-compare')
-const { MusicboxData } = require('shared/Models/Musicbox/MusicboxConfiguration')
-const AddMusicboxTile = require('./AddMusicboxTile')
+const {MusicboxData} = require('shared/Models/Musicbox/MusicboxConfiguration')
 
 const styles = {
   gridListTile: {
@@ -22,11 +26,14 @@ const styles = {
     position: 'relative',
     top: '50%',
     left: '50%'
+  },
+  gridListTileBarHover: {
+    backgroundColor: 'rgba(0,0,0,0.8)'
   }
 }
 const createReactClass = require('create-react-class')
 
-const AddMusicboxWizardDialog = createReactClass({
+const AddMusicboxTile = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -52,7 +59,7 @@ const AddMusicboxWizardDialog = createReactClass({
   getInitialState () {
     const wizardState = musicboxWizardStore.getState()
     return {
-      isOpen: wizardState.addMusicboxOpen
+      hover: false
     }
   },
 
@@ -71,40 +78,37 @@ const AddMusicboxWizardDialog = createReactClass({
   },
 
   render () {
-    const { isOpen } = this.state
-    let evens = (Object.values(MusicboxData).length % 2) === 0
-    const {sidebarClasses} = this.props
+    const {cols, tile, styles, classes, ...passProps} = this.props
+    const {hover} = this.state
+    const image = hover ? `linear-gradient(rgba(0,0,0,0.24), rgba(0,0,0,0.24)), url(${tile.customTileBackground})` : `url(${tile.customTileBackground})`
+    const style = Object.assign({backgroundImage: tile.customTileBackground ? image : ''}, styles.gridImgContainer)
     return (
-      <Dialog
-        open={isOpen}
-        fullScreen
-        onClose={() => musicboxWizardActions.cancelAddMusicbox()}
-        classes={sidebarClasses}>
-        <DialogTitle>Add your service</DialogTitle>
-        <DialogContent>
-          <GridList
-            cellHeight={150}
-            spacing={24}>
-            {Object.values(MusicboxData).map((tile) => {
-              const cols = evens ? 1 : 2
-              evens = evens || true
-              return (
-                <AddMusicboxTile
-                  key={tile.img}
-                  tile={tile}
-                  cols={cols}
-                  styles={styles} />
-              )
-            })}
-          </GridList>
-        </DialogContent>
-        <DialogActions>
-          <Button variant='raised' color='primary' onClick={() => musicboxWizardActions.cancelAddMusicbox()}>
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <GridListTile
+        title={`Add ${tile.title} tab`}
+        key={tile.img}
+        onMouseOver={() => { this.setState({hover: true}) }}
+        onMouseOut={() => { this.setState({hover: false}) }}
+        cols={cols}
+        onClick={() => musicboxWizardActions.addMusicbox(tile.type)}
+        classes={{root: classes.gridListTile}}
+        {...passProps}>
+        <div style={style}>
+          <img src={tile.img} alt={tile.title} className={classes.gridImg} />
+        </div>
+        <GridListTileBar
+          title={tile.title}
+          classes={{root: hover ? classes.gridListTileBarHover : ''}}
+          actionIcon={
+            <IconButton color='primary'>
+              <Icon>add</Icon>
+            </IconButton>
+          }
+        />
+      </GridListTile>
     )
   }
 })
-module.exports = AddMusicboxWizardDialog
+
+const AddWithStyles = withStyles(styles)(AddMusicboxTile)
+
+module.exports = AddWithStyles

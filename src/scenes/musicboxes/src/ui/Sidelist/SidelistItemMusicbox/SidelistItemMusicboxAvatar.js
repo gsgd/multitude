@@ -1,21 +1,29 @@
 const React = require('react')
-const { Avatar } = require('material-ui')
+const PropTypes = require('prop-types')
+import { IconButton, Avatar } from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 const { musicboxStore } = require('../../../stores/musicbox')
 const shallowCompare = require('react-addons-shallow-compare')
 const styles = require('../SidelistStyles')
+const createReactClass = require('create-react-class')
 
-const SidelistItemMusicboxAvatar = React.createClass({
+const themed = theme => ({
+  colorDefault: { backgroundColor: theme.palette.primary.dark }
+})
+
+const SidelistItemMusicboxAvatar = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'SidelistItemMusicboxAvatar',
   propTypes: {
-    isActive: React.PropTypes.bool.isRequired,
-    isHovering: React.PropTypes.bool.isRequired,
-    musicbox: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
-    onClick: React.PropTypes.func.isRequired
+    isActive: PropTypes.bool.isRequired,
+    isHovering: PropTypes.bool.isRequired,
+    musicbox: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    onClick: PropTypes.func.isRequired,
+    onContextMenu: PropTypes.func.isRequired
   },
 
   /* **************************************************************************/
@@ -27,34 +35,36 @@ const SidelistItemMusicboxAvatar = React.createClass({
   },
 
   render () {
-    const { isActive, isHovering, musicbox, index, ...passProps } = this.props
-
+    const { onClick, onContextMenu, isActive, isHovering, musicbox, index, classes, ...passProps } = this.props
     let url
     let children
-    let backgroundColor
-    const borderColor = isActive || isHovering ? musicbox.color : 'white'
+    const style = (isActive || isHovering) ? {
+      backgroundColor: musicbox.color
+    } : {}
     if (musicbox.hasCustomAvatar) {
       url = musicboxStore.getState().getAvatar(musicbox.customAvatarId)
-      backgroundColor = 'white'
+      // backgroundColor = musicbox.color
     } else if (musicbox.avatarURL) {
       url = musicbox.avatarURL
-      backgroundColor = musicbox.color
     } else {
       children = index
-      backgroundColor = musicbox.color
+      // backgroundColor = musicbox.color
     }
     return (
-      <Avatar
-        {...passProps}
-        src={url}
-        size={50}
-        backgroundColor={backgroundColor}
-        color={musicbox.backgroundColor}
-        draggable={false}
-        style={Object.assign({ borderColor: borderColor }, styles.musicboxAvatar)}>
-        {children}
-      </Avatar>
+      <IconButton
+        className={classes.colorDefault}
+        style={style}
+        onClick={onClick}
+        onContextMenu={onContextMenu}>
+        <Avatar
+          {...passProps}
+          src={url}
+          draggable={false}>
+          {children}
+        </Avatar>
+      </IconButton>
     )
   }
 })
-module.exports = SidelistItemMusicboxAvatar
+const styled = withStyles(themed)(SidelistItemMusicboxAvatar)
+module.exports = styled

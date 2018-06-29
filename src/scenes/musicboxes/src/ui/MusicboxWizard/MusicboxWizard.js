@@ -1,12 +1,14 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const { musicboxWizardStore } = require('../../stores/musicboxWizard')
 const shallowCompare = require('react-addons-shallow-compare')
 const AddMusicboxWizardDialog = require('./AddMusicboxWizardDialog')
 const ConfigureMusicboxWizardDialog = require('./ConfigureMusicboxWizardDialog')
 const ConfigureMusicboxServicesDialog = require('./ConfigureMusicboxServicesDialog')
 const ConfigureCompleteWizardDialog = require('./ConfigureCompleteWizardDialog')
+const createReactClass = require('create-react-class')
 
-const MusicboxWizard = React.createClass({
+const MusicboxWizard = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
@@ -69,10 +71,10 @@ const MusicboxWizard = React.createClass({
     if (this.state.render) {
       return (
         <div>
-          <AddMusicboxWizardDialog />
-          <ConfigureMusicboxWizardDialog />
-          <ConfigureMusicboxServicesDialog />
-          <ConfigureCompleteWizardDialog />
+          <AddMusicboxWizardDialog {...this.props} />
+          <ConfigureMusicboxWizardDialog {...this.props} />
+          <ConfigureMusicboxServicesDialog {...this.props} />
+          <ConfigureCompleteWizardDialog {...this.props} />
         </div>
       )
     } else {

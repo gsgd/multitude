@@ -1,19 +1,20 @@
-const Colors = require('material-ui/styles/colors')
+import * as Colors from '@material-ui/core/colors'
 const FOOTER_ITEM_HEIGHT = 50
 const addLink = require('shared/addLink')
 addLink(__dirname, './SidelistStyles.less')
 
-module.exports = {
+const sidelistStyles = {
   /**
   * Layout
   */
   container: {
-    backgroundColor: Colors.blueGrey900,
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0
+    textAlign: 'center',
+    backgroundColor: Colors.blueGrey[900],
+    // position: 'absolute',
+    // top: 0,
+    // bottom: 0,
+    // left: 0,
+    width: 70
   },
   footer: {
     height: 2 * FOOTER_ITEM_HEIGHT,
@@ -44,7 +45,6 @@ module.exports = {
     bottom: 4 * FOOTER_ITEM_HEIGHT
   },
   itemContainer: {
-    textAlign: 'center'
   },
 
   /**
@@ -62,7 +62,7 @@ module.exports = {
   },
   mailboxBadge: {
     backgroundColor: 'rgba(238, 54, 55, 0.95)',
-    color: Colors.red50,
+    color: Colors.red[50],
     fontWeight: '100',
     width: 'auto',
     minWidth: 24,
@@ -152,9 +152,11 @@ module.exports = {
     cursor: 'pointer'
   },
   musicboxActionIconStyle: {
-    fontSize: 18
+    fontSize: 16
   },
   musicboxActionStyle: {
+    minWidth: 'initial',
+    minHeight: 'initial',
     width: 26,
     height: 26,
     padding: 4,
@@ -180,7 +182,7 @@ module.exports = {
   },
   newsBadge: {
     backgroundColor: 'rgba(238, 54, 55, 0.95)',
-    color: Colors.red50,
+    color: Colors.red[50],
     fontWeight: '100',
     width: 'auto',
     minWidth: 24,
@@ -198,3 +200,4 @@ module.exports = {
     zIndex: 2
   }
 }
+module.exports = sidelistStyles

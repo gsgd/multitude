@@ -249,4 +249,5 @@ class SettingsStore {
   }
 }
 
-module.exports = alt.createStore(SettingsStore, 'SettingsStore')
+const store = alt.createStore(SettingsStore, 'SettingsStore')
+module.exports = store

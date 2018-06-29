@@ -1,11 +1,13 @@
 const React = require('react')
+const PropTypes = require('prop-types')
+const createReactClass = require('create-react-class')
 
-const GridRow = React.createClass({
+const GridRow = createReactClass({
   displayName: 'GridRow',
 
   propTypes: {
-    className: React.PropTypes.string,
-    children: React.PropTypes.node
+    className: PropTypes.string,
+    children: PropTypes.node
   },
 
   render () {

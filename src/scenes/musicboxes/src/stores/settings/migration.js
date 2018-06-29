@@ -1,6 +1,6 @@
 const persistence = require('./settingsPersistence')
 
-module.exports = {
+const migration = {
   /**
   * Migrates the data from version 1.3.1
   */
@@ -57,3 +57,4 @@ module.exports = {
     window.localStorage.setItem('migrate_settings_from_1_3_1', 'true')
   }
 }
+module.exports = migration

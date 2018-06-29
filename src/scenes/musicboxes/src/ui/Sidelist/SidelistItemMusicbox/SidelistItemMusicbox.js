@@ -1,24 +1,27 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const { navigationDispatch } = require('../../../Dispatch')
 const { musicboxStore, musicboxActions } = require('../../../stores/musicbox')
 const shallowCompare = require('react-addons-shallow-compare')
-const ReactTooltip = require('react-tooltip')
+
 const styles = require('../SidelistStyles')
-const SidelistItemMusicboxPopover = require('./SidelistItemMusicboxPopover')
 const SidelistItemMusicboxAvatar = require('./SidelistItemMusicboxAvatar')
 const SidelistItemMusicboxActions = require('./SidelistItemMusicboxActions')
+const createReactClass = require('create-react-class')
+const ReactTooltip = require('react-tooltip')
 
-const SidelistItemMusicbox = React.createClass({
+const SidelistItemMusicbox = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/
 
   displayName: 'SidelistItemMusicbox',
   propTypes: {
-    musicboxId: React.PropTypes.string.isRequired,
-    index: React.PropTypes.number.isRequired,
-    isFirst: React.PropTypes.bool.isRequired,
-    isLast: React.PropTypes.bool.isRequired
+    musicboxId: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
+    isFirst: PropTypes.bool.isRequired,
+    isLast: PropTypes.bool.isRequired,
+    openPopover: PropTypes.func.isRequired
   },
 
   /* **************************************************************************/
@@ -47,9 +50,8 @@ const SidelistItemMusicbox = React.createClass({
       musicbox: musicbox,
       isActive: musicboxState.activeMusicboxId() === this.props.musicboxId,
       activeService: musicboxState.activeMusicboxService(),
-      popover: false,
-      popoverAnchor: null,
-      hovering: false
+      hovering: false,
+      tooltip: musicbox ? musicbox.typeWithUsername : ''
     }
   },
 
@@ -58,7 +60,8 @@ const SidelistItemMusicbox = React.createClass({
     this.setState({
       musicbox: musicbox,
       isActive: musicboxState.activeMusicboxId() === this.props.musicboxId,
-      activeService: musicboxState.activeMusicboxService()
+      activeService: musicboxState.activeMusicboxService(),
+      tooltip: musicbox ? musicbox.typeWithUsername : ''
     })
   },
 
@@ -90,11 +93,14 @@ const SidelistItemMusicbox = React.createClass({
   },
 
   /**
-  * Opens the popover
+  * Handles opening a service
+  * @param evt: the event that fired
+  * @param service: the service to open
   */
-  handleOpenPopover (evt) {
-    evt.preventDefault()
-    this.setState({ popover: true, popoverAnchor: evt.currentTarget })
+  handleOpenPopover (evt, service) {
+    const {isFirst, isLast, openPopover} = this.props
+    const {musicbox} = this.state
+    openPopover(evt, musicbox, isFirst, isLast)
   },
 
   /* **************************************************************************/
@@ -123,31 +129,14 @@ const SidelistItemMusicbox = React.createClass({
     }
   },
 
-  /**
-  * Renders the content for the tooltip
-  * @param musicbox: the musicbox to render for
-  * @return jsx
-  */
-  renderTooltipContent (musicbox) {
-    if (!musicbox.email && !musicbox.unread) { return undefined }
-    const hr = '<hr style="height: 1px; border: 0; background-image: linear-gradient(to right, #bcbcbc, #fff, #bcbcbc);" />'
-    const hasError = musicbox.google.authHasGrantError
-    return `
-      <div style="text-align:left;">
-        ${musicbox.email || ''}
-        ${musicbox.email && musicbox.unread ? hr : ''}
-        ${musicbox.unread ? `<small>${musicbox.unread} unread message${musicbox.unread > 1 ? 's' : ''}</small>` : ''}
-        ${hasError ? hr : ''}
-        ${hasError ? '<span style="color:red;">Authentication Error. Right click to reauthenticate</span>' : ''}
-      </div>
-    `
-  },
-
   render () {
     if (!this.state.musicbox) { return null }
-    const { musicbox, isActive, activeService, popover, popoverAnchor, hovering } = this.state
-    const { index, isFirst, isLast, style, ...passProps } = this.props
+    const { musicbox, isActive, activeService, hovering, tooltip } = this.state
+    const { index, style, ...passProps } = this.props
     delete passProps.musicboxId
+    delete passProps.openPopover
+    delete passProps.isFirst
+    delete passProps.isLast
 
     return (
       <div
@@ -155,21 +144,15 @@ const SidelistItemMusicbox = React.createClass({
         style={Object.assign({}, styles.itemContainer, styles.musicboxItemContainer, style)}
         onMouseEnter={() => this.setState({ hovering: true })}
         onMouseLeave={() => this.setState({ hovering: false })}
-        data-tip={this.renderTooltipContent(musicbox)}
-        data-for={`ReactComponent-Sidelist-Item-Musicbox-${musicbox.id}`}
-        data-html>
-        <ReactTooltip
-          id={`ReactComponent-Sidelist-Item-Musicbox-${musicbox.id}`}
-          place='right'
-          type='dark'
-          effect='solid' />
+        data-tip={tooltip}
+      >
         <SidelistItemMusicboxAvatar
+          onClick={this.handleClick}
           onContextMenu={this.handleOpenPopover}
-          isActive={isActive}
           isHovering={hovering}
+          isActive={isActive}
           musicbox={musicbox}
-          index={index}
-          onClick={this.handleClick} />
+          index={index} />
         <SidelistItemMusicboxActions
           musicbox={musicbox}
           isHovering={hovering}
@@ -177,13 +160,6 @@ const SidelistItemMusicbox = React.createClass({
           activeService={activeService}
           onOpenService={this.handleOpenService} />
         {this.renderActiveIndicator(musicbox, isActive)}
-        <SidelistItemMusicboxPopover
-          musicbox={musicbox}
-          isFirst={isFirst}
-          isLast={isLast}
-          isOpen={popover}
-          anchor={popoverAnchor}
-          onRequestClose={() => this.setState({ popover: false })} />
       </div>
     )
   }

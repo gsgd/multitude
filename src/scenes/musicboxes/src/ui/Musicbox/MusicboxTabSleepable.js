@@ -1,11 +1,13 @@
 const React = require('react')
+const PropTypes = require('prop-types')
 const MusicboxTab = require('./MusicboxTab')
 const { musicboxStore } = require('../../stores/musicbox')
 const { MAILBOX_SLEEP_WAIT } = require('shared/constants')
 
 const REF = 'musicboxTab'
+const createReactClass = require('create-react-class')
 
-const MusicboxTabSleepable = React.createClass({
+const MusicboxTabSleepable = createReactClass({
   /* **************************************************************************/
   // Class
   /* **************************************************************************/

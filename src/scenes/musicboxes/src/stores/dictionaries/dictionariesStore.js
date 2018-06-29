@@ -197,25 +197,26 @@ class DictionariesStore {
         .then((res) => res.text())
         .then((dic) => { return { dic: dic } })
     ])
-    .then((responses) => {
-      const data = responses.reduce((acc, res) => Object.assign(acc, res))
-      const affPath = path.join(userDictionariesPath, this.install.lang + '.aff')
-      const dicPath = path.join(userDictionariesPath, this.install.lang + '.dic')
+      .then((responses) => {
+        const data = responses.reduce((acc, res) => Object.assign(acc, res))
+        const affPath = path.join(userDictionariesPath, this.install.lang + '.aff')
+        const dicPath = path.join(userDictionariesPath, this.install.lang + '.dic')
 
-      mkdirp.sync(userDictionariesPath)
-      fs.writeFileSync(affPath, data.aff)
-      fs.writeFileSync(dicPath, data.dic)
+        mkdirp.sync(userDictionariesPath)
+        fs.writeFileSync(affPath, data.aff)
+        fs.writeFileSync(dicPath, data.dic)
 
-      this.install.inflight = false
-      this.install.success = true
-      this.installedCustomDictionaries = null
-      this.emitChange()
-    }, (_err) => {
-      this.install.inflight = false
-      this.install.error = true
-      this.emitChange()
-    })
+        this.install.inflight = false
+        this.install.success = true
+        this.installedCustomDictionaries = null
+        this.emitChange()
+      }, (_err) => {
+        this.install.inflight = false
+        this.install.error = true
+        this.emitChange()
+      })
   }
 }
 
-module.exports = alt.createStore(DictionariesStore, 'DictionariesStore')
+const store = alt.createStore(DictionariesStore, 'DictionariesStore')
+module.exports = store
